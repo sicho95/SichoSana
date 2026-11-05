@@ -1,0 +1,633 @@
+{
+  "format": "sichosana-voice-pack",
+  "packId": "vivienne-fr-v1",
+  "locale": "fr-FR",
+  "voiceId": "fr-FR-VivienneMultilingualNeural",
+  "rate": "-12%",
+  "pitch": "-1Hz",
+  "volume": "+0%",
+  "sourceIdentity": "ResurGo_Fitness Running female coach v2",
+  "status": "candidate-awaiting-damien-audition",
+  "catalogSha256": "48d126d87143fab06bf65e9ff5ab3b5c88a34758fd2736c3ed200c30791173c5",
+  "yogaCatalogSha256": "9e4ea5b991da23c41c6816c931836c0f91440dd9b9e65dda7dbec6b47a927eb0",
+  "files": {
+    "ancrage_discrete_00": {
+      "src": "ancrage_discrete_00.mp3",
+      "sha256": "421e0674aa33862e9ca0fdd09ca61c442971f92873c8293f74506d7b64bdca7a",
+      "bytes": 23904,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6"
+    },
+    "ancrage_discrete_01": {
+      "src": "ancrage_discrete_01.mp3",
+      "sha256": "e8b3a76abad2eed0b64dcf88d525da6adb869c0f4cd5c2011e2634ad8e414554",
+      "bytes": 28800,
+      "textSha256": "0e55d7142f19ffed66ee8a848876047ad9910aa8764c1defceb3a99b9fe0720d"
+    },
+    "ancrage_enveloppante_00": {
+      "src": "ancrage_enveloppante_00.mp3",
+      "sha256": "d930cd0d4c1774619597f68aeca32be3ce61cdaad8f44b84957f83f80b952804",
+      "bytes": 23904,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6"
+    },
+    "ancrage_enveloppante_01": {
+      "src": "ancrage_enveloppante_01.mp3",
+      "sha256": "31c85f42d0f9ea2b5f43094a7d63c64eefc3526c5ae1ed988b18be1b5a28546e",
+      "bytes": 17712,
+      "textSha256": "b46fd9a538882885bfaa01e8fc1736849b4055d59ff6114d3f2dfaf04bc935d2"
+    },
+    "ancrage_enveloppante_02": {
+      "src": "ancrage_enveloppante_02.mp3",
+      "sha256": "41a56d9b826acc135a2e12915acc18d74c0bb51108cbc3fbc6b2061cfbf714c8",
+      "bytes": 28656,
+      "textSha256": "6205cb35ef95feab378f64eec0e4ab888450af11336c3c8ff6a5a9d586001aff"
+    },
+    "ancrage_enveloppante_03": {
+      "src": "ancrage_enveloppante_03.mp3",
+      "sha256": "65e77e4af9ca878e8221b1dfd7c8aa727dfe7ba990f69cbea027e7098950e403",
+      "bytes": 23328,
+      "textSha256": "7e6b5e7026771b0101753f94c2057941c5793e2cfcabdabf47872631ff7fb7e9"
+    },
+    "ancrage_enveloppante_04": {
+      "src": "ancrage_enveloppante_04.mp3",
+      "sha256": "a3116e99b6c5a90a3350bd4e0c43a5b6629705ed673d93298a4fc6713138753e",
+      "bytes": 23184,
+      "textSha256": "cef1fa08545241f9b75660b36a4d0ef988c3003858d0ff4c136b2628833e97b0"
+    },
+    "ancrage_enveloppante_05": {
+      "src": "ancrage_enveloppante_05.mp3",
+      "sha256": "2fbb45c460f0573b6d65535374bc5933224dc3784f2734af4a4df4c7db32d3cf",
+      "bytes": 28800,
+      "textSha256": "0e55d7142f19ffed66ee8a848876047ad9910aa8764c1defceb3a99b9fe0720d"
+    },
+    "ancrage_equilibree_00": {
+      "src": "ancrage_equilibree_00.mp3",
+      "sha256": "72c30b9e8b3eca06d50d1f9e956b3003b19817187757cae15ad23912ea351f5a",
+      "bytes": 23904,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6"
+    },
+    "ancrage_equilibree_01": {
+      "src": "ancrage_equilibree_01.mp3",
+      "sha256": "89b826bde3003a53652e0c5944ab164bdec6c9cd2830dd0c2838ad39d49444fb",
+      "bytes": 28656,
+      "textSha256": "6205cb35ef95feab378f64eec0e4ab888450af11336c3c8ff6a5a9d586001aff"
+    },
+    "ancrage_equilibree_02": {
+      "src": "ancrage_equilibree_02.mp3",
+      "sha256": "3d7c4344c3c3c406f46418eacd71aec9365e9883805e5e70b0677a6c11ddaa6e",
+      "bytes": 23184,
+      "textSha256": "cef1fa08545241f9b75660b36a4d0ef988c3003858d0ff4c136b2628833e97b0"
+    },
+    "ancrage_equilibree_03": {
+      "src": "ancrage_equilibree_03.mp3",
+      "sha256": "439982df193399de9e3b7ca2995c8da88ca1d5c828c5ac7f16665f22711c7bb4",
+      "bytes": 28800,
+      "textSha256": "0e55d7142f19ffed66ee8a848876047ad9910aa8764c1defceb3a99b9fe0720d"
+    },
+    "clarte_discrete_00": {
+      "src": "clarte_discrete_00.mp3",
+      "sha256": "03e3ef6e250da6166726bdcdf096248be3d675fe4357d6a8f5543ef7b000d574",
+      "bytes": 19152,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2"
+    },
+    "clarte_discrete_01": {
+      "src": "clarte_discrete_01.mp3",
+      "sha256": "59f70f127b629db9de5361bada0789417088ee5b9e2d19e297bd91406edea495",
+      "bytes": 27360,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620"
+    },
+    "clarte_enveloppante_00": {
+      "src": "clarte_enveloppante_00.mp3",
+      "sha256": "72b8671f834e8eb7c010a85d4c4693d2935578bdfdaac7e934ed44947c534c70",
+      "bytes": 19152,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2"
+    },
+    "clarte_enveloppante_01": {
+      "src": "clarte_enveloppante_01.mp3",
+      "sha256": "21a7cbba9b155890d88d8efb196c2e164fef465fc1f629a5ec6e5867fa87757b",
+      "bytes": 16560,
+      "textSha256": "48d975e0a1b5f1b125848b63f4ce9b01aecebe7bef0a521f9324e1657988f176"
+    },
+    "clarte_enveloppante_02": {
+      "src": "clarte_enveloppante_02.mp3",
+      "sha256": "5e4702efb98031246318e99efff6d3f53293ec5ae2b69db4149f999d7f327cbf",
+      "bytes": 20448,
+      "textSha256": "eee7dee20d87bc8b6b871d7718039eff9bfbcf2138686a29f875134daeea0cf5"
+    },
+    "clarte_enveloppante_03": {
+      "src": "clarte_enveloppante_03.mp3",
+      "sha256": "c748c2bb1b6f5ee75fd1992a7560b6c8c8a7b307eef59bf2a14611ed0eeece3e",
+      "bytes": 24048,
+      "textSha256": "6d5bce4f49de9cff289a5f695b0b235739dd0732b938be4e38501b48d13882d5"
+    },
+    "clarte_enveloppante_04": {
+      "src": "clarte_enveloppante_04.mp3",
+      "sha256": "1d11ad5c1b753e71919289fa9eed816eef6161ca70969b85c383a17dc4c10c30",
+      "bytes": 18576,
+      "textSha256": "2331ef73e2172fbd3c7c95a27c2e1bc608798936577370dfd717e110d336b99d"
+    },
+    "clarte_enveloppante_05": {
+      "src": "clarte_enveloppante_05.mp3",
+      "sha256": "57337536b26a82c193fe6f99bbe2e0ba99bcae0974b1dfe1322cba69e0ce024b",
+      "bytes": 27360,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620"
+    },
+    "clarte_equilibree_00": {
+      "src": "clarte_equilibree_00.mp3",
+      "sha256": "b1851f5dee0c1494e2838c11bb048cc3bdeabfcc7a5b9157b715e34859a42e0c",
+      "bytes": 19152,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2"
+    },
+    "clarte_equilibree_01": {
+      "src": "clarte_equilibree_01.mp3",
+      "sha256": "c9d5e47a6786ee2fcd46841d8f6139951a85d6db98076ece0c02c5c6d7484fa2",
+      "bytes": 20448,
+      "textSha256": "eee7dee20d87bc8b6b871d7718039eff9bfbcf2138686a29f875134daeea0cf5"
+    },
+    "clarte_equilibree_02": {
+      "src": "clarte_equilibree_02.mp3",
+      "sha256": "ffb8fb60979ac688bdd762f83e9a1cde9d1382f7d6e92e8c833ec099f9eae8ba",
+      "bytes": 18576,
+      "textSha256": "2331ef73e2172fbd3c7c95a27c2e1bc608798936577370dfd717e110d336b99d"
+    },
+    "clarte_equilibree_03": {
+      "src": "clarte_equilibree_03.mp3",
+      "sha256": "fb8d5ffaba613e95eea7ac89d2ed35e30ed2197e6c8267f1ce2e93bdcdee391e",
+      "bytes": 27360,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620"
+    },
+    "detente_discrete_00": {
+      "src": "detente_discrete_00.mp3",
+      "sha256": "17a0fb2333f12db759abcf6683510dac16c8544cb57eb3a228cb358a74faa1c1",
+      "bytes": 23328,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc"
+    },
+    "detente_discrete_01": {
+      "src": "detente_discrete_01.mp3",
+      "sha256": "813b6bfd62bbec364e2b0be5685f0e73e992edc9f985cc21c6b1a5165818ebf8",
+      "bytes": 31968,
+      "textSha256": "7e09ef10c49db713844d50c7e50d1292251fc9cef8fcccdf30e3f74ee6e58338"
+    },
+    "detente_enveloppante_00": {
+      "src": "detente_enveloppante_00.mp3",
+      "sha256": "fa65ba964544aeb167616bf6b2ace96026ca4db029a732dca46e7b56bc0d67e5",
+      "bytes": 23328,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc"
+    },
+    "detente_enveloppante_01": {
+      "src": "detente_enveloppante_01.mp3",
+      "sha256": "7b60b1a62c5024484ccd5ee7e858b090a4490e50b255c50470a0381f3b369db9",
+      "bytes": 19440,
+      "textSha256": "6e0e474b82e8dd41fac1b134344dc3661d3b7cd216f3ede3d3aa4420963506ec"
+    },
+    "detente_enveloppante_02": {
+      "src": "detente_enveloppante_02.mp3",
+      "sha256": "a147bfcb9abf0c3258dd49f989de85c4e967e3f541808f2dd5720fd0fc0b19d5",
+      "bytes": 21024,
+      "textSha256": "6b159546fb4034a8278c925425ec921be87e0c9af145bfcac571acad2cfde7c5"
+    },
+    "detente_enveloppante_03": {
+      "src": "detente_enveloppante_03.mp3",
+      "sha256": "05534e26931c6cc0b416e1b7b2b56e1733647434af1ba043e2dd0f8423d24902",
+      "bytes": 22752,
+      "textSha256": "893de1fe155e60db6621d7f129b7097bcd498b42122f97f17aefc85d6571d654"
+    },
+    "detente_enveloppante_04": {
+      "src": "detente_enveloppante_04.mp3",
+      "sha256": "119a81d15e1e0ed02d8e57d0a1c281bc0602b81449661c0f654327aface43190",
+      "bytes": 23760,
+      "textSha256": "55942422371bffea397f9cff1e8c7a2245a062c0341d0ef822611c6e74c2a214"
+    },
+    "detente_enveloppante_05": {
+      "src": "detente_enveloppante_05.mp3",
+      "sha256": "9638584f1cccdabadc7f8c77737791c80f715cb976f4f23d4eb6f6cc4532aada",
+      "bytes": 31968,
+      "textSha256": "7e09ef10c49db713844d50c7e50d1292251fc9cef8fcccdf30e3f74ee6e58338"
+    },
+    "detente_equilibree_00": {
+      "src": "detente_equilibree_00.mp3",
+      "sha256": "ce41ae294e57acb8e3d1a39e8614d7197c65ab4760b1f8e0c5e493cd1eb81e01",
+      "bytes": 23328,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc"
+    },
+    "detente_equilibree_01": {
+      "src": "detente_equilibree_01.mp3",
+      "sha256": "af9fb8743a224492b0c8b6e217176d0ea601b7fb1f7c1e66144cb2619d3d043e",
+      "bytes": 21024,
+      "textSha256": "6b159546fb4034a8278c925425ec921be87e0c9af145bfcac571acad2cfde7c5"
+    },
+    "detente_equilibree_02": {
+      "src": "detente_equilibree_02.mp3",
+      "sha256": "11616da03ed1def4885f0b336203bf67e4f84519bc8ba82a1c664105c6df1fe5",
+      "bytes": 23760,
+      "textSha256": "55942422371bffea397f9cff1e8c7a2245a062c0341d0ef822611c6e74c2a214"
+    },
+    "detente_equilibree_03": {
+      "src": "detente_equilibree_03.mp3",
+      "sha256": "ac84f13248cd8fafc67bb0131f493be30a92626f2bc1e56219d755f022400ce8",
+      "bytes": 31968,
+      "textSha256": "7e09ef10c49db713844d50c7e50d1292251fc9cef8fcccdf30e3f74ee6e58338"
+    },
+    "gratitude_discrete_00": {
+      "src": "gratitude_discrete_00.mp3",
+      "sha256": "563a90455b6afe92f414926c59d2592d413eb723067e76d16d454e32814fe26b",
+      "bytes": 20880,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd"
+    },
+    "gratitude_discrete_01": {
+      "src": "gratitude_discrete_01.mp3",
+      "sha256": "e0f7d18b905013c75461390a19a4777ffb941c1f7caea1f137e7b4c359e725c9",
+      "bytes": 23328,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2"
+    },
+    "gratitude_enveloppante_00": {
+      "src": "gratitude_enveloppante_00.mp3",
+      "sha256": "bfe1d9aa3aa045e2670bc22e437920535d24e659a01f2767f1a9256b87dcf89b",
+      "bytes": 20880,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd"
+    },
+    "gratitude_enveloppante_01": {
+      "src": "gratitude_enveloppante_01.mp3",
+      "sha256": "86e482d369c7a1a6a0813bd7ea4ac9d1b1a5f0184c73cda307ee4a3a19f77051",
+      "bytes": 18576,
+      "textSha256": "8260995a01c70994f36b693d9c0f8ac5dcdcbba489b04381b6642889eec1ee92"
+    },
+    "gratitude_enveloppante_02": {
+      "src": "gratitude_enveloppante_02.mp3",
+      "sha256": "cb159c6f3ada08d62992531005a87daadd2220c130381cbff85168eae52dc6bf",
+      "bytes": 27504,
+      "textSha256": "303d42b44579f5ffe68cf5c018db6800c5c5a371888782756328eb76a87b496b"
+    },
+    "gratitude_enveloppante_03": {
+      "src": "gratitude_enveloppante_03.mp3",
+      "sha256": "a44b27c1a5b82bc99e6c8a2027b862b6cdedf725606b8081d08a1bbc2df1705f",
+      "bytes": 27072,
+      "textSha256": "04f635325b3cb12ac207923d450acaedb6658520220d83a56605f30416adc6aa"
+    },
+    "gratitude_enveloppante_04": {
+      "src": "gratitude_enveloppante_04.mp3",
+      "sha256": "a2fb9212b25b46bb2b18835fd1460337bff43da4c5cb919f7647097262da4d81",
+      "bytes": 17280,
+      "textSha256": "fedda97cbf28603653c80e3a694cab057246f855b1f37e7b679c5b922d87b422"
+    },
+    "gratitude_enveloppante_05": {
+      "src": "gratitude_enveloppante_05.mp3",
+      "sha256": "ba3d21d4b7db1770af476fef66a754ac986ea33c1f18fcac3fddc805a4fcc1f3",
+      "bytes": 23328,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2"
+    },
+    "gratitude_equilibree_00": {
+      "src": "gratitude_equilibree_00.mp3",
+      "sha256": "ecd06a528ff81792407d128de365cad8280c5b742f7e888ee9948409e371f4f0",
+      "bytes": 20880,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd"
+    },
+    "gratitude_equilibree_01": {
+      "src": "gratitude_equilibree_01.mp3",
+      "sha256": "80f049f1f76445f2de6aa3d556c91a9bc0d20500aebbb99c217dfd0c44216e8f",
+      "bytes": 27504,
+      "textSha256": "303d42b44579f5ffe68cf5c018db6800c5c5a371888782756328eb76a87b496b"
+    },
+    "gratitude_equilibree_02": {
+      "src": "gratitude_equilibree_02.mp3",
+      "sha256": "88ab7369b0b68a72c9054b3bef52024bbb55dc4bf6129ef4bfd7d0abdb1f96ed",
+      "bytes": 17280,
+      "textSha256": "fedda97cbf28603653c80e3a694cab057246f855b1f37e7b679c5b922d87b422"
+    },
+    "gratitude_equilibree_03": {
+      "src": "gratitude_equilibree_03.mp3",
+      "sha256": "2af6d1016da034e0cd9707d4c4fb13e010a1d8e8f60a67eb710285f4ac9c1f20",
+      "bytes": 23328,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2"
+    },
+    "respirer_discrete_00": {
+      "src": "respirer_discrete_00.mp3",
+      "sha256": "9b8eab867542187994cec204ba2696323b99a8f96c68d7a8bac4313d9da466df",
+      "bytes": 32256,
+      "textSha256": "7d56d5c59485a72f9d11cca95f8baec15275f08720635bbfe03f6f3238cd1cdb"
+    },
+    "respirer_discrete_01": {
+      "src": "respirer_discrete_01.mp3",
+      "sha256": "01fd79ac4f37ca1df66bc1f076d9c0166e86ea02ecc8e4b88172b29d0af064ed",
+      "bytes": 29376,
+      "textSha256": "a1ffa19ea3407f2f61d73ee79b3185bc51d5fb591572d2602601bc1c679928b9"
+    },
+    "respirer_enveloppante_00": {
+      "src": "respirer_enveloppante_00.mp3",
+      "sha256": "bfb1bd321e4936928a6be466c8a98e71d89a85ba88896d4101fef64d526abfab",
+      "bytes": 32256,
+      "textSha256": "7d56d5c59485a72f9d11cca95f8baec15275f08720635bbfe03f6f3238cd1cdb"
+    },
+    "respirer_enveloppante_01": {
+      "src": "respirer_enveloppante_01.mp3",
+      "sha256": "4ab88f8b2ad86d3ded963604876b476d7e2de0208070cce12d880ebe7a0e45b9",
+      "bytes": 25632,
+      "textSha256": "cd1a5fb1d201f7b11ebec46d677b3a918c76cef3e250191d9aba84d026cbbd05"
+    },
+    "respirer_enveloppante_02": {
+      "src": "respirer_enveloppante_02.mp3",
+      "sha256": "aae9cc5992a0ef7528fe8a0a32376dcd2aa1a8707a3bfef8887855e60fc45240",
+      "bytes": 21024,
+      "textSha256": "9398fceab2935f00242df8f193aa93536e8ca20f001fdcada89f9e0dae6f46c6"
+    },
+    "respirer_enveloppante_03": {
+      "src": "respirer_enveloppante_03.mp3",
+      "sha256": "f20531b93079e3065ad84e07667428b859c1df46e028b864a23b5f89017176bd",
+      "bytes": 24192,
+      "textSha256": "f12a92e0d270159be1ecb99816d84403414739714287a1b75265d4d64452cff9"
+    },
+    "respirer_enveloppante_04": {
+      "src": "respirer_enveloppante_04.mp3",
+      "sha256": "e5587a7856466aef0bb0cab851531da4f1538836be460af79fb9779da5951e6f",
+      "bytes": 25344,
+      "textSha256": "06a7d179059e7c0e3452d50a84a632375bb285f57501f397e3e37b482e04c2b1"
+    },
+    "respirer_enveloppante_05": {
+      "src": "respirer_enveloppante_05.mp3",
+      "sha256": "ef2de06ba0c48c5c6245e924ae61d7ec9b5574881dcdac5412614ca7d5402f09",
+      "bytes": 29376,
+      "textSha256": "a1ffa19ea3407f2f61d73ee79b3185bc51d5fb591572d2602601bc1c679928b9"
+    },
+    "respirer_equilibree_00": {
+      "src": "respirer_equilibree_00.mp3",
+      "sha256": "280f99c3883e4dcfd9e30462b58e3f8db6d846d97b0e68c7cc512ef4a5a4e2dd",
+      "bytes": 32256,
+      "textSha256": "7d56d5c59485a72f9d11cca95f8baec15275f08720635bbfe03f6f3238cd1cdb"
+    },
+    "respirer_equilibree_01": {
+      "src": "respirer_equilibree_01.mp3",
+      "sha256": "92f91bd5a63c026fa407922164e0ff67c7d2910055349cdd73979dd45dfab394",
+      "bytes": 21024,
+      "textSha256": "9398fceab2935f00242df8f193aa93536e8ca20f001fdcada89f9e0dae6f46c6"
+    },
+    "respirer_equilibree_02": {
+      "src": "respirer_equilibree_02.mp3",
+      "sha256": "c0a4a25400ac0bf85d3711b877ce739ae2fd3c917f4a0a013c695c382a294ea7",
+      "bytes": 25344,
+      "textSha256": "06a7d179059e7c0e3452d50a84a632375bb285f57501f397e3e37b482e04c2b1"
+    },
+    "respirer_equilibree_03": {
+      "src": "respirer_equilibree_03.mp3",
+      "sha256": "3803b8b4cb9189690eaefe576bdfa119a7d6d3afa4b177531f8db3a1358ce8f2",
+      "bytes": 29376,
+      "textSha256": "a1ffa19ea3407f2f61d73ee79b3185bc51d5fb591572d2602601bc1c679928b9"
+    },
+    "sommeil_discrete_00": {
+      "src": "sommeil_discrete_00.mp3",
+      "sha256": "491753800be789d635f2ce9b15991f091303d42baa0f4e4e25ae10239d7342f9",
+      "bytes": 27936,
+      "textSha256": "cd35143f76d3383b135607fa01f7c7b57bef255ba9b459c6f489bb1f9a5aec99"
+    },
+    "sommeil_discrete_01": {
+      "src": "sommeil_discrete_01.mp3",
+      "sha256": "17ebc8c53fa030d4605c8a7923b576175a1c7a16b384be353aff0b365aa076bb",
+      "bytes": 22320,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62"
+    },
+    "sommeil_enveloppante_00": {
+      "src": "sommeil_enveloppante_00.mp3",
+      "sha256": "c838da267b20a56038b4555cd57a5bb4cd9470580d635563f9955a0d9d1b21d1",
+      "bytes": 27936,
+      "textSha256": "cd35143f76d3383b135607fa01f7c7b57bef255ba9b459c6f489bb1f9a5aec99"
+    },
+    "sommeil_enveloppante_01": {
+      "src": "sommeil_enveloppante_01.mp3",
+      "sha256": "4af2925aafd5eaf2b5ebfb648dd4752fc6189f553f2d19aae9361c8f0a44580e",
+      "bytes": 17712,
+      "textSha256": "c464affbcf79d26428b376988428eb4e3087136fb729567c51d1600896014cda"
+    },
+    "sommeil_enveloppante_02": {
+      "src": "sommeil_enveloppante_02.mp3",
+      "sha256": "a2f20f38dcbe2f43e4464e52a2f004befbecd5c3cc65b79d6e0b5890b85d1815",
+      "bytes": 23184,
+      "textSha256": "a85fe8e17ee55fcf11294078e61bb16dfa59e006f7c4ae5e21fd65443ff2d3f0"
+    },
+    "sommeil_enveloppante_03": {
+      "src": "sommeil_enveloppante_03.mp3",
+      "sha256": "166f4f6e54bbea35ba2193fe51056dd110160e0f28eb7fc0f57f1771a671f352",
+      "bytes": 25776,
+      "textSha256": "7bdd570a388e55aa3fe2c3f107e930ec6d1defec54c1c1b3b73ed4246a389510"
+    },
+    "sommeil_enveloppante_04": {
+      "src": "sommeil_enveloppante_04.mp3",
+      "sha256": "47941b366ba1afa4fe35aaa652925a4ca5f9ce2d771aa861ea4c8d53ccd06523",
+      "bytes": 25488,
+      "textSha256": "a53bbce03f0424776fb6c61a18fa0fa174de2dc31b253d4b80b241f0794fce52"
+    },
+    "sommeil_enveloppante_05": {
+      "src": "sommeil_enveloppante_05.mp3",
+      "sha256": "72f4e09c16fe2b6ea20c4bf31c7ca71c90699b4343e7acc98994958ef4dda9df",
+      "bytes": 22320,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62"
+    },
+    "sommeil_equilibree_00": {
+      "src": "sommeil_equilibree_00.mp3",
+      "sha256": "7e62af33134fa1950408e5ac52ed783f766ec8d035f58adfbc30776a760f8b14",
+      "bytes": 27936,
+      "textSha256": "cd35143f76d3383b135607fa01f7c7b57bef255ba9b459c6f489bb1f9a5aec99"
+    },
+    "sommeil_equilibree_01": {
+      "src": "sommeil_equilibree_01.mp3",
+      "sha256": "f9b06a472d8e4edfdb62546d593167a1af54dce7de2aca305c2f84a6080cf9b6",
+      "bytes": 23184,
+      "textSha256": "a85fe8e17ee55fcf11294078e61bb16dfa59e006f7c4ae5e21fd65443ff2d3f0"
+    },
+    "sommeil_equilibree_02": {
+      "src": "sommeil_equilibree_02.mp3",
+      "sha256": "7e3f2912dac34c7c7cd748daa2a645734a5f7580b73e02acae497440929ff3f8",
+      "bytes": 25488,
+      "textSha256": "a53bbce03f0424776fb6c61a18fa0fa174de2dc31b253d4b80b241f0794fce52"
+    },
+    "sommeil_equilibree_03": {
+      "src": "sommeil_equilibree_03.mp3",
+      "sha256": "84750f5cbc1b712398d51d8f6001fb7856e23754ca540ec4663fb2ec58c1809a",
+      "bytes": 22320,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62"
+    },
+    "yoga_detente_00": {
+      "src": "yoga_detente_00.mp3",
+      "sha256": "a1a0471724845c077d981c26ef02b38ca40fc4fef29c4a5e35c4f4bb25b1b879",
+      "bytes": 58176,
+      "textSha256": "419578328f42c35301ca9942a7999110191e663d0fab1ce8527508039ce629d2"
+    },
+    "yoga_detente_01": {
+      "src": "yoga_detente_01.mp3",
+      "sha256": "47477886ea38464b3f5feb6a3f9aa3633a8c05df98a3b58a0af3f43c072dc044",
+      "bytes": 56736,
+      "textSha256": "6aaab2f8ce1f0c9e3101dae03db8f2e30d0cf5841a58c053304b03f5f928467a"
+    },
+    "yoga_detente_02": {
+      "src": "yoga_detente_02.mp3",
+      "sha256": "d2e6b0bccc2c5672efc9abb6a619d151aa2b200b60d10ec4d385574941a6f7f1",
+      "bytes": 55440,
+      "textSha256": "0f18b80f2c396aeadb8a083013ab42576dada4f01302fc4d4a0ad9b042a0d680"
+    },
+    "yoga_detente_03": {
+      "src": "yoga_detente_03.mp3",
+      "sha256": "159f85244aebdd96ab66dfefba3ef85159d518db912c70f27795150a9df3a713",
+      "bytes": 67824,
+      "textSha256": "455116f2bdb635cd7b4d472acd6dee79686708c6fc0af98e0a5b9fc6970048bc"
+    },
+    "yoga_equilibre_00": {
+      "src": "yoga_equilibre_00.mp3",
+      "sha256": "72af70b59846631519981e60505ad428b86399da9d5954d4a9ba503dc00145ea",
+      "bytes": 51984,
+      "textSha256": "0c4b677407e79a21a2d38df5fd5fa965b523df60757fe7ae5cd503713d197953"
+    },
+    "yoga_equilibre_01": {
+      "src": "yoga_equilibre_01.mp3",
+      "sha256": "5251377891eacb6fe4f06f394aa61453375b51d2dadb6759c0d8153cf422e5a2",
+      "bytes": 53712,
+      "textSha256": "301f9702de433dabddf8290bc7470705af99c20f13fdb4acfa6216cbd0585594"
+    },
+    "yoga_equilibre_02": {
+      "src": "yoga_equilibre_02.mp3",
+      "sha256": "7ee85bb6d280843204c37a5877ac677f6a4a29921dc2a72b2d1bd5831338c43d",
+      "bytes": 58752,
+      "textSha256": "45cd7f92ee9ad65f5d67ce7ebb346621720b67d6218df08921b6e576efcefaf2"
+    },
+    "yoga_equilibre_03": {
+      "src": "yoga_equilibre_03.mp3",
+      "sha256": "1c4fc33119d9a9427b074178f163d010153b261569880076764103472f731a5c",
+      "bytes": 67392,
+      "textSha256": "34c7488d1bd098fc4d0f437d9d77e15b72eb782c9c48ea9017a3fe2dcbc44467"
+    },
+    "yoga_equilibre_04": {
+      "src": "yoga_equilibre_04.mp3",
+      "sha256": "0f6f2a10215ea4f107fcdb0eac0d4eafa0e7f2b011b093e612ecf94c418bc90b",
+      "bytes": 67824,
+      "textSha256": "455116f2bdb635cd7b4d472acd6dee79686708c6fc0af98e0a5b9fc6970048bc"
+    },
+    "yoga_eveil-doux_00": {
+      "src": "yoga_eveil-doux_00.mp3",
+      "sha256": "34d71a3dc73ecabdf43a1cdfd96c498b4597b2ba7d1db18e2750de1a4d03154d",
+      "bytes": 51984,
+      "textSha256": "0c4b677407e79a21a2d38df5fd5fa965b523df60757fe7ae5cd503713d197953"
+    },
+    "yoga_eveil-doux_01": {
+      "src": "yoga_eveil-doux_01.mp3",
+      "sha256": "debaf30ac24760c125fb89720e5d064691cb48bc7395cc1ca2ff4605953c4bc2",
+      "bytes": 57600,
+      "textSha256": "419578328f42c35301ca9942a7999110191e663d0fab1ce8527508039ce629d2"
+    },
+    "yoga_eveil-doux_02": {
+      "src": "yoga_eveil-doux_02.mp3",
+      "sha256": "971531225612702b1be465a6b4a073ad56278015cc62ced2141ec9229fea7f91",
+      "bytes": 59904,
+      "textSha256": "8fafc12a1ed9b4d1bd1a5b7da1206ae4d67223e04c34bfaa815d752e20a968d1"
+    },
+    "yoga_eveil-doux_03": {
+      "src": "yoga_eveil-doux_03.mp3",
+      "sha256": "c98641be853dc5d10f0f5f176be3690229369ef1e881a76e2fae9629c2bcc78c",
+      "bytes": 67392,
+      "textSha256": "34c7488d1bd098fc4d0f437d9d77e15b72eb782c9c48ea9017a3fe2dcbc44467"
+    },
+    "yoga_eveil-doux_04": {
+      "src": "yoga_eveil-doux_04.mp3",
+      "sha256": "b3db4ae21f64159a3028c4fece2649f689d4d92d083bd45eaac1e4697e9b457b",
+      "bytes": 67824,
+      "textSha256": "455116f2bdb635cd7b4d472acd6dee79686708c6fc0af98e0a5b9fc6970048bc"
+    },
+    "yoga_hatha-doux_00": {
+      "src": "yoga_hatha-doux_00.mp3",
+      "sha256": "f14736c2cfeb9f23d0e053b15f33d3c0d962930a235fd2aae43b1033b941b84d",
+      "bytes": 52128,
+      "textSha256": "0c4b677407e79a21a2d38df5fd5fa965b523df60757fe7ae5cd503713d197953"
+    },
+    "yoga_hatha-doux_01": {
+      "src": "yoga_hatha-doux_01.mp3",
+      "sha256": "05961ea57dfc24adc9a12becebdc4e6dd6f10d92d738d775b4e1ede658248c7d",
+      "bytes": 57744,
+      "textSha256": "419578328f42c35301ca9942a7999110191e663d0fab1ce8527508039ce629d2"
+    },
+    "yoga_hatha-doux_02": {
+      "src": "yoga_hatha-doux_02.mp3",
+      "sha256": "ae127fb06c06d307f8f5e97a25e3f20d1e00a562705f00f5394affe9cb3645c1",
+      "bytes": 67824,
+      "textSha256": "34c7488d1bd098fc4d0f437d9d77e15b72eb782c9c48ea9017a3fe2dcbc44467"
+    },
+    "yoga_hatha-doux_03": {
+      "src": "yoga_hatha-doux_03.mp3",
+      "sha256": "63abf3794c9dead2c3fc8b8d408fdbd0453adc27762d08f1f192c44cc53a1fe5",
+      "bytes": 56592,
+      "textSha256": "6aaab2f8ce1f0c9e3101dae03db8f2e30d0cf5841a58c053304b03f5f928467a"
+    },
+    "yoga_hatha-doux_04": {
+      "src": "yoga_hatha-doux_04.mp3",
+      "sha256": "6e26339b8974c617a733d16b97419d46ed004dc46b1dcc7686cd136d56e83bb3",
+      "bytes": 55440,
+      "textSha256": "0f18b80f2c396aeadb8a083013ab42576dada4f01302fc4d4a0ad9b042a0d680"
+    },
+    "yoga_hatha-doux_05": {
+      "src": "yoga_hatha-doux_05.mp3",
+      "sha256": "17f544f6e5e6f3e11ab06084cd098ea456c9ae0b307b8847a4b98728408fed38",
+      "bytes": 67824,
+      "textSha256": "455116f2bdb635cd7b4d472acd6dee79686708c6fc0af98e0a5b9fc6970048bc"
+    },
+    "yoga_soir-calme_00": {
+      "src": "yoga_soir-calme_00.mp3",
+      "sha256": "60be07617a154c90efecfc6e1226e310738b06f3f0759477fea4a96295f6c022",
+      "bytes": 56736,
+      "textSha256": "6aaab2f8ce1f0c9e3101dae03db8f2e30d0cf5841a58c053304b03f5f928467a"
+    },
+    "yoga_soir-calme_01": {
+      "src": "yoga_soir-calme_01.mp3",
+      "sha256": "82346bcf124e7d01830c59a70953a1b7badc3dd8b5cc531dcf78e1ff58f8b447",
+      "bytes": 68400,
+      "textSha256": "357bfb3790da919b24ff0f688beff33ec45753b722ab02de854d243b9d620102"
+    },
+    "yoga_soir-calme_02": {
+      "src": "yoga_soir-calme_02.mp3",
+      "sha256": "883e9a51bdff8961a7e33b3c044a83c9a29eb8623c4ea13f2f0370dc03d436bd",
+      "bytes": 55440,
+      "textSha256": "0f18b80f2c396aeadb8a083013ab42576dada4f01302fc4d4a0ad9b042a0d680"
+    },
+    "yoga_soir-calme_03": {
+      "src": "yoga_soir-calme_03.mp3",
+      "sha256": "86f2135b4db2a3d54a0d8cfceb60cc0640f9b635bd4dca1aa8f6853ddd44eeea",
+      "bytes": 67824,
+      "textSha256": "455116f2bdb635cd7b4d472acd6dee79686708c6fc0af98e0a5b9fc6970048bc"
+    },
+    "yoga_vinyasa-fluide_00": {
+      "src": "yoga_vinyasa-fluide_00.mp3",
+      "sha256": "12a506ebe2b08a5089c09a363c3fb8a0b5fbca8eb47b7a515295c77b6a5d30a6",
+      "bytes": 51984,
+      "textSha256": "0c4b677407e79a21a2d38df5fd5fa965b523df60757fe7ae5cd503713d197953"
+    },
+    "yoga_vinyasa-fluide_01": {
+      "src": "yoga_vinyasa-fluide_01.mp3",
+      "sha256": "8c8c677f96f87e91adea85ae2f1446c10112b5672c125c2946c50ba247bcf33e",
+      "bytes": 55872,
+      "textSha256": "901b6ce17b2ee33961b3a9759358f3c8d84faeba858d29763981322645b1ce1a"
+    },
+    "yoga_vinyasa-fluide_02": {
+      "src": "yoga_vinyasa-fluide_02.mp3",
+      "sha256": "d390d4d17ffca5279ebd6db7e8d985344455df800b9cfaad9bf3f9d07160c5df",
+      "bytes": 59904,
+      "textSha256": "8fafc12a1ed9b4d1bd1a5b7da1206ae4d67223e04c34bfaa815d752e20a968d1"
+    },
+    "yoga_vinyasa-fluide_03": {
+      "src": "yoga_vinyasa-fluide_03.mp3",
+      "sha256": "67a194b5bb315c7fed08cfa939cd8539912b74ef7d6ec2a3a92e9f41d7fa0e32",
+      "bytes": 58752,
+      "textSha256": "45cd7f92ee9ad65f5d67ce7ebb346621720b67d6218df08921b6e576efcefaf2"
+    },
+    "yoga_vinyasa-fluide_04": {
+      "src": "yoga_vinyasa-fluide_04.mp3",
+      "sha256": "73c6248cc110607883db485f03d65abc913b853a305fa52dc23c33b8c7548351",
+      "bytes": 63504,
+      "textSha256": "56168b2c12b4e59cfcaff0f3a584176049953287f5d815edd415d29c607d5951"
+    },
+    "yoga_vinyasa-fluide_05": {
+      "src": "yoga_vinyasa-fluide_05.mp3",
+      "sha256": "eb986e3fcce84bd343db9c4a30c6b3d54a9dde665adebae7cdd6d316498061f3",
+      "bytes": 67392,
+      "textSha256": "34c7488d1bd098fc4d0f437d9d77e15b72eb782c9c48ea9017a3fe2dcbc44467"
+    },
+    "yoga_vinyasa-fluide_06": {
+      "src": "yoga_vinyasa-fluide_06.mp3",
+      "sha256": "763dcfa05eb9ca6fdc72b78c4026e55a96160a8db72b4a3929e92d2fa58105d8",
+      "bytes": 67824,
+      "textSha256": "455116f2bdb635cd7b4d472acd6dee79686708c6fc0af98e0a5b9fc6970048bc"
+    }
+  }
+}
