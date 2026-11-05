@@ -1,0 +1,93 @@
+name: SichoSana — aperçu iPhone HTTPS temporaire
+
+on:
+  push:
+    branches: [dev/sichosana-20261105]
+    paths:
+      - ".github/workflows/preview-iphone.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    name: Preview HTTPS iPhone (maximum 45 minutes)
+    runs-on: ubuntu-latest
+    timeout-minutes: 52
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Démarrer une instance éphémère et isolée
+        shell: bash
+        run: |
+          set -euo pipefail
+          export SICHOSANA_HOST=127.0.0.1
+          export SICHOSANA_PORT=8080
+          export SICHOSANA_DATA_DIR="${RUNNER_TEMP}/sichosana-preview-data"
+          mkdir -p "${SICHOSANA_DATA_DIR}"
+          nohup python -m server.app >"${RUNNER_TEMP}/sichosana-preview-server.log" 2>&1 < /dev/null &
+          for i in $(seq 1 30); do
+            if curl -fsS --max-time 2 http://127.0.0.1:8080/api/health >/dev/null; then
+              echo "Backend de recette : OK"
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "${RUNNER_TEMP}/sichosana-preview-server.log"
+          exit 1
+      - name: Télécharger le tunnel éphémère Cloudflare (sans identifiants)
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 --connect-timeout 15 --max-time 120 \
+            https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 \
+            -o "${RUNNER_TEMP}/cloudflared"
+          chmod +x "${RUNNER_TEMP}/cloudflared"
+          "${RUNNER_TEMP}/cloudflared" --version
+      - name: Ouvrir l'aperçu public, isolé du NAS, puis fermer après 45 minutes
+        shell: bash
+        run: |
+          set -euo pipefail
+          logfile="${RUNNER_TEMP}/sichosana-preview-cloudflared.log"
+          "${RUNNER_TEMP}/cloudflared" tunnel --no-autoupdate --url http://127.0.0.1:8080 \
+            >"${logfile}" 2>&1 &
+          tunnel_pid=$!
+          trap 'kill "$tunnel_pid" 2>/dev/null || true' EXIT
+          url=""
+          for i in $(seq 1 60); do
+            if ! kill -0 "$tunnel_pid" 2>/dev/null; then
+              cat "$logfile"
+              exit 1
+            fi
+            url="$(grep -Eo 'https://[a-z0-9-]+\.trycloudflare\.com' "$logfile" | head -1 || true)"
+            if [ -n "$url" ]; then
+              break
+            fi
+            sleep 2
+          done
+          if [ -z "$url" ]; then
+            cat "$logfile"
+            echo "Impossible d'obtenir l'URL de recette."
+            exit 1
+          fi
+          echo "::notice title=Adresse SichoSana iPhone::${url}"
+          echo "PREVIEW_URL=${url}" >> "$GITHUB_ENV"
+          for i in $(seq 1 20); do
+            if curl -fsS --max-time 8 "${url}/api/health" | grep -q '"status": "ok"'; then
+              echo "PREVIEW_PUBLIC_HEALTH_OK ${url}"
+              break
+            fi
+            sleep 3
+          done
+          # Le serveur reste disponible pendant le créneau de recette ; il ne
+          # modifie ni le NAS, ni le DNS, ni les tunnels permanents.
+          sleep 2700
+          echo "Préversion temporaire fermée ; les données serveur étaient éphémères."
+      - name: Journaux en cas de problème
+        if: failure()
+        run: |
+          tail -50 "${RUNNER_TEMP}/sichosana-preview-server.log" || true
+          tail -80 "${RUNNER_TEMP}/sichosana-preview-cloudflared.log" || true
