@@ -4,10 +4,11 @@ import argparse
 import asyncio
 import hashlib
 import json
+import re
 from pathlib import Path
 
 VOICE = "fr-FR-VivienneMultilingualNeural"
-RATE, PITCH, VOLUME = "-12%", "-1Hz", "+0%"
+RATE_YOGA, RATE_MEDITATION, PITCH, VOLUME = "-22%", "-32%", "-1Hz", "+0%"
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -22,19 +23,19 @@ def clips(catalog, yoga):
                     key = session["id"] + "_" + level + "_" + str(index).zfill(2)
                     if len(text) > 1200 or not all(x.isalnum() or x in "_-" for x in key):
                         raise ValueError("Segment audio invalide : " + key)
-                    found.append((key, text))
+                    found.append((key, re.sub(r"(?<=[.!?])\s+", " ... ", text), "meditation"))
     # Même identité Vivienne pour les consignes de yoga et les méditations.
     for pose in yoga.get("poses", []):
         text = (pose.get("nom", "") + ". " + pose.get("instructions", "") + " " + pose.get("prudence", "")).strip()
-        found.append(("pose_" + pose["id"], text))
-    if len(set(k for k, _ in found)) != len(found):
+        found.append(("pose_" + pose["id"], text, "yoga"))
+    if len(set(k for k, _, _ in found)) != len(found):
         raise ValueError("Segments vocaux en doublon")
     return found
 
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=Path("static/data/meditations.json"))
-    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v1"))
+    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v2"))
     parser.add_argument("--yoga", type=Path, default=Path("static/data/yoga.json"))
     parser.add_argument("--jobs", type=int, default=3)
     args = parser.parse_args()
@@ -46,13 +47,13 @@ async def main():
     lock = asyncio.Semaphore(min(max(args.jobs, 1), 4))
     entries = {}
 
-    async def render(key, text):
+    async def render(key, text, kind):
         target = dest / (key + ".mp3")
         async with lock:
             for attempt in range(4):
                 try:
                     if not target.exists() or target.stat().st_size < 2000:
-                        await Communicate(text=text, voice=VOICE, rate=RATE, pitch=PITCH, volume=VOLUME).save(str(target))
+                        await Communicate(text=text, voice=VOICE, rate=RATE_MEDITATION if kind == 'meditation' else RATE_YOGA, pitch=PITCH, volume=VOLUME).save(str(target))
                     if target.stat().st_size < 2000:
                         raise ValueError("Fichier audio vide : " + key)
                     break
@@ -63,13 +64,15 @@ async def main():
         entries[key] = {
             "src": target.name, "sha256": sha(target),
             "bytes": target.stat().st_size, 
-            "textSha256": hashlib.sha256(text.encode("utf-8")).hexdigest()
+            "textSha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "kind": kind
         }
 
-    await asyncio.gather(*(render(k, t) for k, t in clips(source, yoga)))
+    await asyncio.gather(*(render(k, t, kind) for k, t, kind in clips(source, yoga)))
     manifest = {
-        "format": "sichosana-voice-pack", "packId": "vivienne-fr-v1",
-        "locale": "fr-FR", "voiceId": VOICE, "rate": RATE,
+        "format": "sichosana-voice-pack", "packId": "vivienne-fr-v2",
+        "locale": "fr-FR", "voiceId": VOICE, "rateYoga": RATE_YOGA,
+        "rateMeditation": RATE_MEDITATION,
         "pitch": PITCH, "volume": VOLUME,
         "sourceIdentity": "ResurGo_Fitness Running female coach v2",
         "status": "candidate-awaiting-damien-audition",
