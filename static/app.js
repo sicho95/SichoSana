@@ -10,7 +10,7 @@ const todayKey = () => { const d = new Date(); return [d.getFullYear(),String(d.
 const logo = '<span class="brand-seal" aria-hidden="true">S</span>';
 const nav = [{id:'home',text:'Accueil',glyph:'⌂'},{id:'yoga',text:'Yoga',glyph:'◈'},{id:'meditate',text:'Méditer',glyph:'☼'},{id:'astro',text:'Astro',glyph:'☾'},{id:'profile',text:'Profil',glyph:'♙'}];
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
-let reflections={reflections:[]}, astrologyLive=null;
+let reflections={reflections:[]}, poseMedia={photos:[]}, astrologyLive=null, yogaTab='seances';
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Tous', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
@@ -110,16 +110,26 @@ function home(){
  '<div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><div class="eyebrow">Ta progression</div>'+smallStats()+'<button class="text-link" data-action="page" data-value="profile">Voir mon suivi ›</button></div></aside></div>';
 }
 function pills(opts,active,action){return '<div class="filter-bar">'+opts.map(x=>'<button class="filter" type="button" data-action="'+action+'" data-value="'+escapeHTML(x)+'" aria-pressed="'+(x===active)+'">'+escapeHTML(x)+'</button>').join('')+'</div>';}
+function posePicture(id,kind='thumb'){
+ const found=poseMedia.photos?.find(x=>x.id===id);
+ if(!found)return '<span class="pose-missing" aria-label="Illustration à venir">Photo à venir</span>';
+ return '<img loading="lazy" decoding="async" class="pose-photo '+kind+'" src="'+escapeHTML(found.src)+'" alt="Photographie de la posture">';
+}
 function yogaPage(){
  const routines=yoga.routines.filter(r=>routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id)));
  const poses=yoga.poses.filter(p=>poseFilter==='Tous'||p.niveau===poseFilter);
- return heading('Pratiquer','Yoga','Choisis une séance à ton rythme, sans chercher la performance.')+
+ return heading('Pratiquer','Yoga','Une séance à ton rythme et une bibliothèque pour découvrir chaque posture.')+
+ '<div class="yoga-tabs" role="tablist" aria-label="Explorer le yoga">'+
+ '<button type="button" role="tab" aria-selected="'+(yogaTab==='seances')+'" data-action="yoga-tab" data-value="seances">Mes séances</button>'+
+ '<button type="button" role="tab" aria-selected="'+(yogaTab==='postures')+'" data-action="yoga-tab" data-value="postures">Bibliothèque des postures <small>'+yoga.poses.length+'</small></button></div>'+
+ (yogaTab==='seances'?
  '<div class="section-heading"><h2>Les enchaînements</h2></div>'+pills(['Tous','Hatha','Vinyasa','Favoris'],routineFilter,'routine-filter')+
- '<div class="cards">'+(routines.length?routines.map(routineCard).join(''):'<p class="empty">Aucune séance pour ce filtre.</p>')+'</div>'+
- programsSection()+'<div class="section-heading"><h2>Bibliothèque des postures</h2><span class="muted">'+yoga.poses.length+' postures</span></div>'+
+ '<div class="cards">'+(routines.length?routines.map(routineCard).join(''):'<p class="empty">Aucune séance pour ce filtre.</p>')+'</div>'+programsSection():
+ '<div class="section-heading"><h2>Découvrir les postures</h2><span class="muted">'+poses.length+' postures</span></div>'+
+ '<p class="muted">Une fiche pour chaque posture, avec consignes d’installation et précautions. Les photographies sont ajoutées et vérifiées progressivement.</p>'+
  pills(['Tous','Débutant','Intermédiaire'],poseFilter,'pose-filter')+
- '<div class="pose-list">'+poses.map(p=>'<button class="pose-item" type="button" data-action="pose" data-value="'+escapeHTML(p.id)+'"><span class="pose-icon">◈</span><span><strong>'+escapeHTML(p.nom)+'</strong><small>'+escapeHTML(p.sanskrit)+' · '+escapeHTML(p.focus)+'</small></span></button>').join('')+'</div>'+
- '<p class="library-info">Postures disponibles localement. Bibliothèque enrichissable par import Yoga API, sans requête externe pendant la pratique. Adapte toute posture à ton confort.</p>';
+ '<div class="pose-list">'+poses.map(p=>'<button class="pose-item" type="button" data-action="pose" data-value="'+escapeHTML(p.id)+'">'+posePicture(p.id,'thumb')+'<span><strong>'+escapeHTML(p.nom)+'</strong><small>'+escapeHTML(p.sanskrit)+' · '+escapeHTML(p.focus)+'</small></span></button>').join('')+'</div>'+
+ '<p class="library-info">La bibliothèque fonctionne sans réseau après une première ouverture. Les postures doivent rester confortables et adaptées à chacun.</p>');
 }
 function medCard(m){return '<article class="card routine-card"><div class="routine-visual">☼</div><div class="routine-body"><div class="eyebrow">'+escapeHTML(m.category)+'</div><h3>'+escapeHTML(m.name)+'</h3><p>'+escapeHTML(m.description)+'</p><div class="meta"><span>'+m.minutes+' min</span><span>Vivienne · FR</span></div><button class="primary" data-action="start-med" data-value="'+escapeHTML(m.id)+'">Méditer</button></div></article>';}
 function meditationPage(){
@@ -156,14 +166,21 @@ function profilePage(){
 }
 function poseModal(id){
  const p=yoga.poses.find(x=>x.id===id);if(!p)return;
- modal='<div class="modal" role="dialog" aria-modal="true" aria-label="Détail de posture"><button class="icon-btn modal-close" data-action="close" aria-label="Fermer">×</button><div class="eyebrow">'+escapeHTML(p.niveau)+'</div><h2>'+escapeHTML(p.nom)+'</h2><p class="muted">'+escapeHTML(p.sanskrit)+'</p><div class="session-stage"><div class="pose-illustration">◈</div><p>'+escapeHTML(p.focus)+'</p></div><h3>Installation</h3><p>'+escapeHTML(p.instructions)+'</p><h3>À respecter</h3><p class="attention">'+escapeHTML(p.prudence)+'</p></div>';renderModal();
+ const photo=poseMedia.photos?.find(x=>x.id===id);
+ modal='<div class="modal pose-modal" role="dialog" aria-modal="true" aria-label="Détail de posture">'+
+ '<button class="icon-btn modal-close" data-action="close" aria-label="Fermer">×</button>'+
+ '<div class="eyebrow">'+escapeHTML(p.niveau)+'</div><h2>'+escapeHTML(p.nom)+'</h2>'+
+ '<p class="muted">'+escapeHTML(p.sanskrit)+'</p><div class="pose-modal-visual">'+posePicture(p.id,'large')+'</div>'+
+ (photo?'<p class="image-credit"><a target="_blank" rel="noopener noreferrer" href="'+escapeHTML(photo.source)+'">'+escapeHTML(photo.credit)+'</a> · <a target="_blank" rel="noopener noreferrer" href="'+escapeHTML(photo.licenseUrl)+'">Licence</a></p>':'')+
+ '<h3>Installation</h3><p>'+escapeHTML(p.instructions)+'</p><h3>À respecter</h3><p class="attention">'+escapeHTML(p.prudence||'Adapte la posture à ton confort.')+'</p></div>';
+ renderModal();
 }
 function renderModal(){$('#overlay').innerHTML=modal;}
 function closeModal(){modal='';renderModal();}
 function sessionPage(){
  if(!session)return home();
  const i=stepIndex(session),step=session.steps[i],remaining=session.duration-session.elapsed,progress=Math.min(100,100*session.elapsed/session.duration);
- return '<div class="session"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><div class="session-stage"><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div><h2>'+escapeHTML(step.title)+'</h2><p>'+escapeHTML(step.text)+'</p><p class="muted" id="audio-label">'+escapeHTML(voiceStatus)+'</p></div><div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Étape suivante</button><button class="primary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="muted">Si une posture provoque une douleur, interromps-la. Les consignes vocales ne remplacent pas l’écoute de ton corps.</p></div>';
+ return '<div class="session"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><div class="session-stage"><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div>'+(step.imageId?'<div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>':'')+'<h2>'+escapeHTML(step.title)+'</h2><p>'+escapeHTML(step.text)+'</p><p class="muted" id="audio-label">'+escapeHTML(voiceStatus)+'</p></div><div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Étape suivante</button><button class="primary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="muted">Si une posture provoque une douleur, interromps-la. Les consignes vocales ne remplacent pas l’écoute de ton corps.</p></div>';
 }
 function stepIndex(s){
  let elapsed=0;const total=s.steps.reduce((x,p)=>x+p.weight,0)||1;
@@ -188,7 +205,7 @@ function startSession(type,id){
  let steps=[],duration=0,name='';
  if(type==='yoga'){
   const r=findRoutine(id);if(!r)return;name=r.name;duration=r.duration*60;
-  steps=r.poseIds.map((poseId)=>{const p=yoga.poses.find(x=>x.id===poseId);return {title:p?.nom||poseId,text:p?.instructions||'',weight:1,clip:'pose_'+poseId};});
+  steps=r.poseIds.map((poseId)=>{const p=yoga.poses.find(x=>x.id===poseId);return {title:p?.nom||poseId,text:p?.instructions||'',weight:1,clip:'pose_'+poseId,imageId:poseId};});
  }else{
   const med=meditations.sessions.find(x=>x.id===id);if(!med)return;name=med.name;duration=med.minutes*60;
   steps=(med.scripts[profile().meditationStyle]||[]).map((x,i)=>({title:i===0?'S’installer':i===med.scripts[profile().meditationStyle].length-1?'Revenir': 'Prendre le temps',text:x.text,weight:Math.max(1,Number(x.pause)||1),clip:med.id+'_'+profile().meditationStyle+'_'+String(i).padStart(2,'0')}));
@@ -389,6 +406,7 @@ async function init(){
   });
   const data=await Promise.all([fetch('/data/yoga.json').then(r=>{if(!r.ok)throw Error('Yoga indisponible');return r.json();}),fetch('/data/meditations.json').then(r=>{if(!r.ok)throw Error('Méditations indisponibles');return r.json();}),fetch('/data/programs.json').then(r=>{if(!r.ok)throw Error('Programmes indisponibles');return r.json();})]);
   yoga=data[0];meditations=data[1];programs=data[2];
+  try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
   try{const frozen=await fetch('/data/yoga-api-library.json');if(frozen.ok){const items=(await frozen.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...items.filter(p=>!ids.has(p.id)));}}catch(err){} // catalogue local, accessible même sans serveur
   try{const r=await fetch('/api/v1/poses');if(r.ok){const extra=(await r.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...extra.filter(p=>!ids.has(p.id)));}}catch(err){} // bibliothèque préchargée disponible hors réseau
