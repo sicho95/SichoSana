@@ -1,0 +1,62 @@
+{
+  "kind": "curated-pose-photographs",
+  "note": "Toutes les images conservent leur licence Creative Commons originale; crédit et lien affichés dans la fiche",
+  "photos": [
+    {
+      "id": "tadasana",
+      "file": "tadasana.png",
+      "by": "Mr. Yoga",
+      "license": "CC BY-SA 4.0",
+      "source": "https://github.com/jreinjr/yoga-pose-photos",
+      "src": "/media/poses/tadasana.png"
+    },
+    {
+      "id": "balasana",
+      "file": "balasana.png",
+      "by": "Iveto",
+      "license": "CC BY-SA 4.0",
+      "source": "https://github.com/jreinjr/yoga-pose-photos",
+      "src": "/media/poses/balasana.png"
+    },
+    {
+      "id": "adho-mukha",
+      "file": "adho-mukha.png",
+      "by": "Iveto",
+      "license": "CC BY 3.0",
+      "source": "https://github.com/jreinjr/yoga-pose-photos",
+      "src": "/media/poses/adho-mukha.png"
+    },
+    {
+      "id": "virabhadrasana2",
+      "file": "virabhadrasana2.png",
+      "by": "lululemon athletica",
+      "license": "CC BY 2.0",
+      "source": "https://github.com/jreinjr/yoga-pose-photos",
+      "src": "/media/poses/virabhadrasana2.png"
+    },
+    {
+      "id": "bhujangasana",
+      "file": "bhujangasana.png",
+      "by": "Iveto",
+      "license": "CC BY-SA 4.0",
+      "source": "https://github.com/jreinjr/yoga-pose-photos",
+      "src": "/media/poses/bhujangasana.png"
+    },
+    {
+      "id": "vrksasana",
+      "file": "vrksasana.png",
+      "by": "Camilasuga",
+      "license": "CC BY-SA 4.0",
+      "source": "https://github.com/jreinjr/yoga-pose-photos",
+      "src": "/media/poses/vrksasana.png"
+    },
+    {
+      "id": "setu-bandha",
+      "file": "setu-bandha.png",
+      "by": "Biswarup Ganguly",
+      "license": "CC BY 3.0",
+      "source": "https://github.com/jreinjr/yoga-pose-photos",
+      "src": "/media/poses/setu-bandha.png"
+    }
+  ]
+}
