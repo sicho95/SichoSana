@@ -1,0 +1,48 @@
+const {test,expect} = require('@playwright/test');
+const url='http://127.0.0.1:8080/';
+test('iPhone: navigation, chronomètre, progression et offline',async({page,context})=>{
+ await page.setViewportSize({width:390,height:844});
+ await page.goto(url);
+ await expect(page.locator('.bottom-nav')).toBeVisible();
+ await expect(page.locator('.sidebar')).toBeHidden();
+ await expect(page.getByRole('heading',{name:'Un moment pour soi'})).toBeVisible();
+ await page.locator('[data-action="start-yoga"]').first().click();
+ await expect(page.locator('#countdown')).toBeVisible();
+ await page.locator('[data-action="pause"]').click();
+ await expect(page.locator('[data-action="pause"]')).toContainText('Reprendre');
+ await page.locator('[data-action="pause"]').click();
+ await page.locator('[data-action="finish"]').click();
+ await page.locator('.bottom-nav [data-value="profile"]').click();
+ await expect(page.getByText('Mon espace',{exact:true}).first()).toBeVisible();
+ await expect(page.locator('.history-list')).toContainText('Hatha doux');
+ await page.screenshot({path:'screenshots/iphone.png',fullPage:true});
+ await page.evaluate(()=>navigator.serviceWorker.ready);
+ await context.setOffline(true);
+ await page.reload();
+ await expect(page.locator('.bottom-nav')).toBeVisible();
+ await expect(page.locator('h1').first()).toBeVisible();
+});
+test('iPad: navigation horizontale et grille spécifique',async({page})=>{
+ await page.setViewportSize({width:834,height:1112});
+ await page.goto(url);
+ await expect(page.locator('.bottom-nav')).toBeVisible();
+ await expect(page.locator('.sidebar')).toBeHidden();
+ await expect(page.locator('.home-desktop-layout')).toBeVisible();
+ await page.locator('.bottom-nav [data-value="meditate"]').click();
+ await expect(page.getByRole('heading',{name:'Méditation'})).toBeVisible();
+ await expect(page.locator('.meditation-levels button')).toHaveCount(3);
+ await page.screenshot({path:'screenshots/ipad.png',fullPage:true});
+});
+test('ordinateur: panneau latéral, multi-profils et thèmes',async({page})=>{
+ await page.setViewportSize({width:1440,height:900});
+ await page.goto(url);
+ await expect(page.locator('.sidebar')).toBeVisible();
+ await expect(page.locator('.bottom-nav')).toBeHidden();
+ await page.locator('.sidebar [data-value="profile"]').click();
+ page.on('dialog', dialog=>dialog.accept('Compte de test'));
+ await page.locator('[data-action="add-profile"]').click();
+ await expect(page.getByRole('button',{name:'Compte de test'})).toBeVisible();
+ await page.locator('[data-action="theme"][data-value="horizon"]').click();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','horizon');
+ await page.screenshot({path:'screenshots/desktop.png',fullPage:true});
+});
