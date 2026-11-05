@@ -46,3 +46,32 @@ test('ordinateur: panneau latéral, multi-profils et thèmes',async({page})=>{
  await expect(page.locator('html')).toHaveAttribute('data-theme','horizon');
  await page.screenshot({path:'screenshots/desktop.png',fullPage:true});
 });
+
+
+test('Synchronisation de tous les profils entre deux appareils sans perte',async({browser})=>{
+ const c1=await browser.newContext({viewport:{width:1280,height:900}}),c2=await browser.newContext({viewport:{width:1280,height:900}});
+ try{
+  const a=await c1.newPage(),b=await c2.newPage();
+  await a.goto(url);await a.locator('.sidebar [data-value="profile"]').click();
+  a.on('dialog',d=>d.accept('Profil A'));
+  await a.locator('[data-action="add-profile"]').click();
+  await a.locator('#sync-password').fill('MotDePasseUniqueDeTest2026');
+  await a.locator('[data-action="pair"]').click();
+  const toast=await a.locator('#toast').textContent();
+  const code=(toast||'').match(/[A-F0-9]{10}/)?.[0];
+  expect(code,'Un code d’association doit être communiqué').toBeTruthy();
+  await b.goto(url);await b.locator('.sidebar [data-value="profile"]').click();
+  await b.locator('#sync-code').fill(code);
+  await b.locator('#sync-password').fill('MotDePasseUniqueDeTest2026');
+  await b.locator('[data-action="pair"]').click();
+  await expect(b.locator('.profile-option')).toHaveCount(2);
+  await expect(b.locator('.profile-options')).toContainText('Profil A');
+  b.on('dialog',d=>d.accept('Profil B'));
+  await b.locator('[data-action="add-profile"]').click();
+  await b.locator('[data-action="sync"]').click();
+  await a.locator('[data-action="sync-pull"]').click();
+  await expect(a.locator('.profile-option')).toHaveCount(3);
+  await expect(a.locator('.profile-options')).toContainText('Profil A');
+  await expect(a.locator('.profile-options')).toContainText('Profil B');
+ }finally{await c1.close();await c2.close();}
+});
