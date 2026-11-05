@@ -35,7 +35,13 @@ jobs:
           assert all(set(r["poseIds"]) <= pose for r in p["routines"])
           for s in m["sessions"]:
             assert all(s["scripts"][k] for k in ("discrete","equilibree","enveloppante"))
-          print(len(p["poses"]),"poses /",len(p["routines"]),"routines /",len(m["sessions"]),"meditations")
+          pg=json.load(open("static/data/programs.json"))
+          routine_ids={r["id"] for r in p["routines"]}
+          med_ids={s["id"] for s in m["sessions"]}
+          for program in pg["programs"]:
+            assert len(program["steps"])>=5
+            assert all((s["ref"] in routine_ids if s["type"]=="yoga" else s["ref"] in med_ids) for s in program["steps"])
+          print(len(p["poses"]),"poses /",len(p["routines"]),"routines /",len(m["sessions"]),"meditations /",len(pg["programs"]),"programmes")
           PY
       - name: Validate Compose
         run: docker compose -f compose.yaml config -q
