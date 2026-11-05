@@ -45,6 +45,7 @@ def main():
     p.add_argument("--snapshot", type=Path, help="Fichier JSON téléchargé de Yoga API (import hors ligne).")
     p.add_argument("--database", type=Path, default=Path("runtime/sichosana.sqlite3"))
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--output-json",type=Path,help="Geler les postures normalisées pour usage 100 % hors ligne.")
     a = p.parse_args()
     if a.snapshot:
         raw = a.snapshot.read_bytes()
@@ -59,6 +60,11 @@ def main():
         raise ValueError("Import suspect : moins de dix postures.")
     print("Postures prêtes :", len(normalized), "— mode", "simulation" if a.dry_run else "import")
     if a.dry_run:
+        return
+    if a.output_json:
+        a.output_json.parent.mkdir(parents=True,exist_ok=True)
+        a.output_json.write_text(json.dumps({"schemaVersion":1,"source":API,"importedAt":datetime.now(timezone.utc).isoformat(),"poses":normalized},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        print("Catalogue autonome écrit :",a.output_json)
         return
     if not a.database.exists():
         raise FileNotFoundError("La base doit d'abord être initialisée par le serveur : " + str(a.database))
