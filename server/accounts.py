@@ -159,6 +159,8 @@ def create_admin(conn, handle, email, password):
 
 
 def smtp_ready():
+    if os.environ.get("SICHOSANA_TEST_MODE") == "1" and os.environ.get("SICHOSANA_HOST") == "127.0.0.1":
+        return True
     return all(os.environ.get(k) for k in ("SICHOSANA_SMTP_HOST", "SICHOSANA_SMTP_FROM",
                                           "SICHOSANA_PUBLIC_URL"))
 
@@ -170,7 +172,9 @@ def enqueue(conn, address, subject, body, kind):
 
 def deliver_pending(connection_factory):
     """Livraison best effort : la file SQLite survit aux indisponibilités SMTP."""
-    if not smtp_ready():
+    if not smtp_ready() or (
+        os.environ.get("SICHOSANA_TEST_MODE") == "1" and os.environ.get("SICHOSANA_HOST") == "127.0.0.1"
+    ):
         return
     host = os.environ["SICHOSANA_SMTP_HOST"]
     port = int(os.environ.get("SICHOSANA_SMTP_PORT", "465"))
@@ -427,7 +431,10 @@ def api(handler, method, path, connection_factory):
         return False
     try:
         if path == "/api/v1/auth/config":
-            handler.json_response(200, {"registrationOpen": smtp_ready(), "emailConfigured": smtp_ready()})
+            with connection_factory() as cx:
+                admin_exists=bool(cx.execute("SELECT 1 FROM accounts WHERE role='admin' AND status='active' LIMIT 1").fetchone())
+            handler.json_response(200, {"registrationOpen": smtp_ready() and admin_exists,
+                                        "emailConfigured": smtp_ready(), "adminReady": admin_exists})
             return True
         with connection_factory() as conn:
             if (method, path) in public:
@@ -436,6 +443,8 @@ def api(handler, method, path, connection_factory):
                     if path == "/api/v1/auth/register":
                         if not smtp_ready():
                             raise AccountError(503, "Inscriptions indisponibles tant que l'envoi d'emails n'est pas configuré.")
+                        if not conn.execute("SELECT 1 FROM accounts WHERE role='admin' AND status='active' LIMIT 1").fetchone():
+                            raise AccountError(503, "Les inscriptions ouvriront dès l'activation du compte administrateur.")
                         code, result = 201, new_account(conn, payload)
                     elif path == "/api/v1/auth/login":
                         code, result = 200, login(conn, payload)
