@@ -79,6 +79,14 @@ def initialize():
                         "INSERT INTO poses(id,data,origin,asset_license,imported_at) VALUES(?,?,?,?,?)",
                         (pose["id"], json.dumps(pose, ensure_ascii=False), "sichosana-curated", None, int(time.time()))
                     )
+        # Chargé depuis un instantané figé versionné, et jamais depuis une API pendant la pratique.
+        frozen = STATIC / "data" / "yoga-api-library.json"
+        if frozen.is_file():
+            for pose in json.loads(frozen.read_text(encoding="utf-8")).get("poses",[]):
+                c.execute("INSERT INTO poses(id,data,origin,asset_license,imported_at) VALUES(?,?,?,?,?) "
+                          "ON CONFLICT(id) DO UPDATE SET data=excluded.data",
+                          (pose["id"],json.dumps(pose,ensure_ascii=False),"yoga-api",
+                           "Illustrations non redistribuées (Flaticon/CC0 : licences distinctes)",int(time.time())))
 
 
 def password_hash(password, salt):
