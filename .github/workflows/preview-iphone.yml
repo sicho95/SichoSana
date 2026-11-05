@@ -9,6 +9,8 @@ on:
 
 permissions:
   contents: read
+  issues: write
+  actions: write
 
 jobs:
   preview:
@@ -16,6 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 52
     steps:
+      - name: Terminer proprement la prévisualisation précédente pour éviter deux runners
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh api -X POST repos/"$GITHUB_REPOSITORY"/actions/runs/42078115318/cancel || true
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -49,6 +57,8 @@ jobs:
           "${RUNNER_TEMP}/cloudflared" --version
       - name: Ouvrir l'aperçu public, isolé du NAS, puis fermer après 45 minutes
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           logfile="${RUNNER_TEMP}/sichosana-preview-cloudflared.log"
@@ -74,6 +84,7 @@ jobs:
             exit 1
           fi
           echo "::notice title=Adresse SichoSana iPhone::${url}"
+          gh api repos/"$GITHUB_REPOSITORY"/issues/1/comments -f body="RECETTE IPHONE TEMPORAIRE — **[Ouvrir SichoSana sur iPhone](${url})**. Instance isolée, sans données persistantes ; lien actif 45 minutes environ après ce message. Aucun service du NAS modifié."
           echo "PREVIEW_URL=${url}" >> "$GITHUB_ENV"
           for i in $(seq 1 20); do
             if curl -fsS --max-time 8 "${url}/api/health" | grep -q '"status": "ok"'; then
