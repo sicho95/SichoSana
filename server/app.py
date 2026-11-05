@@ -17,8 +17,8 @@ import time
 from collections import defaultdict, deque
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import urlsplit, unquote
-from server import accounts
+from urllib.parse import urlsplit, unquote, parse_qs
+from server import accounts, astrology
 
 BASE = Path(__file__).resolve().parents[1]
 STATIC = Path(os.environ.get("SICHOSANA_WEB_ROOT", BASE / "static")).resolve()
@@ -270,6 +270,9 @@ class Handler(SimpleHTTPRequestHandler):
         try:
             if accounts.api(self, 'GET', path, connection):
                 return
+            if path == "/api/v1/content/horoscope":
+                params=parse_qs(urlsplit(self.path).query)
+                return self.json_response(200, astrology.daily(params.get('sign',[''])[0]))
             if path == "/api/health":
                 return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "0.2"})
             if path == "/api/v1/poses":
