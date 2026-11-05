@@ -402,6 +402,20 @@ async function init(){
     page='home';render();
     if(!user.mustChangePassword){await autoSync(true);refreshAstrology();}
    },
+   welcome:async user=>{
+    const key='welcome:'+user.id;
+    if(await dbRead(key))return;
+    await dbWrite(key,true);
+    modal='<div class="modal welcome-modal" role="dialog" aria-modal="true" aria-label="Bienvenue dans SichoSana">'+
+     '<button class="icon-btn modal-close" data-action="close" aria-label="Fermer">×</button>'+
+     '<div class="eyebrow">Bienvenue dans ton espace</div>'+
+     '<h2>Un instant rien qu’à toi</h2><p>Bienvenue, '+escapeHTML(user.pseudo)+'.</p>'+
+     '<p>Ici, chaque respiration ouvre un espace pour ralentir, te retrouver et t’offrir un instant rien qu’à toi.</p>'+
+     '<p>Prends le temps d’explorer, d’écouter ton corps et de cultiver ton propre rythme.</p>'+
+     '<p class="welcome-signature">Avec douceur,<br>L’équipe de SichoSana</p>'+
+     '<button class="primary" data-action="close">Découvrir mon espace</button></div>';
+    renderModal();
+   },
    exit:async()=>{clearTimeout(syncTimer);if(session)abortSession();state=null;page='home';}
   });
   const data=await Promise.all([fetch('/data/yoga.json').then(r=>{if(!r.ok)throw Error('Yoga indisponible');return r.json();}),fetch('/data/meditations.json').then(r=>{if(!r.ok)throw Error('Méditations indisponibles');return r.json();}),fetch('/data/programs.json').then(r=>{if(!r.ok)throw Error('Programmes indisponibles');return r.json();})]);
