@@ -57,6 +57,7 @@ test('Synchronisation de tous les profils entre deux appareils sans perte',async
   await a.locator('[data-action="add-profile"]').click();
   await a.locator('#sync-password').fill('MotDePasseUniqueDeTest2026');
   await a.locator('[data-action="pair"]').click();
+  await expect(a.locator('#toast')).toContainText('Code d’association :',{timeout:10000});
   const toast=await a.locator('#toast').textContent();
   const code=(toast||'').match(/[A-F0-9]{10}/)?.[0];
   expect(code,'Un code d’association doit être communiqué').toBeTruthy();
