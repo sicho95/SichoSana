@@ -49,7 +49,7 @@ function routineCard(r){
 }
 function weeklyStats(){
  const now=new Date();const start=new Date(now);start.setDate(now.getDate()-((now.getDay()+6)%7));start.setHours(0,0,0,0);
- const dates=Array.from({length:7},(_,i)=>{const d=new Date(start);d.setDate(start.getDate()+i);return d.toISOString().slice(0,10);});
+ const dates=Array.from({length:7},(_,i)=>{const d=new Date(start);d.setDate(start.getDate()+i);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');});
  const done=new Set(profile().history.map(h=>h.date));
  return '<div class="week-dots" aria-label="Pratique cette semaine">'+dates.map((d,i)=>'<span class="'+(done.has(d)?'done':'')+'" title="'+d+'">'+['L','M','M','J','V','S','D'][i]+'</span>').join('')+'</div>';
 }
@@ -292,7 +292,7 @@ async function handle(action,value){
  if(action==='start-med')return startSession('meditate',value);
  if(action==='pose')return poseModal(value);
  if(action==='close')return closeModal();
- if(action==='pause'){if(session){session.running=!session.running;session.last=Date.now();if(!session.running)stopAudio();render();if(session.running)announceStep();}return;}
+ if(action==='pause'){if(session){session.running=!session.running;session.last=Date.now();if(!session.running)stopAudio();else session.spoken=-1;render();if(session.running)announceStep();}return;}
  if(action==='next-step'){if(session){const idx=stepIndex(session);session.elapsed=Math.min(session.duration,stepBoundary(session,idx)+0.01);session.spoken=-1;tick();}return;}
  if(action==='finish')return finishSession(false);
  if(action==='cancel-session')return abortSession();
@@ -308,7 +308,7 @@ async function handle(action,value){
  if(action==='cache-voice')return cacheVoicePack();
  if(action==='notifications')return notifications();
 }
-document.addEventListener('click',(e)=>{const target=e.target.closest('[data-action]');if(!target)return;e.preventDefault();handle(target.dataset.action,target.dataset.value||'').catch?.(err=>notice(err.message));});
+document.addEventListener('click',(e)=>{const target=e.target.closest('[data-action]');if(!target)return;e.preventDefault();Promise.resolve(handle(target.dataset.action,target.dataset.value||'')).catch(err=>notice(err.message));});
 document.addEventListener('change',async(e)=>{
  if(e.target.id==='zodiac'){profile().zodiac=e.target.value;touch();render();}
  if(e.target.id==='import-json'){
@@ -322,7 +322,9 @@ async function init(){
   db=await openDB();state=await dbRead('app')||initialState();
   if(!state.profiles?.length){state=initialState();await save();}
   const data=await Promise.all([fetch('/data/yoga.json').then(r=>{if(!r.ok)throw Error('Yoga indisponible');return r.json();}),fetch('/data/meditations.json').then(r=>{if(!r.ok)throw Error('Méditations indisponibles');return r.json();})]);
-  yoga=data[0];meditations=data[1];render();
+  yoga=data[0];meditations=data[1];
+  try{const r=await fetch('/api/v1/poses');if(r.ok){const extra=(await r.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...extra.filter(p=>!ids.has(p.id)));}}catch(err){} // bibliothèque préchargée disponible hors réseau
+  render();
   if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
  }catch(err){$('#main').innerHTML='<div class="attention"><h2>Initialisation impossible</h2><p>'+escapeHTML(err.message)+'</p><p>Vérifie la connexion initiale et le stockage de ton appareil.</p></div>';}
 }
