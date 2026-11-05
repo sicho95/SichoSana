@@ -71,3 +71,15 @@
  .profile-chip{max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 }
 @media(max-width:360px){.topbar .brand{font-size:18px}.top-actions{gap:5px}.icon-btn{height:38px;width:38px}.profile-chip{max-width:90px}}
+
+/* Parcours : même charte et compositions dédiées. */
+.program-panel{background:linear-gradient(145deg,var(--surface),var(--sage-light))}
+.program-panel .progress-track,.program-cards .progress-track{margin:15px 0 9px}
+.program-panel .primary{width:100%;margin-top:5px}
+.program-steps{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:9px}
+.program-steps li{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.program-steps li:before{content:'○';display:grid;place-items:center;width:21px;height:21px;min-width:21px;border:1px solid var(--line);border-radius:50%;font-size:13px}
+.program-steps li.done:before{content:'✓';color:white;background:var(--sage);border-color:var(--sage)}
+.program-steps li.done{color:var(--sage-dark)}
+.program-cards{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:28px}
+@media(max-width:779px){.program-cards{grid-template-columns:1fr}}
