@@ -1,0 +1,43 @@
+name: SichoSana browser smoke tests
+on:
+  push:
+    branches: [dev/sichosana-20261105]
+    paths:
+      - ".github/workflows/ui-e2e.yml"
+      - "static/**"
+      - "server/**"
+      - "tests/ui.spec.cjs"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm install --no-save --no-package-lock @playwright/test
+      - run: npx playwright install --with-deps chromium
+      - name: Start isolated SichoSana backend
+        run: |
+          python -m server.app >/tmp/sichosana.log 2>&1 &
+          for i in $(seq 1 20); do curl --silent --fail http://127.0.0.1:8080/api/health && break; sleep 1; done
+      - name: Test real browser and responsive compositions
+        run: |
+          mkdir -p screenshots
+          npx playwright test tests/ui.spec.cjs --reporter=line --workers=1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sichosana-screenshots-iphone-ipad-desktop
+          path: screenshots/
+          retention-days: 15
+      - name: Server logs on failure
+        if: failure()
+        run: cat /tmp/sichosana.log
