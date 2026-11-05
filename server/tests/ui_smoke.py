@@ -51,7 +51,7 @@ def run():
             assert page.locator("#new-profile-form").is_visible()
             page.locator("#new-profile-name").fill("Deuxième profil")
             page.locator("#new-profile-form button[type=submit]").click()
-            assert page.get_by_text("Deuxième profil").count() >= 1
+            page.get_by_text("Deuxième profil", exact=True).first.wait_for(timeout=5000)
             page.locator('[data-action="theme"][data-id="horizon"]').click()
             assert page.locator("html").get_attribute("data-theme")=="horizon"
             page.screenshot(path=str(folder / (label+"-profil.png")), full_page=True)
