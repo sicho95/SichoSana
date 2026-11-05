@@ -18,6 +18,7 @@ from collections import defaultdict, deque
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit, unquote
+from server import accounts
 
 BASE = Path(__file__).resolve().parents[1]
 STATIC = Path(os.environ.get("SICHOSANA_WEB_ROOT", BASE / "static")).resolve()
@@ -33,6 +34,7 @@ MAX_JSON = 1_200_000
 
 def connection():
     c = sqlite3.connect(DB_PATH, timeout=10)
+    c.row_factory = sqlite3.Row
     c.execute("PRAGMA foreign_keys=ON")
     c.execute("PRAGMA journal_mode=WAL")
     c.execute("PRAGMA busy_timeout=10000")
@@ -79,6 +81,7 @@ def initialize():
                         "INSERT INTO poses(id,data,origin,asset_license,imported_at) VALUES(?,?,?,?,?)",
                         (pose["id"], json.dumps(pose, ensure_ascii=False), "sichosana-curated", None, int(time.time()))
                     )
+        accounts.init_schema(c)
         # Chargé depuis un instantané figé versionné, et jamais depuis une API pendant la pratique.
         frozen = STATIC / "data" / "yoga-api-library.json"
         if frozen.is_file():
@@ -265,6 +268,8 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         path = urlsplit(self.path).path
         try:
+            if accounts.api(self, 'GET', path, connection):
+                return
             if path == "/api/health":
                 return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "0.2"})
             if path == "/api/v1/poses":
@@ -287,6 +292,10 @@ class Handler(SimpleHTTPRequestHandler):
     def do_POST(self):
         path = urlsplit(self.path).path
         try:
+            if path.startswith('/api/v1/auth/') and too_many_attempts(self.client_address[0]):
+                return self.json_response(429, {'error': 'Trop de tentatives. Réessaye dans quelques minutes.'})
+            if accounts.api(self, 'POST', path, connection):
+                return
             if path not in ("/api/v1/groups", "/api/v1/pair"):
                 return self.json_response(404, {"error": "Route inexistante."})
             if too_many_attempts(self.client_address[0]):
@@ -306,9 +315,11 @@ class Handler(SimpleHTTPRequestHandler):
             return self.json_response(500, {"error": "Erreur interne."})
 
     def do_PUT(self):
-        if urlsplit(self.path).path != "/api/v1/snapshot":
+        if urlsplit(self.path).path not in ('/api/v1/snapshot','/api/v1/account/snapshot'):
             return self.json_response(404, {"error": "Route inexistante."})
         try:
+            if accounts.api(self, 'PUT', urlsplit(self.path).path, connection):
+                return
             group_id = authenticated_group(self.headers)
             raw = self.headers.get("If-Match", "-1")
             if not raw.isdigit():
@@ -324,6 +335,13 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception:
             LOGGER.exception("PUT failed")
             return self.json_response(500, {"error": "Erreur interne."})
+
+
+    def do_PATCH(self):
+        path = urlsplit(self.path).path
+        if accounts.api(self, 'PATCH', path, connection):
+            return
+        return self.json_response(404, {'error': 'Route inexistante.'})
 
 
 def main():
