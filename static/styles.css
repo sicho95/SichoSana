@@ -162,3 +162,65 @@
  .daily-reflection{font-size:19px}
 }
 @media(prefers-reduced-motion:reduce){.auth-photo:before{transition:none!important}}
+
+/* V2 : visuels photographiques et bibliothèque de postures. */
+.hero{background:#d9e2d6;isolation:isolate;box-shadow:0 15px 38px #354b3621}
+.hero::before,.hero:before{
+ content:"";position:absolute;inset:0;opacity:1;z-index:-1;
+ background:url("/media/yoga-hero.png") center 42%/cover no-repeat}
+:root[data-theme="horizon"] .hero{background:#dbe9e5}
+:root[data-theme="horizon"] .hero::before{background:url("/media/nature.png") center 54%/cover no-repeat}
+.hero::after{content:"";z-index:0;position:absolute;inset:0;
+ background:linear-gradient(100deg,#f5f3e6f7 0%,#f5f3e6f2 36%,#f5f3e6ba 55%,#f5f3e60a 90%)}
+:root[data-theme="horizon"] .hero::after{background:linear-gradient(100deg,#e4efedf6,#e4efeded 35%,#e4efedb0 60%,#e4efed12 95%)}
+.hero-content{position:relative;z-index:1}
+.hero-art,.hero-art:before{display:none!important}
+.hero h2{color:#304d3e}
+.routine-visual,.routine-card:nth-child(3n+2) .routine-visual,
+.routine-card:nth-child(3n+3) .routine-visual{
+ background:url("/media/yoga-hero.png") 50% 38%/cover no-repeat;
+ color:#fff;text-shadow:0 2px 20px #253c2bba;min-height:145px}
+.routine-visual:before{display:none}
+.routine-card:nth-child(3n+2) .routine-visual{background-position:60% 60%}
+.routine-card:nth-child(3n+3) .routine-visual{background:url("/media/nature.png") center 50%/cover no-repeat}
+.routine-card.meditation-card .routine-visual{background:url("/media/meditation.png") center/cover no-repeat}
+.routine-visual span{font-size:35px}
+.wellness-row .tile:first-child{background:#dce7d9 url("/media/meditation.png") right center/auto 110% no-repeat}
+.wellness-row .tile:first-child::after{display:none}
+.wellness-row .tile:first-child h3,.wellness-row .tile:first-child p,.wellness-row .tile:first-child button{background:#f9f9f1ce;border-radius:9px;padding:2px 6px}
+.yoga-tabs{display:flex;gap:5px;border-radius:16px;background:var(--sage-light);
+ padding:5px;width:max-content;max-width:100%;flex-wrap:wrap;margin:5px 0 23px}
+.yoga-tabs button{border:0;border-radius:12px;padding:13px 19px;background:transparent;
+ color:var(--sage-dark);font-weight:650}
+.yoga-tabs button[aria-selected="true"]{background:var(--surface);box-shadow:var(--shadow)}
+.yoga-tabs small{font-size:11px;opacity:.7;margin-left:6px}
+.pose-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pose-item{min-height:112px;overflow:hidden;padding:9px;text-align:left;gap:17px}
+.pose-photo.thumb{display:block;flex:0 0 100px;width:100px;height:98px;object-fit:contain;
+ border-radius:14px;background:#eff0ea}
+.pose-item strong{font-family:var(--serif);font-weight:650;font-size:20px}
+.pose-item small{display:block;line-height:1.5;font-size:12px}
+.pose-missing{display:grid;place-items:center;text-align:center;flex-shrink:0;width:100px;height:98px;
+ background:linear-gradient(155deg,#e7ece2,#f5eee2);border-radius:14px;font:italic 13px var(--serif);
+ padding:8px;color:var(--muted)}
+.pose-modal-visual{min-height:240px;max-height:340px;display:grid;place-items:center;
+ background:linear-gradient(140deg,#eaf0e7,#f9f7f0);border-radius:20px;overflow:hidden}
+.pose-photo.large{width:100%;max-height:340px;object-fit:contain}
+.pose-modal-visual .pose-missing{width:100%;height:230px;background:transparent;font-size:19px}
+.image-credit{font-size:11px;color:var(--muted);line-height:1.6}
+.session-pose-image{width:100%;max-width:330px;min-height:160px;max-height:245px;margin:8px auto;display:grid;place-items:center}
+.session-pose-image img{height:235px;max-width:100%;object-fit:contain;border-radius:16px}
+.session-pose-image .pose-missing{width:100%;height:125px}
+@media(min-width:1101px){.pose-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:779px){
+ .hero::after{background:linear-gradient(180deg,#f6f1e055 0%,#f6f1e0c8 28%,#f6f1e0fc 82%)}
+ :root[data-theme="horizon"] .hero::after{background:linear-gradient(180deg,#e4efed66,#e4efedef 80%)}
+ .hero::before{background-position:center 35%}
+ .pose-list{grid-template-columns:1fr}
+ .pose-photo.thumb{width:100px;height:102px}
+ .yoga-tabs{width:100%}.yoga-tabs button{flex:1;padding:12px 8px;font-size:13px}
+ .routine-visual{min-height:168px}
+ .session-stage{padding:20px 16px}
+ .session-pose-image{max-height:175px}
+ .session-pose-image img{height:165px}
+}
