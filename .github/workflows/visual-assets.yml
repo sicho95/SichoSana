@@ -44,12 +44,35 @@ jobs:
                   im.save(out,format='PNG',optimize=True,compress_level=9)
               print(out,Path(out).stat().st_size)
           PY
+      - name: Photographies réelles des postures avec crédits individuels
+        run: |
+          set -euo pipefail
+          mkdir -p static/media/poses
+          python - <<'PY'
+          from urllib.request import Request,urlopen
+          from PIL import Image,ImageOps
+          from pathlib import Path
+          from io import BytesIO
+          names={
+           'tadasana':'mountain','balasana':'childs-pose',
+           'adho-mukha':'downward-dog','virabhadrasana2':'warrior-2',
+           'bhujangasana':'cobra','vrksasana':'tree','setu-bandha':'bridge'
+          }
+          for ident,slug in names.items():
+              url='https://raw.githubusercontent.com/jreinjr/yoga-pose-photos/main/'+slug+'.jpg'
+              req=Request(url,headers={'User-Agent':'SichoSana/2.0'})
+              with urlopen(req,timeout=25) as response: data=response.read(2_000_000)
+              with Image.open(BytesIO(data)) as image:
+                  image=ImageOps.exif_transpose(image).convert('RGB')
+                  image.save('static/media/poses/'+ident+'.png',format='PNG',optimize=True,compress_level=9)
+              print('Posture photo',ident,len(data))
+          PY
       - name: Commit assets sur branche de préparation
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add static/media/*.png
+          git add static/media/*.png static/media/poses/*.png
           if ! git diff --cached --quiet; then
             git commit -m "assets: photos PNG haute définition pour interfaces SichoSana"
             git fetch origin "$GITHUB_REF_NAME"
