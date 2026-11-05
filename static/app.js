@@ -7,7 +7,7 @@ const escapeHTML = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => 
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2));
 const formatTime = (n) => { const s = Math.max(0, Math.ceil(n)); return Math.floor(s/60).toString().padStart(2,'0')+':'+(s%60).toString().padStart(2,'0'); };
 const todayKey = () => { const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); };
-const logo = '<svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M32 49c-2-10-14-16-14-24 9 1 14 6 14 12 0-6 5-11 14-12 0 8-12 14-14 24Z"/><path d="M32 37C20 34 16 21 22 13c6 4 10 10 10 18 0-8 4-14 10-18 6 8 2 21-10 24Z"/><path d="M11 42c9 1 15 7 21 7s12-6 21-7M17 52h30"/></svg>';
+const logo = '<span class="brand-seal" aria-hidden="true">S</span>';
 const nav = [{id:'home',text:'Accueil',glyph:'⌂'},{id:'yoga',text:'Yoga',glyph:'◈'},{id:'meditate',text:'Méditer',glyph:'☼'},{id:'astro',text:'Astro',glyph:'☾'},{id:'profile',text:'Profil',glyph:'♙'}];
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
 let reflections={reflections:[]}, astrologyLive=null;
