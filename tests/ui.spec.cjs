@@ -9,6 +9,8 @@ async function signIn(page,pseudo=ADMIN.pseudo,password=ADMIN.password){
  await page.locator('input[name="password"]').fill(password);
  await page.getByRole('button',{name:'Me connecter'}).click();
  await expect(page.getByRole('heading',{name:'Un moment pour soi'})).toBeVisible({timeout:15000});
+ await page.locator('.welcome-modal').waitFor({state:'visible',timeout:2500}).catch(()=>{});
+ if(await page.locator('.welcome-modal').isVisible())await page.locator('.welcome-modal [data-action="close"]').first().click();
 }
 
 test('iPhone: inscription non affichée après connexion, yoga et progression',async({page,context})=>{
@@ -82,6 +84,7 @@ test('inscription puis approbation admin et connexion insensible à la casse',as
   await applicant.locator('input[name="password"]').fill('UnMotDePasseLong2026!');
   await applicant.getByRole('button',{name:'Me connecter'}).click();
   await expect(applicant.getByRole('heading',{name:'Un moment pour soi'})).toBeVisible();
+  await expect(applicant.locator('.welcome-modal')).toBeVisible();
  }finally{await c1.close();await c2.close();}
 });
 
