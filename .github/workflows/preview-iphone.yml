@@ -10,6 +10,8 @@ on:
 permissions:
   contents: read
   issues: write
+  pull-requests: write
+  statuses: write
   actions: write
 
 jobs:
@@ -84,7 +86,7 @@ jobs:
             exit 1
           fi
           echo "::notice title=Adresse SichoSana iPhone::${url}"
-          gh api repos/"$GITHUB_REPOSITORY"/issues/1/comments -f body="RECETTE IPHONE TEMPORAIRE — **[Ouvrir SichoSana sur iPhone](${url})**. Instance isolée, sans données persistantes ; lien actif 45 minutes environ après ce message. Aucun service du NAS modifié."
+          gh api repos/"$GITHUB_REPOSITORY"/issues/1/comments -f body="RECETTE IPHONE TEMPORAIRE — **[Ouvrir SichoSana sur iPhone](${url})**. Instance isolée, sans données persistantes ; lien actif 45 minutes environ après ce message. Aucun service du NAS modifié." || echo "Publication du commentaire refusée : tentative sur les statuts de commit."\n          gh api -X POST repos/"$GITHUB_REPOSITORY"/statuses/"$GITHUB_SHA" -f state=success -f context=sichosana/recette-iphone -f description="Lien HTTPS temporaire, 45 minutes" -f target_url="$url" || echo "Publication du statut refusée : URL toujours visible dans les logs Github Actions."
           echo "PREVIEW_URL=${url}" >> "$GITHUB_ENV"
           for i in $(seq 1 20); do
             if curl -fsS --max-time 8 "${url}/api/health" | grep -q '"status": "ok"'; then
