@@ -1,0 +1,611 @@
+{
+  "format": "sichosana-voice-pack",
+  "packId": "vivienne-fr-v2",
+  "locale": "fr-FR",
+  "voiceId": "fr-FR-VivienneMultilingualNeural",
+  "rateYoga": "-22%",
+  "rateMeditation": "-32%",
+  "pitch": "-1Hz",
+  "volume": "+0%",
+  "sourceIdentity": "ResurGo_Fitness Running female coach v2",
+  "status": "candidate-awaiting-damien-audition",
+  "catalogSha256": "48d126d87143fab06bf65e9ff5ab3b5c88a34758fd2736c3ed200c30791173c5",
+  "yogaCatalogSha256": "9e4ea5b991da23c41c6816c931836c0f91440dd9b9e65dda7dbec6b47a927eb0",
+  "files": {
+    "ancrage_discrete_00": {
+      "src": "ancrage_discrete_00.mp3",
+      "sha256": "2439f6b14f38dad94dd8bc939dd6bfbe5581163b6b13a545194cd6fe2f60c418",
+      "bytes": 30528,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6",
+      "kind": "meditation"
+    },
+    "ancrage_discrete_01": {
+      "src": "ancrage_discrete_01.mp3",
+      "sha256": "b83af036d4160f07cab09b61b17a87b3cbedb25e47f7ab862186b04ec9d5a91c",
+      "bytes": 39168,
+      "textSha256": "706e8b3230adc7abbebd4fc4366a6c813c151679249e5695ca2d8cc4530bb928",
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_00": {
+      "src": "ancrage_enveloppante_00.mp3",
+      "sha256": "fd571a0642fe10e8d0602e60e848c2bebb13a64b72d47e7fbdb12535ba1f0a54",
+      "bytes": 30528,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6",
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_01": {
+      "src": "ancrage_enveloppante_01.mp3",
+      "sha256": "021a80326278f79302a6215352b75f78722ebe4366723419e2ea7b8dd40c28ad",
+      "bytes": 22896,
+      "textSha256": "b46fd9a538882885bfaa01e8fc1736849b4055d59ff6114d3f2dfaf04bc935d2",
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_02": {
+      "src": "ancrage_enveloppante_02.mp3",
+      "sha256": "94a239a461d9af9fd23f84c0ca2f46ca387a6b2ead36d90347883a1adee4319b",
+      "bytes": 36432,
+      "textSha256": "6205cb35ef95feab378f64eec0e4ab888450af11336c3c8ff6a5a9d586001aff",
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_03": {
+      "src": "ancrage_enveloppante_03.mp3",
+      "sha256": "fb4f219f80e3fa759421603eeee356dde54f74057ff6a737319061002d148b0e",
+      "bytes": 29664,
+      "textSha256": "7e6b5e7026771b0101753f94c2057941c5793e2cfcabdabf47872631ff7fb7e9",
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_04": {
+      "src": "ancrage_enveloppante_04.mp3",
+      "sha256": "73fcd95d8ceb8e83d6852a967d5867a73a6510bd9aeaa4532f81e4a6a91b0a51",
+      "bytes": 29808,
+      "textSha256": "cef1fa08545241f9b75660b36a4d0ef988c3003858d0ff4c136b2628833e97b0",
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_05": {
+      "src": "ancrage_enveloppante_05.mp3",
+      "sha256": "a6a751a855c0645ccf1f2b96a90dbc6179373ed1bb7f94816aca7d983b6faab8",
+      "bytes": 39600,
+      "textSha256": "706e8b3230adc7abbebd4fc4366a6c813c151679249e5695ca2d8cc4530bb928",
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_00": {
+      "src": "ancrage_equilibree_00.mp3",
+      "sha256": "9fc71e8741eef4689146cffe0003b0f3b798f3ee955fe3d082f7011570ece07a",
+      "bytes": 30528,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6",
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_01": {
+      "src": "ancrage_equilibree_01.mp3",
+      "sha256": "1d3cff2a1d89874b43ebe6917dd67f7712ade8c214bc92f928f20405c62faa93",
+      "bytes": 36432,
+      "textSha256": "6205cb35ef95feab378f64eec0e4ab888450af11336c3c8ff6a5a9d586001aff",
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_02": {
+      "src": "ancrage_equilibree_02.mp3",
+      "sha256": "06c2f8a49513e09c65e085cfee0bd2f72ec8b0403dae0c7aaf300d24638d7c7b",
+      "bytes": 29664,
+      "textSha256": "cef1fa08545241f9b75660b36a4d0ef988c3003858d0ff4c136b2628833e97b0",
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_03": {
+      "src": "ancrage_equilibree_03.mp3",
+      "sha256": "8e499e20aa9cb0c98f3c3ab918f20cb37754d87d6da3b7313d36ba9c5e1b5711",
+      "bytes": 39312,
+      "textSha256": "706e8b3230adc7abbebd4fc4366a6c813c151679249e5695ca2d8cc4530bb928",
+      "kind": "meditation"
+    },
+    "clarte_discrete_00": {
+      "src": "clarte_discrete_00.mp3",
+      "sha256": "6098c985fb3733bf33be64150db879a8214b4e0b1ad209861d9c945987cf02c6",
+      "bytes": 24480,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2",
+      "kind": "meditation"
+    },
+    "clarte_discrete_01": {
+      "src": "clarte_discrete_01.mp3",
+      "sha256": "40a2406515219e51146d099cff728b4207279080f350fa4bcb7e7b51206c159e",
+      "bytes": 35280,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620",
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_00": {
+      "src": "clarte_enveloppante_00.mp3",
+      "sha256": "74fcdf230a911a17e933ba811b5876d0c08a68ca903a2520801c896f2c278d4c",
+      "bytes": 24480,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2",
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_01": {
+      "src": "clarte_enveloppante_01.mp3",
+      "sha256": "29cd1273fa36ae35bbec2d1b5f90f220b1a14734ba8671caa6b8ef1c63397ed9",
+      "bytes": 21312,
+      "textSha256": "48d975e0a1b5f1b125848b63f4ce9b01aecebe7bef0a521f9324e1657988f176",
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_02": {
+      "src": "clarte_enveloppante_02.mp3",
+      "sha256": "7b799cf84e8abe544aee5db4920249b2d16f2943033efa55aa7755a24a85b515",
+      "bytes": 26352,
+      "textSha256": "eee7dee20d87bc8b6b871d7718039eff9bfbcf2138686a29f875134daeea0cf5",
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_03": {
+      "src": "clarte_enveloppante_03.mp3",
+      "sha256": "f2c3a79283431e5999a945cd6d12e8c1e9c2dbdd301457a5323074713be0840b",
+      "bytes": 31104,
+      "textSha256": "6d5bce4f49de9cff289a5f695b0b235739dd0732b938be4e38501b48d13882d5",
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_04": {
+      "src": "clarte_enveloppante_04.mp3",
+      "sha256": "cc8477d1bdadf4983b0a93cbaf451ec718059319ae9f66550d23a404b0393b26",
+      "bytes": 23904,
+      "textSha256": "2331ef73e2172fbd3c7c95a27c2e1bc608798936577370dfd717e110d336b99d",
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_05": {
+      "src": "clarte_enveloppante_05.mp3",
+      "sha256": "52be98cf05e84cf9c648c7a3dfbb6c0fe00a5188c7ef99fdbd56c5dd03bb5b01",
+      "bytes": 35280,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620",
+      "kind": "meditation"
+    },
+    "clarte_equilibree_00": {
+      "src": "clarte_equilibree_00.mp3",
+      "sha256": "0a88cfd8e2b94670f2b8e86e307cc72150cd330615fa29636baf08614378235a",
+      "bytes": 24192,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2",
+      "kind": "meditation"
+    },
+    "clarte_equilibree_01": {
+      "src": "clarte_equilibree_01.mp3",
+      "sha256": "965b32a9dc9163205245ac4a029a09f419cf56227a0da57aa3282fd841b51bf6",
+      "bytes": 26352,
+      "textSha256": "eee7dee20d87bc8b6b871d7718039eff9bfbcf2138686a29f875134daeea0cf5",
+      "kind": "meditation"
+    },
+    "clarte_equilibree_02": {
+      "src": "clarte_equilibree_02.mp3",
+      "sha256": "382adbc46e6f3ff0d409a904bc3cbbeb8c95d45e7d713b05469cee2d4a6558ba",
+      "bytes": 24480,
+      "textSha256": "2331ef73e2172fbd3c7c95a27c2e1bc608798936577370dfd717e110d336b99d",
+      "kind": "meditation"
+    },
+    "clarte_equilibree_03": {
+      "src": "clarte_equilibree_03.mp3",
+      "sha256": "e7b072d79eef689dc92178b45e7d9e0d0cc22cb019f179fc57146756d69c1cdd",
+      "bytes": 35280,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620",
+      "kind": "meditation"
+    },
+    "detente_discrete_00": {
+      "src": "detente_discrete_00.mp3",
+      "sha256": "180d4341b7d4add33879742aae23a8ee5301c69837ffe0ec37e7fc86bc489c0c",
+      "bytes": 30240,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc",
+      "kind": "meditation"
+    },
+    "detente_discrete_01": {
+      "src": "detente_discrete_01.mp3",
+      "sha256": "4a3b3e0283009bd1f427a0ed890b4b4d262b367bdc98eae5f8bf78741d6cbc6f",
+      "bytes": 43344,
+      "textSha256": "7c06b75593bb6871d8223d69c0f3557396f95eb329457622de9958f2ed333489",
+      "kind": "meditation"
+    },
+    "detente_enveloppante_00": {
+      "src": "detente_enveloppante_00.mp3",
+      "sha256": "ea26f0481358f49e5b44909467c211437677c424e6cbb5e7f020536b37b14c62",
+      "bytes": 30240,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc",
+      "kind": "meditation"
+    },
+    "detente_enveloppante_01": {
+      "src": "detente_enveloppante_01.mp3",
+      "sha256": "2c83e064dfa833d6d766506010d154d72a70064d4a86555b1a9cf2035b2f9c75",
+      "bytes": 24912,
+      "textSha256": "6e0e474b82e8dd41fac1b134344dc3661d3b7cd216f3ede3d3aa4420963506ec",
+      "kind": "meditation"
+    },
+    "detente_enveloppante_02": {
+      "src": "detente_enveloppante_02.mp3",
+      "sha256": "c2cc74621b5a7294d2848051fa8ba48f98de941f1db65838d4f5c49c324bf00f",
+      "bytes": 27360,
+      "textSha256": "6b159546fb4034a8278c925425ec921be87e0c9af145bfcac571acad2cfde7c5",
+      "kind": "meditation"
+    },
+    "detente_enveloppante_03": {
+      "src": "detente_enveloppante_03.mp3",
+      "sha256": "d57ca45961013f0f5571f49275182f1b383a93952e80466eb7eccaab1a5d2a6f",
+      "bytes": 29232,
+      "textSha256": "893de1fe155e60db6621d7f129b7097bcd498b42122f97f17aefc85d6571d654",
+      "kind": "meditation"
+    },
+    "detente_enveloppante_04": {
+      "src": "detente_enveloppante_04.mp3",
+      "sha256": "22e1a7ed1cfcbc39c0ce5bee83646ba1790152b89527f5cb3dbcc9c0cfd0481e",
+      "bytes": 31104,
+      "textSha256": "55942422371bffea397f9cff1e8c7a2245a062c0341d0ef822611c6e74c2a214",
+      "kind": "meditation"
+    },
+    "detente_enveloppante_05": {
+      "src": "detente_enveloppante_05.mp3",
+      "sha256": "1465428b6abd59ca28561d30b347b51e003f124e24c393b0f5d3a94352741132",
+      "bytes": 43344,
+      "textSha256": "7c06b75593bb6871d8223d69c0f3557396f95eb329457622de9958f2ed333489",
+      "kind": "meditation"
+    },
+    "detente_equilibree_00": {
+      "src": "detente_equilibree_00.mp3",
+      "sha256": "eaaf5b3c5075d3a37c4293306cddc2717c260bdfde7fa99b23b6ec158c57b6d2",
+      "bytes": 30240,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc",
+      "kind": "meditation"
+    },
+    "detente_equilibree_01": {
+      "src": "detente_equilibree_01.mp3",
+      "sha256": "ddb1f4eaabd62ad514b0e0a14131c90f1a046f1d5fc4daebabc54c8bf70333aa",
+      "bytes": 27792,
+      "textSha256": "6b159546fb4034a8278c925425ec921be87e0c9af145bfcac571acad2cfde7c5",
+      "kind": "meditation"
+    },
+    "detente_equilibree_02": {
+      "src": "detente_equilibree_02.mp3",
+      "sha256": "c1a248b743b8c13153838ae60dad0d6d04a848eef52eee84e80826a0e9295a84",
+      "bytes": 31104,
+      "textSha256": "55942422371bffea397f9cff1e8c7a2245a062c0341d0ef822611c6e74c2a214",
+      "kind": "meditation"
+    },
+    "detente_equilibree_03": {
+      "src": "detente_equilibree_03.mp3",
+      "sha256": "d2f2c6bcc3a25d62216e34168c6cba3c332f3950ae7a5e222b3f375cf897c673",
+      "bytes": 43344,
+      "textSha256": "7c06b75593bb6871d8223d69c0f3557396f95eb329457622de9958f2ed333489",
+      "kind": "meditation"
+    },
+    "gratitude_discrete_00": {
+      "src": "gratitude_discrete_00.mp3",
+      "sha256": "3e0b734ea252b7a4eec70f9126ab0afbf825db50b2336565fdd4141b34158ea1",
+      "bytes": 26784,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd",
+      "kind": "meditation"
+    },
+    "gratitude_discrete_01": {
+      "src": "gratitude_discrete_01.mp3",
+      "sha256": "eba7c208da9fe9c863bb12f7867224e9915b7f65f863d4d849d9632e27c79d94",
+      "bytes": 30096,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2",
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_00": {
+      "src": "gratitude_enveloppante_00.mp3",
+      "sha256": "25171d3fa0050cba0b071ab8183701668169fa4b6d0a1a461ace631a63992ea1",
+      "bytes": 26784,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd",
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_01": {
+      "src": "gratitude_enveloppante_01.mp3",
+      "sha256": "43cb39f05e51e3b2e67bba76203428916c351759b0ebedf9c39eb4be8f67c2c6",
+      "bytes": 24048,
+      "textSha256": "8260995a01c70994f36b693d9c0f8ac5dcdcbba489b04381b6642889eec1ee92",
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_02": {
+      "src": "gratitude_enveloppante_02.mp3",
+      "sha256": "b37af4d113a701fee789695102a3343f72f234c3619c317a67f38ae08a09d0a6",
+      "bytes": 35568,
+      "textSha256": "303d42b44579f5ffe68cf5c018db6800c5c5a371888782756328eb76a87b496b",
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_03": {
+      "src": "gratitude_enveloppante_03.mp3",
+      "sha256": "89e4f666c5fab91a1bf0ac3f0d58d316ca153051019f6dbe79d90ee70cc0f9c7",
+      "bytes": 34704,
+      "textSha256": "04f635325b3cb12ac207923d450acaedb6658520220d83a56605f30416adc6aa",
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_04": {
+      "src": "gratitude_enveloppante_04.mp3",
+      "sha256": "acb7227d0f6040f5a451c3807ed506879ce55bdab7b79283e4e617eb5c554bf9",
+      "bytes": 22608,
+      "textSha256": "fedda97cbf28603653c80e3a694cab057246f855b1f37e7b679c5b922d87b422",
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_05": {
+      "src": "gratitude_enveloppante_05.mp3",
+      "sha256": "215675b892b5748d1b2f09c5e6d44d8a15b2fb7ff5ef0fb2750106be62f49a83",
+      "bytes": 30096,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2",
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_00": {
+      "src": "gratitude_equilibree_00.mp3",
+      "sha256": "41032a65ad463e38013b0b072482e0aadb9c46e45060db15b0505ce86b3a0216",
+      "bytes": 26784,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd",
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_01": {
+      "src": "gratitude_equilibree_01.mp3",
+      "sha256": "20f4d704ae756f22db9f8ea858c09e0118a86eb050552a6d12d1805c3628dd82",
+      "bytes": 36144,
+      "textSha256": "303d42b44579f5ffe68cf5c018db6800c5c5a371888782756328eb76a87b496b",
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_02": {
+      "src": "gratitude_equilibree_02.mp3",
+      "sha256": "8cda2b6ee8f434790f61fe520126724b0fb27b4bf5bb5b81bcb8bd6dce59a28b",
+      "bytes": 22608,
+      "textSha256": "fedda97cbf28603653c80e3a694cab057246f855b1f37e7b679c5b922d87b422",
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_03": {
+      "src": "gratitude_equilibree_03.mp3",
+      "sha256": "f216f6ab7da837ac2181cc7e5c9d5b9f904d7954cf5dfae701ded93331574897",
+      "bytes": 30096,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2",
+      "kind": "meditation"
+    },
+    "pose_adho-mukha": {
+      "src": "pose_adho-mukha.mp3",
+      "sha256": "18933886f39b82df008cd6fdd5eba4ffdba7f8b2bf1727b837166bbfa4899aa7",
+      "bytes": 63216,
+      "textSha256": "901b6ce17b2ee33961b3a9759358f3c8d84faeba858d29763981322645b1ce1a",
+      "kind": "yoga"
+    },
+    "pose_anjaneyasana": {
+      "src": "pose_anjaneyasana.mp3",
+      "sha256": "8c8f79db55b10e92ef7e09dcd943442241730cee6f43025e44e33acd67a73870",
+      "bytes": 67824,
+      "textSha256": "8fafc12a1ed9b4d1bd1a5b7da1206ae4d67223e04c34bfaa815d752e20a968d1",
+      "kind": "yoga"
+    },
+    "pose_baddha-konasana": {
+      "src": "pose_baddha-konasana.mp3",
+      "sha256": "03d87b7b1843535ca6b1e82a02fdb2592dbb0608bd08ca1de2b605b5a84fb57b",
+      "bytes": 62928,
+      "textSha256": "6aaab2f8ce1f0c9e3101dae03db8f2e30d0cf5841a58c053304b03f5f928467a",
+      "kind": "yoga"
+    },
+    "pose_balasana": {
+      "src": "pose_balasana.mp3",
+      "sha256": "d6b8c0fe2a79a0f26d5ed5c26d83cdd5fc39c3a6f0239bd4e3db278e41dd968c",
+      "bytes": 76608,
+      "textSha256": "34c7488d1bd098fc4d0f437d9d77e15b72eb782c9c48ea9017a3fe2dcbc44467",
+      "kind": "yoga"
+    },
+    "pose_bhujangasana": {
+      "src": "pose_bhujangasana.mp3",
+      "sha256": "8cbf9068a103e63375686e9486d732b51f881889210fd17105a58997f5ad9382",
+      "bytes": 71280,
+      "textSha256": "56168b2c12b4e59cfcaff0f3a584176049953287f5d815edd415d29c607d5951",
+      "kind": "yoga"
+    },
+    "pose_marjaryasana": {
+      "src": "pose_marjaryasana.mp3",
+      "sha256": "ca5fd95995001f16cf0480e5509d7cdd7ba801d8ee7efaf1acfb521bb30f51a3",
+      "bytes": 65232,
+      "textSha256": "419578328f42c35301ca9942a7999110191e663d0fab1ce8527508039ce629d2",
+      "kind": "yoga"
+    },
+    "pose_paschimottanasana": {
+      "src": "pose_paschimottanasana.mp3",
+      "sha256": "1bdfa33618bda9adf4e003830f047a94622661d9655379d571b3487f41ee495b",
+      "bytes": 77760,
+      "textSha256": "357bfb3790da919b24ff0f688beff33ec45753b722ab02de854d243b9d620102",
+      "kind": "yoga"
+    },
+    "pose_savasana": {
+      "src": "pose_savasana.mp3",
+      "sha256": "773f88bd9392c8276c5c260db449d9edeea3c80e090cb2ff253c90a3d1c9cc52",
+      "bytes": 76464,
+      "textSha256": "455116f2bdb635cd7b4d472acd6dee79686708c6fc0af98e0a5b9fc6970048bc",
+      "kind": "yoga"
+    },
+    "pose_setu-bandha": {
+      "src": "pose_setu-bandha.mp3",
+      "sha256": "c4a420c19d8c956347a3c259f03dfadbdc94489c6190dd21fccd32a8257d5795",
+      "bytes": 59040,
+      "textSha256": "a1cdd6ba6302f533bd63235980155d9dad8233633ac163985e6a4b12f614b04a",
+      "kind": "yoga"
+    },
+    "pose_supta-matsyendrasana": {
+      "src": "pose_supta-matsyendrasana.mp3",
+      "sha256": "aef9695d14fa51af9f4c7a064d4bbce1b7bb7ae022859c59676c2c6d56b15827",
+      "bytes": 62640,
+      "textSha256": "0f18b80f2c396aeadb8a083013ab42576dada4f01302fc4d4a0ad9b042a0d680",
+      "kind": "yoga"
+    },
+    "pose_tadasana": {
+      "src": "pose_tadasana.mp3",
+      "sha256": "29d58c64c5089215873b428cbb54d2c534002fea8c9d4b83a652016f1efe8fb2",
+      "bytes": 58896,
+      "textSha256": "0c4b677407e79a21a2d38df5fd5fa965b523df60757fe7ae5cd503713d197953",
+      "kind": "yoga"
+    },
+    "pose_virabhadrasana2": {
+      "src": "pose_virabhadrasana2.mp3",
+      "sha256": "93c788e18a02047689e39cd83250908e4aa6a42e75fb393c4ed28bd307517589",
+      "bytes": 65664,
+      "textSha256": "45cd7f92ee9ad65f5d67ce7ebb346621720b67d6218df08921b6e576efcefaf2",
+      "kind": "yoga"
+    },
+    "pose_vrksasana": {
+      "src": "pose_vrksasana.mp3",
+      "sha256": "00db0520127992b9602776e7543ab65ae60f9ec9f9f0fa5903c6e645361878de",
+      "bytes": 60768,
+      "textSha256": "301f9702de433dabddf8290bc7470705af99c20f13fdb4acfa6216cbd0585594",
+      "kind": "yoga"
+    },
+    "respirer_discrete_00": {
+      "src": "respirer_discrete_00.mp3",
+      "sha256": "4fbe4f8e1766e1ce5348edd90297e695580a61b75469faa5bae8ffe9d5b31e8c",
+      "bytes": 43920,
+      "textSha256": "15117a2a88b107bd1a17dce2f3e03ef3eb4b68bc14eb5317df43130e703f0705",
+      "kind": "meditation"
+    },
+    "respirer_discrete_01": {
+      "src": "respirer_discrete_01.mp3",
+      "sha256": "20738defe2d52173daea0bf062062f685b513c0d2beb95cff4ddcbecc361b8e3",
+      "bytes": 40320,
+      "textSha256": "65b07ff4c51f1cbb00a59c2e23c879823a493433f516acf06f2b8ce442ed2efa",
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_00": {
+      "src": "respirer_enveloppante_00.mp3",
+      "sha256": "efce8e94e8d3fb9f5ed933da88f13c8fdd5210c76a386c55478c79eab15d74c8",
+      "bytes": 43344,
+      "textSha256": "15117a2a88b107bd1a17dce2f3e03ef3eb4b68bc14eb5317df43130e703f0705",
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_01": {
+      "src": "respirer_enveloppante_01.mp3",
+      "sha256": "b91d8b7e9871358bf70b086c4ba71449db2f6db81b6e93409f915e0ebc8363c4",
+      "bytes": 34992,
+      "textSha256": "aa4726c8a76570c944860952fabeb42081672a335cd21cf4b946bb2026ed9edf",
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_02": {
+      "src": "respirer_enveloppante_02.mp3",
+      "sha256": "61abd4c10b308de6e8720562efb5cbf5a3418b30360c7f46653e486348559bcc",
+      "bytes": 27504,
+      "textSha256": "9398fceab2935f00242df8f193aa93536e8ca20f001fdcada89f9e0dae6f46c6",
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_03": {
+      "src": "respirer_enveloppante_03.mp3",
+      "sha256": "eedcf0cd977bf3894625e5f662c9ebbb0561c2dd66da764560b6bb6053365fb3",
+      "bytes": 31248,
+      "textSha256": "f12a92e0d270159be1ecb99816d84403414739714287a1b75265d4d64452cff9",
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_04": {
+      "src": "respirer_enveloppante_04.mp3",
+      "sha256": "f26a2e1882abdab1860f483be082772b7fd53d50b4ce7779e52d8880be1b757a",
+      "bytes": 32544,
+      "textSha256": "06a7d179059e7c0e3452d50a84a632375bb285f57501f397e3e37b482e04c2b1",
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_05": {
+      "src": "respirer_enveloppante_05.mp3",
+      "sha256": "61158f68db7521606af94eb85578ea75bebb0e7ca63d100b69decfd02016c752",
+      "bytes": 40320,
+      "textSha256": "65b07ff4c51f1cbb00a59c2e23c879823a493433f516acf06f2b8ce442ed2efa",
+      "kind": "meditation"
+    },
+    "respirer_equilibree_00": {
+      "src": "respirer_equilibree_00.mp3",
+      "sha256": "5d91b4e44e0227c0287c7bfe0065162b091ee5b8310ae3638c8f362bf5cc1085",
+      "bytes": 43344,
+      "textSha256": "15117a2a88b107bd1a17dce2f3e03ef3eb4b68bc14eb5317df43130e703f0705",
+      "kind": "meditation"
+    },
+    "respirer_equilibree_01": {
+      "src": "respirer_equilibree_01.mp3",
+      "sha256": "c683323b764194be9b588f01d727a358347fc793412d3495eaf47cab108351c7",
+      "bytes": 27504,
+      "textSha256": "9398fceab2935f00242df8f193aa93536e8ca20f001fdcada89f9e0dae6f46c6",
+      "kind": "meditation"
+    },
+    "respirer_equilibree_02": {
+      "src": "respirer_equilibree_02.mp3",
+      "sha256": "aaf244057498460dfabbd8933dd84974f5951d5f566e599061c4bc088fd7cb20",
+      "bytes": 32544,
+      "textSha256": "06a7d179059e7c0e3452d50a84a632375bb285f57501f397e3e37b482e04c2b1",
+      "kind": "meditation"
+    },
+    "respirer_equilibree_03": {
+      "src": "respirer_equilibree_03.mp3",
+      "sha256": "6bd3c275efef57cdf0dca3a6a3a8a8cd0bea99c8984bcbdac2a3337fd75c544f",
+      "bytes": 40320,
+      "textSha256": "65b07ff4c51f1cbb00a59c2e23c879823a493433f516acf06f2b8ce442ed2efa",
+      "kind": "meditation"
+    },
+    "sommeil_discrete_00": {
+      "src": "sommeil_discrete_00.mp3",
+      "sha256": "b086ae6473b54fdca40c85476499dc8e4c234eeca02e0ecd548b7bc47a541f79",
+      "bytes": 37440,
+      "textSha256": "ced087df6e0fd8b8daed8d2f04b36af80cd110c22afdd5b4ad35f93adcb347f3",
+      "kind": "meditation"
+    },
+    "sommeil_discrete_01": {
+      "src": "sommeil_discrete_01.mp3",
+      "sha256": "57cb6f450fe0b376f64fbe6565118f3228521f657838ab71e12ba087eca2803e",
+      "bytes": 28944,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62",
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_00": {
+      "src": "sommeil_enveloppante_00.mp3",
+      "sha256": "9d152fbf3475b0084875150ade88048f883a3bd262b0c016bdd6ba735cb53008",
+      "bytes": 37440,
+      "textSha256": "ced087df6e0fd8b8daed8d2f04b36af80cd110c22afdd5b4ad35f93adcb347f3",
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_01": {
+      "src": "sommeil_enveloppante_01.mp3",
+      "sha256": "8c64860d75be01720f97d4946399d14fd17509c5db1524f70ede59be37b29b03",
+      "bytes": 22752,
+      "textSha256": "c464affbcf79d26428b376988428eb4e3087136fb729567c51d1600896014cda",
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_02": {
+      "src": "sommeil_enveloppante_02.mp3",
+      "sha256": "5fb0a57d389efcabee46c76fea0b82aa021d2804f2fc0f1f56cabc299de61242",
+      "bytes": 30096,
+      "textSha256": "a85fe8e17ee55fcf11294078e61bb16dfa59e006f7c4ae5e21fd65443ff2d3f0",
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_03": {
+      "src": "sommeil_enveloppante_03.mp3",
+      "sha256": "690a446444796f3ae55916e1cb4fd9a3f564abddf51e046c87321b6a904fcd14",
+      "bytes": 32976,
+      "textSha256": "7bdd570a388e55aa3fe2c3f107e930ec6d1defec54c1c1b3b73ed4246a389510",
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_04": {
+      "src": "sommeil_enveloppante_04.mp3",
+      "sha256": "3ee5c9d12361030977a2d8662df5e8fb3bda74cc1331794185722db9499c90d8",
+      "bytes": 34848,
+      "textSha256": "1c4f77458b429acee247b8dc07c179ebb3f3a658216f9b30481fca84c470c33c",
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_05": {
+      "src": "sommeil_enveloppante_05.mp3",
+      "sha256": "1a6baf53766b113bc0ae563681bd99a2b9aceb7a763cb8c70094e1e43f094862",
+      "bytes": 28944,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62",
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_00": {
+      "src": "sommeil_equilibree_00.mp3",
+      "sha256": "0af70e637affd871962813c299ebd0597b16caf955489d6ecf4cf53e886d0ccf",
+      "bytes": 37440,
+      "textSha256": "ced087df6e0fd8b8daed8d2f04b36af80cd110c22afdd5b4ad35f93adcb347f3",
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_01": {
+      "src": "sommeil_equilibree_01.mp3",
+      "sha256": "e8beb78ff9c00c4dcd12892a492f4e80e763f92775712c99c3339c703e84a2c2",
+      "bytes": 30096,
+      "textSha256": "a85fe8e17ee55fcf11294078e61bb16dfa59e006f7c4ae5e21fd65443ff2d3f0",
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_02": {
+      "src": "sommeil_equilibree_02.mp3",
+      "sha256": "66cab204ddb1f82c9f1617db725c6d8e2a967a95078cec51ce992a40e642235f",
+      "bytes": 34848,
+      "textSha256": "1c4f77458b429acee247b8dc07c179ebb3f3a658216f9b30481fca84c470c33c",
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_03": {
+      "src": "sommeil_equilibree_03.mp3",
+      "sha256": "b1d2d0a1a3cff9ea6e4d54a75274cdb0d2f912e2ba7fd2b1d02c003f7ab7ad2a",
+      "bytes": 28800,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62",
+      "kind": "meditation"
+    }
+  }
+}
