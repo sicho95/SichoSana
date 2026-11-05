@@ -1,4 +1,4 @@
-name: SichoSana Vivienne candidate
+name: SichoSana — audio doux V2
 on:
   workflow_dispatch:
   push:
@@ -24,10 +24,11 @@ jobs:
         run: |
           python - <<'PY'
           import json,pathlib,hashlib
-          p=pathlib.Path('static/voice/vivienne-fr-v1')
+          p=pathlib.Path('static/voice/vivienne-fr-v2')
           m=json.loads((p/'manifest.json').read_text())
           assert m['voiceId']=='fr-FR-VivienneMultilingualNeural'
-          assert m['rate']=='-12%'
+          assert m['rateYoga']=='-22%'
+          assert m['rateMeditation']=='-32%'
           assert len(m['files'])>=12
           for key,item in m['files'].items():
               b=(p/item['src']).read_bytes()
@@ -36,16 +37,16 @@ jobs:
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: sichosana-vivienne-preview
-          path: static/voice/vivienne-fr-v1/
+          name: sichosana-audio-doux-v2
+          path: static/voice/vivienne-fr-v2/
           retention-days: 30
       - name: Commit candidate voice clips
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add static/voice/vivienne-fr-v1/
+          git add static/voice/vivienne-fr-v2/
           if ! git diff --cached --quiet; then
-            git commit -m "assets: Vivienne candidate audio"
+            git commit -m "assets: voix douce v2 yoga et méditation"
             git fetch origin "$GITHUB_REF_NAME"
             git rebase "origin/$GITHUB_REF_NAME"
             git push origin "HEAD:$GITHUB_REF_NAME"
