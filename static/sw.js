@@ -1,6 +1,6 @@
 /* SichoSana — caches indépendants, sans toucher aux autres PWA. */
-const VERSION='sichosana-static-v4';
-const ESSENTIAL=['/','/index.html','/styles.css','/app.js','/icon.svg','/manifest.webmanifest','/data/yoga.json','/data/yoga-api-library.json','/data/meditations.json','/data/programs.json'];
+const VERSION='sichosana-static-v5';
+const ESSENTIAL=['/','/index.html','/styles.css','/app.js','/auth.js','/icon.svg','/manifest.webmanifest','/data/yoga.json','/data/yoga-api-library.json','/data/meditations.json','/data/programs.json','/data/reflections.json'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(VERSION).then(cache=>cache.addAll(ESSENTIAL)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('sichosana-static-')&&k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',event=>{
