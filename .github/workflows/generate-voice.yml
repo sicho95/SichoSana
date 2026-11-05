@@ -2,10 +2,11 @@ name: SichoSana Vivienne candidate
 on:
   workflow_dispatch:
   push:
-    branches: [dev/sichosana-20261105]
+    branches: [dev/sichosana-app-20261105]
     paths:
       - scripts/generate-voice-pack.py
       - static/data/meditations.json
+      - static/data/yoga.json
       - .github/workflows/generate-voice.yml
 permissions:
   contents: write
