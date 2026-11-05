@@ -1,0 +1,32 @@
+name: SichoSana responsive UI smoke
+on:
+  push:
+    branches: [dev/sichosana-app-20261105]
+    paths:
+      - static/**
+      - server/**
+      - .github/workflows/ui-smoke.yml
+  pull_request:
+  workflow_dispatch:
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install -r server/requirements.txt playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Launch NAS-compatible API
+        run: |
+          SICHOSANA_DB_PATH=/tmp/sichosana-ui.sqlite3 uvicorn server.app:app --host 127.0.0.1 --port 18765 >/tmp/sichosana-ui.log 2>&1 &
+          for i in $(seq 1 40); do curl -fsS http://127.0.0.1:18765/api/v1/health && break; sleep 1; done
+      - name: Test iPhone, iPad and desktop layouts
+        run: python server/tests/ui_smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sichosana-responsive-previews
+          path: screenshots/
+          retention-days: 30
