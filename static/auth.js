@@ -102,7 +102,9 @@ export async function onSubmit(form){
    session=out;await callbacks.write('auth',out);
    await callbacks.enter(out.user);
    if(out.user.mustChangePassword)callbacks.notice('Change ton mot de passe provisoire.');
-   callbacks.render();return;
+   callbacks.render();
+   if(!out.user.mustChangePassword)await callbacks.welcome(out.user);
+   return;
   }
   if(form.dataset.accountForm==='forgot'){
    await api('auth/forgot',{method:'POST',body:JSON.stringify(data)});
@@ -119,7 +121,7 @@ export async function onSubmit(form){
    session.user.mustChangePassword=false;
    await callbacks.write('auth',session);
    callbacks.notice('Ton nouveau mot de passe est enregistré.');
-   callbacks.render();return;
+   callbacks.render();await callbacks.welcome(session.user);return;
   }
  }catch(err){callbacks.notice(errorMessage(err));}
 }
