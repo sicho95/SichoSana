@@ -17,7 +17,7 @@ def main():
     print("SichoSana — création du premier administrateur")
     print("Cette opération est refusée si un administrateur existe déjà.")
     pseudo = input("Pseudo initial [Sicho] : ").strip() or "Sicho"
-    email = input("Email de l'administrateur : ").strip()
+    email = input("Email de l\'administrateur [sicho95@gmail.com] : ").strip() or "sicho95@gmail.com"
     password = getpass("Mot de passe provisoire (non affiché) : ")
     confirmation = getpass("Confirmer : ")
     if password != confirmation:
