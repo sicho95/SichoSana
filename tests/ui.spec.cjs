@@ -41,7 +41,7 @@ test('ordinateur: panneau latéral, multi-profils et thèmes',async({page})=>{
  await page.locator('.sidebar [data-value="profile"]').click();
  page.on('dialog', dialog=>dialog.accept('Compte de test'));
  await page.locator('[data-action="add-profile"]').click();
- await expect(page.getByRole('button',{name:'Compte de test'})).toBeVisible();
+ await expect(page.locator('.profile-option.active')).toContainText('Compte de test');
  await page.locator('[data-action="theme"][data-value="horizon"]').click();
  await expect(page.locator('html')).toHaveAttribute('data-theme','horizon');
  await page.screenshot({path:'screenshots/desktop.png',fullPage:true});
