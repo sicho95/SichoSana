@@ -351,12 +351,25 @@ def main():
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
     initialize()
     server = ThreadingHTTPServer((HOST, PORT), Handler)
+    stop_emails = threading.Event()
+
+    def deliver_emails_forever():
+        while not stop_emails.wait(75):
+            try:
+                accounts.deliver_pending(connection)
+            except Exception:
+                LOGGER.exception("Echec de livraison des emails en attente")
+
+    mail_thread = threading.Thread(target=deliver_emails_forever,
+                                   name="sichosana-mail-outbox", daemon=True)
+    mail_thread.start()
     LOGGER.info("SichoSana ready at %s:%s, SQLite %s", HOST, PORT, DB_PATH)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         pass
     finally:
+        stop_emails.set()
         server.server_close()
 
 
