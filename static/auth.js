@@ -33,7 +33,9 @@ export async function resume(){
   await callbacks.enter(out.user);
  }catch(e){
   if(e.status===401||e.status===403){session=null;await callbacks.write('auth',null);}
-  else{session=null;await callbacks.write('auth',null);}
+  else if(saved.user){ // Hors ligne : préserver la session en cache, sans prétendre au serveur disponible.
+   session=saved;await callbacks.enter(saved.user);
+  }
  }
 }
 export function show(next){mode=next;callbacks.render();}
