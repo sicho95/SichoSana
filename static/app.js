@@ -131,7 +131,7 @@ function yogaPage(){
  '<div class="pose-list">'+poses.map(p=>'<button class="pose-item" type="button" data-action="pose" data-value="'+escapeHTML(p.id)+'">'+posePicture(p.id,'thumb')+'<span><strong>'+escapeHTML(p.nom)+'</strong><small>'+escapeHTML(p.sanskrit)+' · '+escapeHTML(p.focus)+'</small></span></button>').join('')+'</div>'+
  '<p class="library-info">La bibliothèque fonctionne sans réseau après une première ouverture. Les postures doivent rester confortables et adaptées à chacun.</p>');
 }
-function medCard(m){return '<article class="card routine-card"><div class="routine-visual">☼</div><div class="routine-body"><div class="eyebrow">'+escapeHTML(m.category)+'</div><h3>'+escapeHTML(m.name)+'</h3><p>'+escapeHTML(m.description)+'</p><div class="meta"><span>'+m.minutes+' min</span><span>Vivienne · FR</span></div><button class="primary" data-action="start-med" data-value="'+escapeHTML(m.id)+'">Méditer</button></div></article>';}
+function medCard(m){return '<article class="card routine-card meditation-card"><div class="routine-visual"></div><div class="routine-body"><div class="eyebrow">'+escapeHTML(m.category)+'</div><h3>'+escapeHTML(m.name)+'</h3><p>'+escapeHTML(m.description)+'</p><div class="meta"><span>'+m.minutes+' min</span><span>Vivienne · FR</span></div><button class="primary" data-action="start-med" data-value="'+escapeHTML(m.id)+'">Méditer</button></div></article>';}
 function meditationPage(){
  const opts=['Toutes',...new Set(meditations.sessions.map(m=>m.category))];
  const subset=meditations.sessions.filter(m=>meditationFilter==='Toutes'||m.category===meditationFilter);
