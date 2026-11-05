@@ -1,6 +1,7 @@
 /* SichoSana — PWA locale, écrans adaptés iPhone/iPad/ordinateur.
    Conserver la charte graphique dans styles.css et l'identité Vivienne ResurGo. */
 'use strict';
+import * as Accounts from './auth.js';
 const $ = (s) => document.querySelector(s);
 const escapeHTML = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2));
@@ -20,8 +21,8 @@ const inspirations = [
   'Laisse respirer tes idées avant de décider.'
 ];
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
-const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0,credentials:null}; };
-let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Tous', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null;
+const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
+let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Tous', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
 function openDB(){
  return new Promise((resolve,reject)=>{
    const request=indexedDB.open('sichosana-v1',1);
@@ -32,15 +33,16 @@ function openDB(){
 function dbRead(key){return new Promise((resolve,reject)=>{const t=db.transaction('state','readonly').objectStore('state').get(key);t.onsuccess=()=>resolve(t.result);t.onerror=()=>reject(t.error);});}
 function dbWrite(key,value){return new Promise((resolve,reject)=>{const t=db.transaction('state','readwrite').objectStore('state').put(value,key);t.onsuccess=()=>resolve();t.onerror=()=>reject(t.error);});}
 function profile(){return state.profiles.find(x=>x.id===state.activeProfileId)||state.profiles[0];}
-async function save(){try{await dbWrite('app',state);}catch(err){notice('Sauvegarde locale impossible : '+err.message);}}
+async function save(auto=true){try{if(Accounts.user())await dbWrite('account:'+Accounts.user().id,state);if(auto)scheduleAutoSync();}catch(err){notice('Sauvegarde locale impossible : '+err.message);}}
 function touch(){profile().modifiedAt=Date.now();save();}
 function notice(text){const e=$('#toast');e.textContent=text;e.classList.add('show');clearTimeout(notice.timeout);notice.timeout=setTimeout(()=>e.classList.remove('show'),4000);}
 function brand(){return '<div class="brand">'+logo+'<span>Sicho<span>Sana</span></span></div>';}
 function navButton(item){return '<button type="button" class="nav-link" data-action="page" data-value="'+item.id+'" '+(page===item.id?'aria-current="page"':'')+'><span class="nav-glyph">'+item.glyph+'</span><span>'+item.text+'</span></button>';}
 function renderShell(){
- $('#sidebar').innerHTML=brand()+'<nav>'+nav.map(navButton).join('')+'</nav><p class="sidebar-tag">Un moment pour soi,<br>à son rythme.</p>';
- $('#bottomnav').innerHTML=nav.map(navButton).join('');
- $('#topbar').innerHTML='<div class="desktop-brand">'+brand()+'</div><div class="top-actions"><span class="connection-pill">'+(navigator.onLine?'● En ligne':'○ Hors ligne')+'</span><button class="icon-btn" type="button" data-action="notifications" aria-label="Notifications">♧</button><button class="profile-chip" type="button" data-action="page" data-value="profile"><span class="dot"></span>'+escapeHTML(profile().name)+'</button></div>';
+ const all=Accounts.user()?.role==='admin'?[...nav,{id:'admin',text:'Admin',glyph:'⚙'}]:nav;
+ $('#sidebar').innerHTML=brand()+'<nav>'+all.map(navButton).join('')+'</nav><p class="sidebar-tag">Un moment pour soi,<br>à son rythme.</p>';
+ $('#bottomnav').innerHTML=all.map(navButton).join('');
+ $('#topbar').innerHTML='<div class="desktop-brand">'+brand()+'</div><div class="top-actions"><span class="connection-pill">'+(navigator.onLine?'● En ligne':'○ Hors ligne')+'</span><button class="icon-btn" type="button" data-action="notifications" aria-label="Notifications">♧</button><button class="profile-chip" type="button" data-action="page" data-value="profile"><span class="dot"></span>'+escapeHTML(Accounts.user()?.pseudo||'')+'</button></div>';
 }
 function heading(kicker,title,subtitle){return '<div class="page-heading"><div><div class="eyebrow">'+kicker+'</div><h1>'+title+'</h1>'+(subtitle?'<p class="subtitle">'+subtitle+'</p>':'')+'</div></div>';}
 function routineCard(r){
@@ -127,17 +129,14 @@ function smallStats(){
  return '<div class="stats"><div class="stat"><strong>'+h.length+'</strong><span>séances</span></div><div class="stat"><strong>'+total+'</strong><span>minutes</span></div><div class="stat"><strong>'+new Set(h.map(x=>x.date)).size+'</strong><span>jours actifs</span></div></div>';
 }
 function profilePage(){
- const p=profile(),connected=!!state.credentials;
- return heading('Mon espace','Profil & progression','Tes habitudes et tes données restent d’abord sur cet appareil.')+
- '<div class="profile-layout"><div class="stack"><section class="card"><div class="section-heading"><h2>Profils</h2><button class="small-btn" data-action="add-profile">+ Ajouter</button></div><div class="profile-options">'+state.profiles.map(x=>'<button class="profile-option '+(x.id===p.id?'active':'')+'" data-action="select-profile" data-value="'+escapeHTML(x.id)+'"><strong>'+escapeHTML(x.name)+'</strong><br><small>'+ (x.id===p.id?'Profil actuel':'Ouvrir ce profil')+'</small></button>').join('')+'</div><div class="field"><label for="profile-name">Nom du profil actuel</label><input id="profile-name" maxlength="50" value="'+escapeHTML(p.name)+'"></div><button class="secondary" data-action="save-name">Enregistrer le nom</button></section>'+
+ const p=profile();
+ return heading('Mon espace','Profil & progression','Retrouve tes séances et tes habitudes automatiquement sur tes appareils.')+
+ '<div class="profile-layout"><div class="stack">'+Accounts.profilePanel()+
+ '<section class="card"><div class="section-heading"><h2>Profils de pratique</h2><button class="small-btn" data-action="add-profile">+ Ajouter</button></div><div class="profile-options">'+state.profiles.map(x=>'<button class="profile-option '+(x.id===p.id?'active':'')+'" data-action="select-profile" data-value="'+escapeHTML(x.id)+'"><strong>'+escapeHTML(x.name)+'</strong><br><small>'+ (x.id===p.id?'Profil actuel':'Ouvrir ce profil')+'</small></button>').join('')+'</div><div class="field"><label for="profile-name">Nom du profil actuel</label><input id="profile-name" maxlength="50" value="'+escapeHTML(p.name)+'"></div><button class="secondary" data-action="save-name">Enregistrer le nom</button></section>'+
  '<section class="card"><h2>Mes préférences</h2><div class="field"><label>Univers graphique</label><div class="segment">'+[['linen','Lin & Sauge'],['horizon','Horizon & Sauge']].map(([id,name])=>'<button data-action="theme" data-value="'+id+'" aria-pressed="'+(p.theme===id)+'">'+name+'</button>').join('')+'</div></div><div class="field"><label for="zodiac">Signe astrologique (facultatif)</label><select id="zodiac"><option value="">Aucun</option>'+signs.map(s=>'<option value="'+s+'" '+(p.zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div><p class="muted">Aucune date de naissance nécessaire.</p></section>'+
- '<section class="card"><h2>Sauvegarde locale</h2><p>Export JSON complet de tous les profils et de leur progression. Les codes et jetons d’accès ne sont jamais inclus dans l’export.</p><div class="session-controls"><button class="secondary" data-action="export">Exporter JSON</button><button class="secondary" data-action="import">Importer JSON</button><input type="file" id="import-json" accept="application/json,.json" hidden></div></section></div>'+
+ '<section class="card"><h2>Mes données</h2><p>La synchronisation fonctionne automatiquement dès que la connexion est disponible. Tu peux conserver une copie personnelle de tes séances.</p><div class="session-controls"><button class="secondary" data-action="export">Exporter mes données</button><button class="secondary" data-action="import">Importer mes données</button><input type="file" id="import-json" accept="application/json,.json" hidden></div></section></div>'+
  '<div class="stack"><section class="card"><h2>Mes progrès</h2>'+smallStats()+'<h3>Historique</h3>'+(p.history.length?'<div class="history-list">'+p.history.slice().reverse().slice(0,15).map(x=>'<div>'+escapeHTML(x.date)+' · '+escapeHTML(x.name)+' <small>'+x.duration+' min</small></div>').join('')+'</div>':'<p class="muted">Ta première séance apparaîtra ici.</p>')+'</section>'+
- '<section class="card"><h2>Synchronisation NAS</h2><p>Association par code et mot de passe. Le serveur SQLite permet de retrouver tous les profils sur tes appareils. Aucun effacement silencieux en cas de conflit.</p>'+
- (connected?'<p class="pill">Association présente sur cet appareil</p><div class="session-controls"><button class="primary" data-action="sync">Synchroniser maintenant</button><button class="secondary" data-action="sync-pull">Récupérer les données</button><button class="secondary" data-action="disconnect">Dissocier cet appareil</button></div>':
- '<div class="field"><label for="sync-code">Code d’association (vide pour créer)</label><input id="sync-code" autocapitalize="off" autocomplete="off" placeholder="Code si autre appareil"></div><div class="field"><label for="sync-password">Mot de passe (au moins 12 caractères)</label><input id="sync-password" type="password" autocomplete="new-password"></div><button class="primary" data-action="pair">Créer / associer</button>')+
- '<p id="sync-status" class="muted">'+(syncBusy?'Synchronisation en cours…':'')+'</p></section>'+
- '<section class="card"><h2>Notifications</h2><p>Les rappels web push restent désactivés jusqu’à ton choix d’horaires et la configuration des clés du serveur. Aucune notification imposée.</p><button class="secondary" data-action="notifications">État des notifications</button></section></div></div>';
+ '<section class="card"><h2>Notifications</h2><p>Les rappels seront proposés une fois les horaires choisis et les autorisations activées.</p><button class="secondary" data-action="notifications">Mes notifications</button></section></div></div>';
 }
 function poseModal(id){
  const p=yoga.poses.find(x=>x.id===id);if(!p)return;
@@ -156,9 +155,15 @@ function stepIndex(s){
  return s.steps.length-1;
 }
 function render(){
+ if(!Accounts.loggedIn() || Accounts.mustChangePassword()){
+  document.documentElement.dataset.theme='linen';
+  $('#sidebar').innerHTML='';$('#bottomnav').innerHTML='';$('#topbar').innerHTML='';
+  $('#main').innerHTML=Accounts.loggedIn()?Accounts.passwordScreen():Accounts.screen();
+  renderModal();return;
+ }
  document.documentElement.dataset.theme=profile().theme==='horizon'?'horizon':'linen';
  renderShell();
- const html=session?sessionPage():page==='home'?home():page==='yoga'?yogaPage():page==='meditate'?meditationPage():page==='astro'?astroPage():profilePage();
+ const html=session?sessionPage():page==='home'?home():page==='yoga'?yogaPage():page==='meditate'?meditationPage():page==='astro'?astroPage():page==='admin'&&Accounts.user()?.role==='admin'?Accounts.adminScreen():profilePage();
  $('#main').innerHTML=html;renderModal();
 }
 function findRoutine(id){return yoga.routines.find(x=>x.id===id);}
@@ -243,45 +248,40 @@ function ingest(data,remote=false){
  else{state.profiles=mergedProfiles(state.profiles,fresh);if(!state.profiles.some(p=>p.id===state.activeProfileId))state.activeProfileId=state.profiles[0].id;}
  save();render();
 }
-function syncAuth(){const t=state.credentials?.token;if(!t)throw Error('Association manquante.');return {'Content-Type':'application/json','Authorization':'Bearer '+t};}
-async function syncRequest(path,options={}){
- const res=await fetch('/api/v1/'+path,{...options,headers:{...(options.headers||{})}});
- let data={};try{data=await res.json();}catch(e){}
- if(!res.ok){const error=new Error(data.error||'Erreur serveur '+res.status);error.status=res.status;error.data=data;throw error;}
- return data;
-}
-async function beginPairing(){
- const code=($('#sync-code')?.value||'').trim().toUpperCase(),password=$('#sync-password')?.value||'';
- if(password.length<12)return notice('Mot de passe : au moins 12 caractères.');
- syncBusy=true;
- try{
-  const path=code?'pair':'groups';
-  const out=await syncRequest(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,password,deviceId:uid()})});
-  state.credentials={token:out.token,code:out.code};state.revision=out.revision||0;await save();
-  if(code){await pullSync();}else{await pushSync();notice('Code d’association : '+out.code+' — conserve-le avec ton mot de passe.');}
- }catch(err){notice('Association impossible : '+err.message);}finally{syncBusy=false;render();}
+/* Synchronisation native : aucun jumelage, code NAS ou bouton manuel. */
+function scheduleAutoSync(){
+ if(!Accounts.loggedIn()||Accounts.mustChangePassword())return;
+ clearTimeout(syncTimer);
+ syncTimer=setTimeout(()=>autoSync(false),1200);
 }
 async function pullSync(){
- const out=await syncRequest('snapshot',{headers:syncAuth()});
- if(out.data)ingest(out.data,true);state.revision=out.revision;await save();render();notice('Tous les profils ont été récupérés et fusionnés.');
+ const remote=await Accounts.api('account/snapshot');
+ if(remote.data)ingest(remote.data,true);
+ state.revision=remote.revision;
+ await save(false);
 }
 async function pushSync(){
- const auth=syncAuth();
+ if(!Accounts.loggedIn()||Accounts.mustChangePassword())return;
  try{
-  const out=await syncRequest('snapshot',{method:'PUT',headers:{...auth,'If-Match':String(state.revision||0)},body:JSON.stringify({data:snapshot()})});
-  state.revision=out.revision;await save();notice('Sauvegarde synchronisée.');
- }catch(err){
-  if(err.status!==409)throw err;
-  const remote=err.data;
-  if(remote?.data)ingest(remote.data,true);
-  state.revision=remote.revision;await save();
-  const retry=await syncRequest('snapshot',{method:'PUT',headers:{...auth,'If-Match':String(state.revision)},body:JSON.stringify({data:snapshot()})});
-  state.revision=retry.revision;await save();notice('Conflit fusionné : aucun profil effacé.');
+  const out=await Accounts.api('account/snapshot',{method:'PUT',headers:{'If-Match':String(state.revision||0)},body:JSON.stringify({data:snapshot()})});
+  state.revision=out.revision;await save(false);
+ }catch(error){
+  if(error.status!==409)throw error;
+  if(error.data?.data)ingest(error.data.data,true);
+  state.revision=error.data.revision;await save(false);
+  const retry=await Accounts.api('account/snapshot',{method:'PUT',headers:{'If-Match':String(state.revision)},body:JSON.stringify({data:snapshot()})});
+  state.revision=retry.revision;await save(false);
  }
 }
-async function doSync(pull=false){
- if(syncBusy)return;syncBusy=true;render();
- try{if(pull)await pullSync();else await pushSync();}catch(err){notice('Synchronisation : '+err.message);}finally{syncBusy=false;render();}
+async function autoSync(pullFirst=true){
+ if(syncBusy||!navigator.onLine||!Accounts.loggedIn()||Accounts.mustChangePassword()||!state)return;
+ syncBusy=true;
+ try{
+  if(pullFirst)await pullSync();
+  await pushSync();
+  syncStatus='';
+ }catch(error){syncStatus=error.message;}
+ finally{syncBusy=false;}
 }
 async function cacheVoicePack(){
  try{
@@ -308,7 +308,7 @@ function notifications(){
  modal='<div class="modal" role="dialog" aria-modal="true"><button class="icon-btn modal-close" data-action="close">×</button><h2>Notifications</h2><p>'+ (supported?'Le navigateur est compatible avec les notifications web push.':'Cet appareil ou navigateur ne propose pas toutes les fonctions web push.')+'</p><p>Les horaires et clés VAPID ne sont pas encore configurés. Aucun rappel n’est activé automatiquement.</p><button class="secondary" data-action="close">Compris</button></div>';renderModal();
 }
 async function handle(action,value){
- if(action==='page'){if(session)abortSession();page=value;render();window.scrollTo(0,0);return;}
+ if(action==='page'){if(session)abortSession();page=value;render();if(page==='admin')await Accounts.refreshAdmin();window.scrollTo(0,0);return;}
  if(action==='routine-filter'){routineFilter=value;render();return;}
  if(action==='pose-filter'){poseFilter=value;render();return;}
  if(action==='med-filter'){meditationFilter=value;render();return;}
@@ -329,14 +329,19 @@ async function handle(action,value){
  if(action==='save-name'){profile().name=($('#profile-name')?.value||'Mon espace').trim().slice(0,50)||'Mon espace';touch();render();return;}
  if(action==='export')return exportData();
  if(action==='import')return $('#import-json')?.click();
- if(action==='pair')return beginPairing();
- if(action==='sync')return doSync(false);
- if(action==='sync-pull')return doSync(true);
- if(action==='disconnect'){state.credentials=null;state.revision=0;save();render();return;}
  if(action==='cache-voice')return cacheVoicePack();
  if(action==='notifications')return notifications();
 }
-document.addEventListener('click',(e)=>{const target=e.target.closest('[data-action]');if(!target)return;e.preventDefault();Promise.resolve(handle(target.dataset.action,target.dataset.value||'')).catch(err=>notice(err.message));});
+document.addEventListener('click',(e)=>{
+ const accountButton=e.target.closest('[data-account]');
+ if(accountButton){e.preventDefault();Promise.resolve(Accounts.onAction(accountButton.dataset.account,accountButton)).catch(err=>notice(err.message));return;}
+ const target=e.target.closest('[data-action]');if(!target)return;e.preventDefault();
+ Promise.resolve(handle(target.dataset.action,target.dataset.value||'')).catch(err=>notice(err.message));
+});
+document.addEventListener('submit',(e)=>{
+ const form=e.target.closest('form[data-account-form]');if(!form)return;
+ e.preventDefault();Accounts.onSubmit(form).catch(err=>notice(err.message));
+});
 document.addEventListener('change',async(e)=>{
  if(e.target.id==='zodiac'){profile().zodiac=e.target.value;touch();render();}
  if(e.target.id==='import-json'){
@@ -344,15 +349,27 @@ document.addEventListener('change',async(e)=>{
   try{if(file.size>2_000_000)throw Error('Fichier trop volumineux.');ingest(JSON.parse(await file.text()));notice('Sauvegarde importée et fusionnée.');}catch(err){notice('Import impossible : '+err.message);}
  }
 });
-window.addEventListener('online',render);window.addEventListener('offline',render);
+window.addEventListener('online',()=>{render();autoSync(true);});
+window.addEventListener('offline',render);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoSync(true);});
 async function init(){
  try{
-  db=await openDB();state=await dbRead('app')||initialState();
-  if(!state.profiles?.length){state=initialState();await save();}
+  db=await openDB();
+  Accounts.configure({
+   read:dbRead,write:dbWrite,render,notice,
+   enter:async user=>{
+    state=await dbRead('account:'+user.id)||initialState();
+    if(!state.profiles?.length)state=initialState();
+    page='home';render();
+    if(!user.mustChangePassword)await autoSync(true);
+   },
+   exit:async()=>{clearTimeout(syncTimer);if(session)abortSession();state=null;page='home';}
+  });
   const data=await Promise.all([fetch('/data/yoga.json').then(r=>{if(!r.ok)throw Error('Yoga indisponible');return r.json();}),fetch('/data/meditations.json').then(r=>{if(!r.ok)throw Error('Méditations indisponibles');return r.json();}),fetch('/data/programs.json').then(r=>{if(!r.ok)throw Error('Programmes indisponibles');return r.json();})]);
   yoga=data[0];meditations=data[1];programs=data[2];
   try{const frozen=await fetch('/data/yoga-api-library.json');if(frozen.ok){const items=(await frozen.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...items.filter(p=>!ids.has(p.id)));}}catch(err){} // catalogue local, accessible même sans serveur
   try{const r=await fetch('/api/v1/poses');if(r.ok){const extra=(await r.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...extra.filter(p=>!ids.has(p.id)));}}catch(err){} // bibliothèque préchargée disponible hors réseau
+  await Accounts.resume();
   render();
   if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
  }catch(err){$('#main').innerHTML='<div class="attention"><h2>Initialisation impossible</h2><p>'+escapeHTML(err.message)+'</p><p>Vérifie la connexion initiale et le stockage de ton appareil.</p></div>';}
