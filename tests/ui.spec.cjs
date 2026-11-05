@@ -24,7 +24,7 @@ test('iPhone: inscription non affichée après connexion, yoga et progression',a
  await page.locator('[data-action="finish"]').click();
  await page.locator('.bottom-nav [data-value="profile"]').click();
  await expect(page.locator('.history-list')).toContainText('Hatha doux');
- await expect(page.locator('h2')).not.toContainText('Synchronisation NAS');
+ await expect(page.getByRole('heading',{name:'Synchronisation NAS'})).toHaveCount(0);
  await page.screenshot({path:'screenshots/iphone.png',fullPage:true});
  await page.evaluate(()=>navigator.serviceWorker.ready);
  await context.setOffline(true);
