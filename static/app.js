@@ -10,16 +10,7 @@ const todayKey = () => { const d = new Date(); return [d.getFullYear(),String(d.
 const logo = '<svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M32 49c-2-10-14-16-14-24 9 1 14 6 14 12 0-6 5-11 14-12 0 8-12 14-14 24Z"/><path d="M32 37C20 34 16 21 22 13c6 4 10 10 10 18 0-8 4-14 10-18 6 8 2 21-10 24Z"/><path d="M11 42c9 1 15 7 21 7s12-6 21-7M17 52h30"/></svg>';
 const nav = [{id:'home',text:'Accueil',glyph:'⌂'},{id:'yoga',text:'Yoga',glyph:'◈'},{id:'meditate',text:'Méditer',glyph:'☼'},{id:'astro',text:'Astro',glyph:'☾'},{id:'profile',text:'Profil',glyph:'♙'}];
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
-const inspirations = [
-  'Accorde-toi une pause pour retrouver ton rythme.',
-  'La simplicité peut être une façon de prendre soin de toi.',
-  'Un petit geste de douceur peut changer la couleur du jour.',
-  'Observe ce que tu ressens, sans chercher à le transformer.',
-  'Écoute tes besoins et laisse une place au calme.',
-  'Prends un instant pour te reconnecter à l’essentiel.',
-  'La patience est aussi une forme de mouvement.',
-  'Laisse respirer tes idées avant de décider.'
-];
+let reflections={reflections:[]}, astrologyLive=null;
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Tous', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
@@ -55,12 +46,34 @@ function weeklyStats(){
  const done=new Set(profile().history.map(h=>h.date));
  return '<div class="week-dots" aria-label="Pratique cette semaine">'+dates.map((d,i)=>'<span class="'+(done.has(d)?'done':'')+'" title="'+d+'">'+['L','M','M','J','V','S','D'][i]+'</span>').join('')+'</div>';
 }
-function localAstro(){
- const sign=profile().zodiac;if(!sign)return {text:'Choisis ton signe dans Profil pour afficher ton inspiration quotidienne.',sign:'Non configuré'};
- const seed=(todayKey()+sign).split('').reduce((n,c)=>(n*31+c.charCodeAt(0))%100003,7);
- return {text:inspirations[seed%inspirations.length],sign};
+function dailyReflection(){
+ const p=profile(),list=reflections.reflections||[];
+ if(!list.length)return 'Accorde-toi le droit d’habiter pleinement cet instant.';
+ const history=(p.reflectionHistory||[]).filter(x=>x.date>=new Date(Date.now()-14*86400000).toISOString().slice(0,10));
+ const found=history.find(x=>x.date===todayKey());
+ if(found&&Number.isInteger(found.index)&&list[found.index])return list[found.index];
+ const seed=(todayKey()+p.id+(Accounts.user()?.id||'')).split('').reduce((v,c)=>(v*33+c.charCodeAt(0))>>>0,5381);
+ const recent=new Set(history.slice(-10).map(x=>x.index));
+ let index=seed%list.length;
+ for(let n=0;n<list.length&&recent.has(index);n++)index=(index+37)%list.length;
+ p.reflectionHistory=[...history,{date:todayKey(),index}].slice(-30);
+ touch();
+ return list[index];
 }
-
+function localAstro(){
+ const sign=profile().zodiac;
+ if(!sign)return {text:'Choisis ton signe dans ton profil pour découvrir ton horoscope du jour.',sign:'Non configuré'};
+ if(astrologyLive?.sign===sign && astrologyLive?.date===todayKey())return astrologyLive;
+ return {text:'Ton horoscope en français sera disponible dès que sa source sera activée et joignable.',sign};
+}
+async function refreshAstrology(){
+ const sign=profile()?.zodiac;
+ if(!sign||!navigator.onLine)return;
+ try{
+  const result=await Accounts.api('content/horoscope?sign='+encodeURIComponent(sign));
+  astrologyLive=result; if(page==='astro'||page==='home')render();
+ }catch(e){astrologyLive={sign,text:'L’horoscope du jour est temporairement indisponible.',available:false};}
+}
 function activeProgram(){return programs.programs.find(x=>x.id===profile().selectedProgram)||programs.programs[0];}
 function progressProgram(program){
  const counts=new Map();
@@ -88,13 +101,13 @@ function programsSection(){
  }).join('')+'</div>';
 }
 function home(){
- const r=yoga.routines[0],astro=localAstro(),n=profile().history.filter(x=>x.date===todayKey()).length;
+ const r=yoga.routines[0],astro=localAstro(),reflection=dailyReflection(),n=profile().history.filter(x=>x.date===todayKey()).length;
  return heading('Bienvenue','Un moment pour soi','Du mouvement, de la douceur et un peu de temps pour toi.')+
  '<div class="home-desktop-layout"><div class="home-main"><section class="hero"><div class="hero-content"><span class="pill">✧ Séance du jour</span><h2>'+escapeHTML(r.name)+'</h2><p>'+escapeHTML(r.subtitle)+'</p><div class="meta"><span>'+r.duration+' min</span><span>'+escapeHTML(r.level)+'</span></div><button class="primary" type="button" data-action="start-yoga" data-value="'+r.id+'">▷ Commencer ma séance</button></div><div class="hero-art" aria-hidden="true">'+logo+'</div></section>'+
- '<div class="wellness-row"><article class="tile"><div class="tile-icon">☼</div><h3>Méditation guidée</h3><p>Une parenthèse calme, avec la voix Vivienne et le niveau de guidage de ton choix.</p><button class="text-link" data-action="page" data-value="meditate">Découvrir les séances ›</button></article><article class="tile"><div class="tile-icon">☾</div><h3>Astro du jour</h3><p>'+escapeHTML(astro.text)+'</p><button class="text-link" data-action="page" data-value="astro">Mon inspiration ›</button></article></div>'+
+ '<div class="wellness-row"><article class="tile"><div class="tile-icon">☼</div><h3>Méditation guidée</h3><p>Une parenthèse calme, avec un niveau de guidage qui respecte ton rythme.</p><button class="text-link" data-action="page" data-value="meditate">Découvrir les séances ›</button></article><article class="tile"><div class="tile-icon">☾</div><h3>Astro du jour</h3><p>'+escapeHTML(astro.text)+'</p><button class="text-link" data-action="page" data-value="astro">Mon inspiration ›</button></article></div>'+
  '<div class="section-heading"><h2>Explorer le yoga</h2><button class="text-link" data-action="page" data-value="yoga">Toutes les séances ›</button></div><div class="cards">'+yoga.routines.slice(1,4).map(routineCard).join('')+'</div></div>'+
  '<aside class="home-aside">'+programSidebar()+'<div class="card"><div class="eyebrow">Rituel de la semaine</div><h3>7 jours de présence</h3><p class="muted">La régularité se construit sans pression.</p>'+weeklyStats()+'<p class="muted">'+n+' séance'+(n>1?'s':'')+' terminée'+(n>1?'s':'')+' aujourd’hui.</p></div>'+
- '<div class="card"><div class="eyebrow">Ta progression</div>'+smallStats()+'<button class="text-link" data-action="page" data-value="profile">Voir mon suivi ›</button></div></aside></div>';
+ '<div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><div class="eyebrow">Ta progression</div>'+smallStats()+'<button class="text-link" data-action="page" data-value="profile">Voir mon suivi ›</button></div></aside></div>';
 }
 function pills(opts,active,action){return '<div class="filter-bar">'+opts.map(x=>'<button class="filter" type="button" data-action="'+action+'" data-value="'+escapeHTML(x)+'" aria-pressed="'+(x===active)+'">'+escapeHTML(x)+'</button>').join('')+'</div>';}
 function yogaPage(){
@@ -113,16 +126,19 @@ function meditationPage(){
  const opts=['Toutes',...new Set(meditations.sessions.map(m=>m.category))];
  const subset=meditations.sessions.filter(m=>meditationFilter==='Toutes'||m.category===meditationFilter);
  return heading('Ralentir','Méditation','Silence, présence et paroles à la juste mesure.')+
- '<div class="card meditation-intro"><div><div class="eyebrow">Voix de la coach Running ResurGo</div><h3>Vivienne, un peu plus douce et plus lente</h3><p>Fichiers audio pré-générés. Identité vocale conservée ; si les fichiers ne sont pas encore installés, l’audio est annoncé indisponible.</p></div><button class="secondary" data-action="cache-voice">Télécharger les audios pour le hors ligne</button><small id="voice-status">'+escapeHTML(voiceStatus)+'</small></div>'+
+ '<div class="card meditation-intro"><div><div class="eyebrow">Un accompagnement à ton rythme</div><h3>Une voix apaisante, et des silences pour respirer</h3><p>Prends le temps d’écouter, de ressentir ou de savourer les pauses. L’accompagnement reste disponible sans réseau après téléchargement.</p></div><button class="secondary" data-action="cache-voice">Rendre les séances disponibles hors ligne</button><small id="voice-status">'+escapeHTML(voiceStatus)+'</small></div>'+
  '<div class="section-heading"><h2>Intensité du guidage</h2></div>'+
  '<div class="segment meditation-levels">'+[['discrete','Discrète'],['equilibree','Équilibrée'],['enveloppante','Enveloppante']].map(([id,t])=>'<button data-action="med-level" data-value="'+id+'" aria-pressed="'+(profile().meditationStyle===id)+'">'+t+'</button>').join('')+'</div><p class="muted">Discrète : longs silences · Équilibrée : quelques repères · Enveloppante : accompagnement plus présent.</p>'+
  '<div class="section-heading"><h2>Choisir un moment</h2></div>'+pills(opts,meditationFilter,'med-filter')+
  '<div class="cards">'+subset.map(medCard).join('')+'</div>';
 }
 function astroPage(){
- const a=localAstro();
- return heading('Saison intérieure','Astrologie du jour','Un espace poétique de réflexion, sans prédiction présentée comme un fait.')+
- '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+new Intl.DateTimeFormat('fr-FR',{dateStyle:'long'}).format(new Date())+'</span><h2>Une pensée pour aujourd’hui</h2><p class="astro-quote">« '+escapeHTML(a.text)+' »</p><p class="muted">Inspiration symbolique générée localement à partir du jour et du signe. Aucun calcul de position planétaire ni horoscope d’une source externe n’est revendiqué.</p><button class="secondary" data-action="page" data-value="profile">Personnaliser mon signe</button></div><div class="card"><h3>Petit rituel</h3><p>Ferme les yeux quelques instants. Observe ta respiration, puis choisis une intention simple pour aujourd’hui.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div>';
+ const a=localAstro(),reflection=dailyReflection();
+ return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture astrologique courte pour inviter au calme, sans certitude ni prédiction scientifique.')+
+ '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+new Intl.DateTimeFormat('fr-FR',{dateStyle:'long'}).format(new Date())+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML(a.text)+'</p>'+
+ '<p class="muted">Horoscope en français, à accueillir comme une invitation à réfléchir.</p>'+
+ (a.available?'<p class="muted">Source : <a href="'+escapeHTML(a.sourceUrl||'https://sigastra.com/fr/horoscope-du-jour')+'" target="_blank" rel="noopener noreferrer">Sigastra</a></p>':'')+
+ '<button class="secondary" data-action="page" data-value="profile">Choisir mon signe</button></div><div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Ferme les yeux quelques instants. Observe ta respiration, puis choisis une intention simple pour aujourd’hui.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
 }
 function smallStats(){
  const h=profile().history,total=h.reduce((n,e)=>n+(e.duration||0),0);
@@ -186,7 +202,7 @@ function stopAudio(){if(audio){audio.pause();audio.src='';audio=null;}}
 async function voiceManifest(){
  if(manifest)return manifest;
  const res=await fetch('/voice/vivienne-fr-v1/manifest.json');
- if(!res.ok)throw Error('Pack Vivienne non installé.');
+ if(!res.ok)throw Error('Accompagnement audio non installé.');
  const obj=await res.json();
  if(obj.format!=='sichosana-voice-pack'||obj.voiceId!=='fr-FR-VivienneMultilingualNeural')throw Error('Identité vocale inconnue.');
  manifest=obj;return obj;
@@ -197,7 +213,7 @@ async function playVoice(clip){
   const m=await voiceManifest(),record=m.files[clip];if(!record)throw Error('Segment absent : '+clip);
   const path='/voice/vivienne-fr-v1/'+encodeURIComponent(record.src);
   audio=new Audio(path);audio.preload='auto';audio.volume=0.94;
-  await audio.play();voiceStatus='Voix Vivienne';
+  await audio.play();voiceStatus='Lecture en cours';
  }catch(err){voiceStatus='Audio indisponible : '+err.message;}
  const label=$('#audio-label');if(label)label.textContent=voiceStatus;
 }
@@ -295,7 +311,7 @@ async function cacheVoicePack(){
    const e=$('#voice-status');if(e)e.textContent=voiceStatus;
   }
   const mr=await fetch('/voice/vivienne-fr-v1/manifest.json');if(mr.ok)await cache.put('/voice/vivienne-fr-v1/manifest.json',mr);
-  voiceStatus=done+' fichiers Vivienne disponibles hors ligne.';render();notice('Pack vocal installé.');
+  voiceStatus=done+' fichiers audio disponibles hors ligne.';render();notice('Pack vocal installé.');
  }catch(err){voiceStatus='Audio indisponible : '+err.message;render();notice(voiceStatus);}
 }
 async function exportData(){
@@ -343,7 +359,7 @@ document.addEventListener('submit',(e)=>{
  e.preventDefault();Accounts.onSubmit(form).catch(err=>notice(err.message));
 });
 document.addEventListener('change',async(e)=>{
- if(e.target.id==='zodiac'){profile().zodiac=e.target.value;touch();render();}
+ if(e.target.id==='zodiac'){profile().zodiac=e.target.value;astrologyLive=null;touch();render();refreshAstrology();}
  if(e.target.id==='import-json'){
   const file=e.target.files?.[0];if(!file)return;
   try{if(file.size>2_000_000)throw Error('Fichier trop volumineux.');ingest(JSON.parse(await file.text()));notice('Sauvegarde importée et fusionnée.');}catch(err){notice('Import impossible : '+err.message);}
@@ -361,12 +377,13 @@ async function init(){
     state=await dbRead('account:'+user.id)||initialState();
     if(!state.profiles?.length)state=initialState();
     page='home';render();
-    if(!user.mustChangePassword)await autoSync(true);
+    if(!user.mustChangePassword){await autoSync(true);refreshAstrology();}
    },
    exit:async()=>{clearTimeout(syncTimer);if(session)abortSession();state=null;page='home';}
   });
   const data=await Promise.all([fetch('/data/yoga.json').then(r=>{if(!r.ok)throw Error('Yoga indisponible');return r.json();}),fetch('/data/meditations.json').then(r=>{if(!r.ok)throw Error('Méditations indisponibles');return r.json();}),fetch('/data/programs.json').then(r=>{if(!r.ok)throw Error('Programmes indisponibles');return r.json();})]);
   yoga=data[0];meditations=data[1];programs=data[2];
+  try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
   try{const frozen=await fetch('/data/yoga-api-library.json');if(frozen.ok){const items=(await frozen.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...items.filter(p=>!ids.has(p.id)));}}catch(err){} // catalogue local, accessible même sans serveur
   try{const r=await fetch('/api/v1/poses');if(r.ok){const extra=(await r.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...extra.filter(p=>!ids.has(p.id)));}}catch(err){} // bibliothèque préchargée disponible hors réseau
   await Accounts.resume();
