@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: npm install --no-save --no-package-lock @playwright/test
+      - run: npm install --no-save --no-package-lock @playwright/test@1.64.1
       - run: npx playwright install --with-deps chromium
       - name: Start isolated SichoSana backend
         run: |
