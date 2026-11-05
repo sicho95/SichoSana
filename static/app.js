@@ -201,7 +201,8 @@ function startSession(type,id){
 function stopAudio(){if(audio){audio.pause();audio.src='';audio=null;}}
 async function voiceManifest(){
  if(manifest)return manifest;
- const res=await fetch('/voice/vivienne-fr-v1/manifest.json');
+ let res=await fetch('/voice/vivienne-fr-v2/manifest.json');
+ if(!res.ok)res=await fetch('/voice/vivienne-fr-v1/manifest.json');
  if(!res.ok)throw Error('Accompagnement audio non installé.');
  const obj=await res.json();
  if(obj.format!=='sichosana-voice-pack'||obj.voiceId!=='fr-FR-VivienneMultilingualNeural')throw Error('Identité vocale inconnue.');
@@ -211,8 +212,13 @@ async function playVoice(clip){
  stopAudio();
  try{
   const m=await voiceManifest(),record=m.files[clip];if(!record)throw Error('Segment absent : '+clip);
-  const path='/voice/vivienne-fr-v1/'+encodeURIComponent(record.src);
+  const path='/voice/'+encodeURIComponent(m.packId)+'/'+encodeURIComponent(record.src);
   audio=new Audio(path);audio.preload='auto';audio.volume=0.94;
+   // La hauteur tonale reste identique à la coach Running, seule la cadence change.
+   audio.preservesPitch=true;
+   if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
+   const v2=m.packId==='vivienne-fr-v2';
+   audio.playbackRate=session?.type==='meditate'?(v2?0.94:0.72):(v2?0.98:0.86);
   await audio.play();voiceStatus='Lecture en cours';
  }catch(err){voiceStatus='Audio indisponible : '+err.message;}
  const label=$('#audio-label');if(label)label.textContent=voiceStatus;
@@ -305,12 +311,12 @@ async function cacheVoicePack(){
   const m=await voiceManifest(),cache=await caches.open('sichosana-vivienne-'+m.packId),items=Object.values(m.files);
   let done=0;voiceStatus='Téléchargement : 0 / '+items.length;render();
   for(const x of items){
-   const url='/voice/vivienne-fr-v1/'+encodeURIComponent(x.src);
+   const url='/voice/'+encodeURIComponent(m.packId)+'/'+encodeURIComponent(x.src);
    if(!await cache.match(url)){const r=await fetch(url);if(!r.ok)throw Error('Fichier absent : '+x.src);await cache.put(url,r.clone());}
    done++;voiceStatus='Téléchargement : '+done+' / '+items.length;
    const e=$('#voice-status');if(e)e.textContent=voiceStatus;
   }
-  const mr=await fetch('/voice/vivienne-fr-v1/manifest.json');if(mr.ok)await cache.put('/voice/vivienne-fr-v1/manifest.json',mr);
+  const mr=await fetch('/voice/'+encodeURIComponent(m.packId)+'/manifest.json');if(mr.ok)await cache.put('/voice/'+encodeURIComponent(m.packId)+'/manifest.json',mr);
   voiceStatus=done+' fichiers audio disponibles hors ligne.';render();notice('Pack vocal installé.');
  }catch(err){voiceStatus='Audio indisponible : '+err.message;render();notice(voiceStatus);}
 }
