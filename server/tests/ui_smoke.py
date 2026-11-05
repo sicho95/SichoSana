@@ -53,11 +53,11 @@ def run():
             page.locator("#new-profile-form button[type=submit]").click()
             page.get_by_text("Deuxième profil", exact=True).first.wait_for(timeout=5000)
             page.locator('[data-action="theme"][data-id="horizon"]').click()
-            assert page.locator("html").get_attribute("data-theme")=="horizon"
+            page.wait_for_function("() => document.documentElement.dataset.theme === 'horizon'", timeout=5000)
             page.screenshot(path=str(folder / (label+"-profil.png")), full_page=True)
             page.reload(wait_until="networkidle")
             page.get_by_role("heading", name="Un moment pour soi").wait_for()
-            assert page.locator("html").get_attribute("data-theme")=="horizon"
+            page.wait_for_function("() => document.documentElement.dataset.theme === 'horizon'", timeout=5000)
             assert not errors, (label,errors)
             context.close()
         browser.close()
