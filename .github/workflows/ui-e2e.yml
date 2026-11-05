@@ -26,8 +26,20 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Start isolated SichoSana backend
         run: |
-          python -m server.app >/tmp/sichosana.log 2>&1 &
+          export SICHOSANA_TEST_MODE=1 SICHOSANA_HOST=127.0.0.1
+          export SICHOSANA_PUBLIC_URL=http://127.0.0.1:8080
+          export SICHOSANA_DATA_DIR="${RUNNER_TEMP}/sichosana-e2e"
+          mkdir -p "${SICHOSANA_DATA_DIR}"
+          python - <<'PY'
+          from server import app, accounts
+          app.initialize()
+          with app.connection() as c:
+              account_id=accounts.create_admin(c,'Sicho','admin@example.test','TestAdminPassword2026!')
+              c.execute("UPDATE accounts SET must_change=0 WHERE id=?", (account_id,))
+          PY
+          nohup python -m server.app >/tmp/sichosana.log 2>&1 < /dev/null &
           for i in $(seq 1 20); do curl --silent --fail http://127.0.0.1:8080/api/health && break; sleep 1; done
+          echo "Test backend ready"
       - name: Test real browser and responsive compositions
         run: |
           mkdir -p screenshots
