@@ -1,0 +1,335 @@
+"""SichoSana: serveur Python sans dépendances tierces, SQLite et PWA locale.
+Aucun routage Cloudflare/Tailscale n'est modifié par ce service.
+"""
+from __future__ import annotations
+
+import hashlib
+import hmac
+import json
+import logging
+import mimetypes
+import os
+from pathlib import Path
+import secrets
+import sqlite3
+import threading
+import time
+from collections import defaultdict, deque
+from http import HTTPStatus
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import urlsplit, unquote
+
+BASE = Path(__file__).resolve().parents[1]
+STATIC = Path(os.environ.get("SICHOSANA_WEB_ROOT", BASE / "static")).resolve()
+DATA_DIR = Path(os.environ.get("SICHOSANA_DATA_DIR", BASE / ".data")).resolve()
+DB_PATH = DATA_DIR / "sichosana.sqlite3"
+HOST = os.environ.get("SICHOSANA_HOST", "0.0.0.0")
+PORT = int(os.environ.get("SICHOSANA_PORT", "8080"))
+LOCK = threading.RLock()
+RATE = defaultdict(deque)
+LOGGER = logging.getLogger("sichosana")
+MAX_JSON = 1_200_000
+
+
+def connection():
+    c = sqlite3.connect(DB_PATH, timeout=10)
+    c.execute("PRAGMA foreign_keys=ON")
+    c.execute("PRAGMA journal_mode=WAL")
+    c.execute("PRAGMA busy_timeout=10000")
+    return c
+
+
+def initialize():
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with LOCK, connection() as c:
+        c.executescript("""
+        CREATE TABLE IF NOT EXISTS groups (
+            id TEXT PRIMARY KEY,
+            code TEXT NOT NULL UNIQUE,
+            salt BLOB NOT NULL,
+            password_hash BLOB NOT NULL,
+            created_at INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS devices (
+            token_hash TEXT PRIMARY KEY,
+            group_id TEXT NOT NULL REFERENCES groups(id),
+            device_id TEXT NOT NULL,
+            created_at INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS snapshots (
+            group_id TEXT PRIMARY KEY REFERENCES groups(id),
+            revision INTEGER NOT NULL DEFAULT 0,
+            payload TEXT NOT NULL,
+            updated_at INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS poses (
+            id TEXT PRIMARY KEY,
+            data TEXT NOT NULL,
+            origin TEXT NOT NULL,
+            asset_license TEXT,
+            imported_at INTEGER NOT NULL
+        );
+        """)
+        count = c.execute("SELECT COUNT(*) FROM poses").fetchone()[0]
+        if count == 0:
+            src = STATIC / "data" / "yoga.json"
+            if src.exists():
+                for pose in json.loads(src.read_text(encoding="utf-8"))["poses"]:
+                    c.execute(
+                        "INSERT INTO poses(id,data,origin,asset_license,imported_at) VALUES(?,?,?,?,?)",
+                        (pose["id"], json.dumps(pose, ensure_ascii=False), "sichosana-curated", None, int(time.time()))
+                    )
+
+
+def password_hash(password, salt):
+    return hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, 300_000)
+
+
+def hash_token(token):
+    return hashlib.sha256(token.encode("ascii")).hexdigest()
+
+
+def register_device(conn, group_id, device_id):
+    token = secrets.token_urlsafe(36)
+    conn.execute("INSERT INTO devices VALUES(?,?,?,?)",
+                 (hash_token(token), group_id, device_id[:80], int(time.time())))
+    return token
+
+
+def create_group(password, device_id):
+    if not isinstance(password, str) or len(password) < 12 or len(password) > 256:
+        raise ValueError("Mot de passe : entre 12 et 256 caractères.")
+    if not isinstance(device_id, str) or len(device_id) > 80:
+        raise ValueError("Identifiant appareil invalide.")
+    with LOCK, connection() as c:
+        salt = secrets.token_bytes(24)
+        group_id = secrets.token_hex(16)
+        for _ in range(10):
+            code = secrets.token_hex(5).upper()
+            try:
+                c.execute("INSERT INTO groups VALUES(?,?,?,?,?)",
+                          (group_id, code, salt, password_hash(password, salt), int(time.time())))
+                break
+            except sqlite3.IntegrityError:
+                pass
+        else:
+            raise RuntimeError("Impossible de générer un code.")
+        token = register_device(c, group_id, device_id)
+        initial = json.dumps({"schemaVersion": 1, "profiles": [], "activeProfileId": None})
+        c.execute("INSERT INTO snapshots VALUES(?,?,?,?)",
+                  (group_id, 0, initial, int(time.time())))
+    return {"code": code, "token": token, "revision": 0}
+
+
+def pair_group(code, password, device_id):
+    if not isinstance(code, str) or not isinstance(password, str) or not isinstance(device_id, str):
+        raise ValueError("Code et mot de passe requis.")
+    with LOCK, connection() as c:
+        row = c.execute("SELECT id,salt,password_hash FROM groups WHERE code=?",
+                        (code.strip().upper(),)).fetchone()
+        # Conserve une charge comparable en cas de code inconnu.
+        salt = row[1] if row else b"x" * 24
+        digest = password_hash(password[:256], salt)
+        if not row or not hmac.compare_digest(digest, row[2]):
+            raise PermissionError("Code ou mot de passe incorrect.")
+        token = register_device(c, row[0], device_id)
+        revision = c.execute("SELECT revision FROM snapshots WHERE group_id=?", (row[0],)).fetchone()[0]
+    return {"code": code.strip().upper(), "token": token, "revision": revision}
+
+
+def authenticated_group(headers):
+    authorization = headers.get("Authorization", "")
+    if not authorization.startswith("Bearer "):
+        raise PermissionError("Association requise.")
+    token = authorization[7:]
+    if len(token) > 200 or not token.isascii():
+        raise PermissionError("Jeton invalide.")
+    with connection() as c:
+        row = c.execute("SELECT group_id FROM devices WHERE token_hash=?", (hash_token(token),)).fetchone()
+        if not row:
+            raise PermissionError("Appareil inconnu.")
+        return row[0]
+
+
+def current_snapshot(group_id):
+    with connection() as c:
+        row = c.execute("SELECT revision,payload FROM snapshots WHERE group_id=?", (group_id,)).fetchone()
+    if not row:
+        raise ValueError("Synchronisation introuvable.")
+    return {"revision": row[0], "data": json.loads(row[1])}
+
+
+def validate_snapshot(data):
+    if not isinstance(data, dict) or data.get("schemaVersion") != 1:
+        raise ValueError("Format de sauvegarde non reconnu.")
+    profiles = data.get("profiles")
+    if not isinstance(profiles, list) or not 0 < len(profiles) <= 100:
+        raise ValueError("Un à cent profils attendus.")
+    seen = set()
+    for p in profiles:
+        if not isinstance(p, dict) or not isinstance(p.get("id"), str):
+            raise ValueError("Profil invalide.")
+        if len(p["id"]) > 120 or p["id"] in seen:
+            raise ValueError("Identifiant de profil invalide.")
+        seen.add(p["id"])
+        if not isinstance(p.get("name"), str) or len(p["name"]) > 50:
+            raise ValueError("Nom de profil invalide.")
+        if not isinstance(p.get("history"), list) or len(p["history"]) > 2000:
+            raise ValueError("Historique invalide.")
+        if "credentials" in p:
+            raise ValueError("Les identifiants secrets ne sont pas synchronisés.")
+    if "credentials" in data:
+        raise ValueError("Les identifiants secrets ne sont pas synchronisés.")
+    return json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+
+
+def save_snapshot(group_id, expected_revision, data):
+    payload = validate_snapshot(data)
+    if len(payload.encode("utf-8")) > MAX_JSON:
+        raise ValueError("Sauvegarde trop volumineuse.")
+    with LOCK, connection() as c:
+        revision = c.execute("SELECT revision FROM snapshots WHERE group_id=?", (group_id,)).fetchone()[0]
+        if revision != expected_revision:
+            return False, current_snapshot(group_id)
+        revision += 1
+        c.execute("UPDATE snapshots SET revision=?,payload=?,updated_at=? WHERE group_id=?",
+                  (revision, payload, int(time.time()), group_id))
+        return True, {"revision": revision}
+
+
+def pose_library():
+    with connection() as c:
+        rows = c.execute("SELECT data FROM poses ORDER BY origin,id").fetchall()
+    return {"poses": [json.loads(r[0]) for r in rows]}
+
+
+def too_many_attempts(ip):
+    now = time.monotonic()
+    with LOCK:
+        q = RATE[ip]
+        while q and now - q[0] > 300:
+            q.popleft()
+        if len(q) >= 12:
+            return True
+        q.append(now)
+        return False
+
+
+class Handler(SimpleHTTPRequestHandler):
+    server_version = "SichoSana/0.2"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(STATIC), **kwargs)
+
+    def log_message(self, fmt, *args):
+        LOGGER.info("%s %s", self.address_string(), fmt % args)
+
+    def end_headers(self):
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Permissions-Policy", "camera=(),microphone=(),geolocation=()")
+        self.send_header("Content-Security-Policy",
+            "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+            "img-src 'self' data:; media-src 'self'; connect-src 'self'; "
+            "object-src 'none'; base-uri 'self'; frame-ancestors 'none'")
+        super().end_headers()
+
+    def json_response(self, status, data):
+        body = json.dumps(data, ensure_ascii=False).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def body_json(self):
+        length = int(self.headers.get("Content-Length") or "0")
+        if not 0 < length <= MAX_JSON:
+            raise ValueError("Requête vide ou trop volumineuse.")
+        raw = self.rfile.read(length)
+        data = json.loads(raw)
+        if not isinstance(data, dict):
+            raise ValueError("Objet JSON attendu.")
+        return data
+
+    def do_GET(self):
+        path = urlsplit(self.path).path
+        try:
+            if path == "/api/health":
+                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "0.2"})
+            if path == "/api/v1/poses":
+                return self.json_response(200, pose_library())
+            if path == "/api/v1/snapshot":
+                return self.json_response(200, current_snapshot(authenticated_group(self.headers)))
+            if path.startswith("/api/"):
+                return self.json_response(404, {"error": "Route inexistante."})
+            if path == "/":
+                self.path = "/index.html"
+            return super().do_GET()
+        except PermissionError as exc:
+            return self.json_response(401, {"error": str(exc)})
+        except (ValueError, json.JSONDecodeError) as exc:
+            return self.json_response(400, {"error": str(exc)})
+        except Exception:
+            LOGGER.exception("GET failed")
+            return self.json_response(500, {"error": "Erreur interne."})
+
+    def do_POST(self):
+        path = urlsplit(self.path).path
+        try:
+            if path not in ("/api/v1/groups", "/api/v1/pair"):
+                return self.json_response(404, {"error": "Route inexistante."})
+            if too_many_attempts(self.client_address[0]):
+                return self.json_response(429, {"error": "Trop de tentatives. Réessayer dans quelques minutes."})
+            data = self.body_json()
+            if path == "/api/v1/groups":
+                out = create_group(data.get("password"), data.get("deviceId", ""))
+            else:
+                out = pair_group(data.get("code"), data.get("password"), data.get("deviceId", ""))
+            return self.json_response(201, out)
+        except PermissionError as exc:
+            return self.json_response(403, {"error": str(exc)})
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            return self.json_response(400, {"error": str(exc)})
+        except Exception:
+            LOGGER.exception("POST failed")
+            return self.json_response(500, {"error": "Erreur interne."})
+
+    def do_PUT(self):
+        if urlsplit(self.path).path != "/api/v1/snapshot":
+            return self.json_response(404, {"error": "Route inexistante."})
+        try:
+            group_id = authenticated_group(self.headers)
+            raw = self.headers.get("If-Match", "-1")
+            if not raw.isdigit():
+                raise ValueError("Numéro de révision If-Match requis.")
+            expected_revision = int(raw)
+            body = self.body_json()
+            ok, out = save_snapshot(group_id, expected_revision, body.get("data"))
+            return self.json_response(200 if ok else 409, out)
+        except PermissionError as exc:
+            return self.json_response(401, {"error": str(exc)})
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            return self.json_response(400, {"error": str(exc)})
+        except Exception:
+            LOGGER.exception("PUT failed")
+            return self.json_response(500, {"error": "Erreur interne."})
+
+
+def main():
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
+    initialize()
+    server = ThreadingHTTPServer((HOST, PORT), Handler)
+    LOGGER.info("SichoSana ready at %s:%s, SQLite %s", HOST, PORT, DB_PATH)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+
+
+if __name__ == "__main__":
+    main()
