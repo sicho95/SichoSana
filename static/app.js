@@ -198,6 +198,7 @@ function profilePage(){
  '<div class="profile-layout"><div class="stack">'+Accounts.profilePanel()+
  '<section class="card"><div class="section-heading"><h2>Profils de pratique</h2><button class="small-btn" data-action="add-profile">+ Ajouter</button></div><div class="profile-options">'+state.profiles.map(x=>'<button class="profile-option '+(x.id===p.id?'active':'')+'" data-action="select-profile" data-value="'+escapeHTML(x.id)+'"><strong>'+escapeHTML(x.name)+'</strong><br><small>'+ (x.id===p.id?'Profil actuel':'Ouvrir ce profil')+'</small></button>').join('')+'</div><div class="field"><label for="profile-name">Nom du profil actuel</label><input id="profile-name" maxlength="50" value="'+escapeHTML(p.name)+'"></div><button class="secondary" data-action="save-name">Enregistrer le nom</button></section>'+
  '<section class="card"><h2>Mes préférences</h2><div class="field"><label>Univers graphique</label><div class="segment">'+[['linen','Lin & Sauge'],['horizon','Horizon & Sauge']].map(([id,name])=>'<button data-action="theme" data-value="'+id+'" aria-pressed="'+(p.theme===id)+'">'+name+'</button>').join('')+'</div></div><div class="field"><label for="zodiac">Signe astrologique (facultatif)</label><select id="zodiac"><option value="">Aucun</option>'+signs.map(s=>'<option value="'+s+'" '+(p.zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div><p class="muted">Aucune date de naissance nécessaire.</p></section>'+
+ '<section class="card"><h2>Bibliothèque de yoga</h2><p>Préparation, version douce, posture finale, respiration et précautions sont détaillées dans les fiches.</p><button type="button" class="secondary" data-action="page" data-value="yoga">Explorer les postures</button><details class="yoga-credits"><summary>Sources et crédits des illustrations</summary><p>Postures et illustrations : <a href="https://github.com/alexcumplido/yoga-api" target="_blank" rel="noopener noreferrer">Yoga API · Alexandre C.</a></p><p><a href="https://www.flaticon.com/free-icons/easy" target="_blank" rel="noopener noreferrer">Easy icons created by monkik — Flaticon</a></p><p><a href="https://www.flaticon.com/free-icons/yoga" target="_blank" rel="noopener noreferrer">Yoga icons created by dDara — Flaticon</a></p><p>Les illustrations rouges de Yoga API sont sous CC0. Les images Flaticon conservent leurs droits ; attribution globale selon leurs conditions.</p></details></section>'+
  '<section class="card"><h2>Mes données</h2><p>La synchronisation fonctionne automatiquement dès que la connexion est disponible. Tu peux conserver une copie personnelle de tes séances.</p><div class="session-controls"><button class="secondary" data-action="export">Exporter mes données</button><button class="secondary" data-action="import">Importer mes données</button><input type="file" id="import-json" accept="application/json,.json" hidden></div></section></div>'+
  '<div class="stack"><section class="card"><h2>Mes progrès</h2>'+smallStats()+'<h3>Historique</h3>'+(p.history.length?'<div class="history-list">'+p.history.slice().reverse().slice(0,15).map(x=>'<div>'+escapeHTML(x.date)+' · '+escapeHTML(x.name)+' <small>'+x.duration+' min</small></div>').join('')+'</div>':'<p class="muted">Ta première séance apparaîtra ici.</p>')+'</section>'+
  '<section class="card"><h2>Notifications</h2><p>Les rappels seront proposés une fois les horaires choisis et les autorisations activées.</p><button class="secondary" data-action="notifications">Mes notifications</button></section>'+(Accounts.user()?.role==='admin'?'<section class="card admin-entry"><div class="eyebrow">Espace administrateur</div><h2>Gestion des comptes</h2><p class="muted">Inscriptions, permissions et emails.</p><button class="primary" data-action="page" data-value="admin">Ouvrir l’administration</button></section>':'')+'</div></div>';
@@ -436,6 +437,7 @@ async function handle(action,value){
  if(action==='pose-filter'){poseFilter=value;render();return;}
  if(action==='med-filter'){meditationFilter=value;render();return;}
  if(action==='med-level'){profile().meditationStyle=value;touch();render();return;}
+ if(action==='practice-mode'){profile().practiceMode=value;touch();render();return;}
  if(action==='theme'){profile().theme=value;touch();render();return;}
  if(action==='select-program'){profile().selectedProgram=value;touch();render();return;}
  if(action==='favorite'){const list=profile().favorites;profile().favorites=list.includes(value)?list.filter(x=>x!==value):[...list,value];touch();render();return;}
@@ -474,6 +476,14 @@ document.addEventListener('change',async(e)=>{
   try{if(file.size>2_000_000)throw Error('Fichier trop volumineux.');ingest(JSON.parse(await file.text()));notice('Sauvegarde importée et fusionnée.');}catch(err){notice('Import impossible : '+err.message);}
  }
 });
+document.addEventListener('error',e=>{
+ const target=e.target;
+ if(target instanceof HTMLImageElement && target.hasAttribute('data-pose-image')){
+  const span=document.createElement('span');
+  span.className='pose-missing';span.textContent='Illustration indisponible';
+  target.replaceWith(span);
+ }
+},true);
 window.addEventListener('online',()=>{render();autoSync(true);});
 window.addEventListener('offline',render);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoSync(true);});
@@ -506,6 +516,7 @@ async function init(){
   });
   const data=await Promise.all([fetch('/data/yoga.json').then(r=>{if(!r.ok)throw Error('Yoga indisponible');return r.json();}),fetch('/data/meditations.json').then(r=>{if(!r.ok)throw Error('Méditations indisponibles');return r.json();}),fetch('/data/programs.json').then(r=>{if(!r.ok)throw Error('Programmes indisponibles');return r.json();})]);
   yoga=data[0];meditations=data[1];programs=data[2];
+   try{const q=await fetch('/data/pose-guidance.json');if(q.ok){const j=await q.json();if(j?.schemaVersion===1&&j?.poses)poseGuidance=j;}}catch(e){}
   try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
   try{const frozen=await fetch('/data/yoga-api-library.json');if(frozen.ok){const items=(await frozen.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...items.filter(p=>!ids.has(p.id)));}}catch(err){} // catalogue local, accessible même sans serveur
