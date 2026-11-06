@@ -366,3 +366,21 @@ html,body{width:100%;max-width:100%;overflow-x:clip}
  .bottom-nav{padding-bottom:5px}
  .topbar{height:56px}
 }
+
+/* Horoscope français : commandes intégrées aux trois formats d'écran. */
+.astro-controls{display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin:0 0 19px}
+.astro-controls .field{margin:0;min-width:200px;max-width:310px;flex:1}
+.astro-periods{display:flex;gap:3px;max-width:100%}
+.astro-periods button{white-space:nowrap;font-size:13px}
+.astro-attribution{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-top:18px;border-top:1px solid var(--line);padding-top:11px;font-size:12px;color:var(--muted)}
+.astro-attribution a{font-size:12px;padding:4px 0}
+@media(max-width:779px){
+ .astro-controls{align-items:stretch;flex-direction:column;gap:9px}
+ .astro-controls .field{max-width:none;width:100%}
+ .astro-periods{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .astro-periods button{font-size:11px;padding:10px 3px;white-space:normal}
+ .astro-layout{width:100%;min-width:0}
+ .astrology-card{min-height:0;padding:24px 19px}
+ .astrology-card h2{margin-top:16px}
+ .astro-quote{font-size:clamp(21px,6.7vw,28px);line-height:1.42}
+}
