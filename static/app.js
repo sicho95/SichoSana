@@ -10,7 +10,7 @@ const todayKey = () => { const d = new Date(); return [d.getFullYear(),String(d.
 const logo = '<img class="lotus-mark" src="/icon.svg" alt="" width="40" height="40">';
 const nav = [{id:'home',text:'Accueil',glyph:'⌂'},{id:'yoga',text:'Yoga',glyph:'♧'},{id:'meditate',text:'Méditer',glyph:'☼'},{id:'astro',text:'Astro',glyph:'☾'},{id:'profile',text:'Profil',glyph:'♙'}];
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
-let reflections={reflections:[]}, poseMedia={photos:[]}, astrologyLive=null, yogaTab='seances';
+let reflections={reflections:[]}, poseMedia={photos:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Tous', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
@@ -62,17 +62,17 @@ function dailyReflection(){
 }
 function localAstro(){
  const sign=profile().zodiac;
- if(!sign)return {text:'Choisis ton signe dans ton profil pour découvrir ton horoscope du jour.',sign:'Non configuré'};
- if(astrologyLive?.sign===sign && astrologyLive?.date===todayKey())return astrologyLive;
- return {text:'Ton horoscope en français sera disponible dès que sa source sera activée et joignable.',sign};
+ if(!sign)return {text:'Choisis ton signe ci-dessous pour découvrir ton horoscope en français.',sign:'Non configuré',available:false};
+ if(astrologyLive?.sign===sign && astrologyLive?.period===astroPeriod && astrologyLive?.date===todayKey())return astrologyLive;
+ return {text:'Consulte ton horoscope en français, avec un lien direct vers la source.',sign,available:false};
 }
 async function refreshAstrology(){
  const sign=profile()?.zodiac;
  if(!sign||!navigator.onLine)return;
  try{
-  const result=await Accounts.api('content/horoscope?sign='+encodeURIComponent(sign));
-  astrologyLive=result; if(page==='astro'||page==='home')render();
- }catch(e){astrologyLive={sign,text:'L’horoscope du jour est temporairement indisponible.',available:false};}
+  const result=await Accounts.api('content/horoscope?sign='+encodeURIComponent(sign)+'&period='+astroPeriod);
+  if(result.sign===profile()?.zodiac && result.period===astroPeriod){astrologyLive=result;if(page==='astro'||page==='home')render();}
+ }catch(e){astrologyLive={sign,period:astroPeriod,text:'Source momentanément indisponible.',available:false};if(page==='astro')render();}
 }
 function activeProgram(){return programs.programs.find(x=>x.id===profile().selectedProgram)||programs.programs[0];}
 function progressProgram(program){
@@ -144,11 +144,13 @@ function meditationPage(){
 }
 function astroPage(){
  const a=localAstro(),reflection=dailyReflection();
- return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture astrologique courte pour inviter au calme, sans certitude ni prédiction scientifique.')+
+ const link=escapeHTML(a.sourceUrl||'https://sigastra.com/fr/horoscope-du-jour');
+ return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture culturelle et symbolique, sans prédiction scientifique.')+
+ '<div class="astro-controls"><div class="field"><label for="astro-sign">Mon signe astrologique</label><select id="astro-sign"><option value="">Choisir un signe</option>'+signs.map(s=>'<option value="'+s+'" '+(profile().zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
+ '<div class="segment astro-periods" role="group" aria-label="Période">'+[['daily','Aujourd’hui'],['weekly','Cette semaine'],['monthly','Ce mois']].map(([id,name])=>'<button type="button" data-action="astro-period" data-value="'+id+'" aria-pressed="'+(astroPeriod===id)+'">'+name+'</button>').join('')+'</div></div>'+
  '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+new Intl.DateTimeFormat('fr-FR',{dateStyle:'long'}).format(new Date())+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML(a.text)+'</p>'+
- '<p class="muted">Horoscope en français, à accueillir comme une invitation à réfléchir. <a href="https://sigastra.com/fr/horoscope-du-jour" target="_blank" rel="noopener noreferrer">Consulter l’horoscope à la source (Sigastra)</a>.</p>'+
- (a.available?'<p class="muted">Source : <a href="'+escapeHTML(a.sourceUrl||'https://sigastra.com/fr/horoscope-du-jour')+'" target="_blank" rel="noopener noreferrer">Sigastra</a></p>':'')+
- '<button class="secondary" data-action="page" data-value="profile">Choisir mon signe</button></div><div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Ferme les yeux quelques instants. Observe ta respiration, puis choisis une intention simple pour aujourd’hui.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
+ '<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="/astro-source.html">Horoscopes publics</a></div></div>'+
+ '<div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Observe ta respiration et choisis une intention simple.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
 }
 function smallStats(){
  const h=profile().history,total=h.reduce((n,e)=>n+(e.duration||0),0);
@@ -375,7 +377,7 @@ function notifications(){
  modal='<div class="modal" role="dialog" aria-modal="true"><button class="icon-btn modal-close" data-action="close">×</button><h2>Notifications</h2><p>'+ (supported?'Le navigateur est compatible avec les notifications web push.':'Cet appareil ou navigateur ne propose pas toutes les fonctions web push.')+'</p><p>Les horaires et clés VAPID ne sont pas encore configurés. Aucun rappel n’est activé automatiquement.</p><button class="secondary" data-action="close">Compris</button></div>';renderModal();
 }
 async function handle(action,value){
- if(action==='page'){if(session)abortSession();page=value;render();if(page==='admin')await Accounts.refreshAdmin();window.scrollTo(0,0);return;}
+ if(action==='page'){if(session)abortSession();page=value;render();if(page==='admin')await Accounts.refreshAdmin();if(page==='astro')refreshAstrology();window.scrollTo(0,0);return;}
  if(action==='routine-filter'){routineFilter=value;render();return;}
  if(action==='pose-filter'){poseFilter=value;render();return;}
  if(action==='med-filter'){meditationFilter=value;render();return;}
@@ -397,6 +399,7 @@ async function handle(action,value){
  if(action==='export')return exportData();
  if(action==='import')return $('#import-json')?.click();
  if(action==='cache-voice')return cacheVoicePack();
+ if(action==='astro-period'){astroPeriod=value;astrologyLive=null;render();refreshAstrology();return;}
  if(action==='replay-voice'){if(session)return playVoice(session.steps[stepIndex(session)].clip);return;}
  if(action==='notifications')return notifications();
 }
@@ -411,7 +414,7 @@ document.addEventListener('submit',(e)=>{
  e.preventDefault();Accounts.onSubmit(form).catch(err=>notice(err.message));
 });
 document.addEventListener('change',async(e)=>{
- if(e.target.id==='zodiac'){profile().zodiac=e.target.value;astrologyLive=null;touch();render();refreshAstrology();}
+ if(e.target.id==='zodiac'||e.target.id==='astro-sign'){profile().zodiac=e.target.value;astrologyLive=null;touch();render();refreshAstrology();}
  if(e.target.id==='import-json'){
   const file=e.target.files?.[0];if(!file)return;
   try{if(file.size>2_000_000)throw Error('Fichier trop volumineux.');ingest(JSON.parse(await file.text()));notice('Sauvegarde importée et fusionnée.');}catch(err){notice('Import impossible : '+err.message);}
