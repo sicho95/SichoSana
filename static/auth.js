@@ -40,7 +40,7 @@ export async function resume(){
 }
 export function show(next){mode=next;callbacks.render();}
 export function screen(){
- const brand='<div class="auth-emblem" aria-hidden="true">✦</div><div class="eyebrow">SichoSana</div>';
+ const brand='<div class="auth-emblem" aria-hidden="true"><img src="/icon.svg" alt="" width="64" height="64"></div><div class="eyebrow">SichoSana</div>';
  const fields=(parts)=>parts.join('');
  const intro='<div class="auth-intro">'+brand+'<h1>'+(mode==='register'?'Créer mon espace':mode==='forgot'?'Retrouver mon accès':mode==='reset'?'Nouveau mot de passe':'Prendre un moment pour moi')+'</h1><p>Un lieu doux pour respirer, bouger et se retrouver à son rythme.</p></div>';
  let form='';
@@ -76,14 +76,14 @@ export async function refreshAdmin(){
  catch(e){callbacks.notice('Administration : '+errorMessage(e));}
 }
 export function adminScreen(){
- return '<div class="page-heading"><div class="eyebrow">Gestion des accès</div><h1>Administration</h1><p class="subtitle">Approuve les inscriptions, gère les comptes et les droits.</p></div><div class="admin-board"><div class="section-heading"><h2>Comptes</h2><button class="secondary" data-account="refresh-users">Actualiser</button></div>'+
+ return '<div class="page-heading"><div><div class="eyebrow">Gestion des accès</div><h1>Administration</h1><p class="subtitle">Approuve les inscriptions, gère les comptes et les droits.</p></div></div><div class="admin-board"><div class="section-heading"><h2>Comptes</h2><button class="secondary" data-account="refresh-users">Actualiser</button></div>'+
  (adminUsers.length?adminUsers.map(u=>{
    const pending=u.status==='pending',active=u.status==='active',suspended=u.status==='suspended';
    return '<article class="card admin-user"><div><strong>'+clean(u.pseudo)+'</strong> <span class="pill">'+clean(u.status)+'</span> '+(u.role==='admin'?'<span class="pill">Admin</span>':'')+'<p class="muted">'+clean(u.email)+'</p></div><div class="admin-buttons">'+
    (pending?'<button class="primary" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="approve">Valider</button>':'')+
-   (active?'<button class="secondary" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="suspend">Suspendre</button>':'')+
+   (active&&u.id!==user().id?'<button class="secondary" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="suspend">Suspendre</button>':'')+
    (suspended?'<button class="secondary" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="restore">Réactiver</button>':'')+
-   (active?'<button class="secondary" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="'+(u.role==='admin'?'demote':'promote')+'">'+(u.role==='admin'?'Retirer droit admin':'Rendre admin')+'</button>':'')+
+   (active&&(u.id!==user().id||u.role!=='admin')?'<button class="secondary" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="'+(u.role==='admin'?'demote':'promote')+'">'+(u.role==='admin'?'Retirer droit admin':'Rendre admin')+'</button>':'')+
    (u.id!==user().id?'<button class="small-btn" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="delete">Supprimer</button>':'')+
    '</div></article>';
  }).join(''):'<div class="card"><p>Charge les comptes pour voir les demandes.</p></div>')+
