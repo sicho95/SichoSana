@@ -27,3 +27,9 @@ Thèmes autorisés en V1 : Lin & Sauge, Horizon & Sauge. Les tokens CSS et trois
 ## Réflexions quotidiennes
 
 `static/data/reflections.json` contient 400 formulations originales candidates, séquencées afin de ne pas répéter une entrée dans les dix derniers jours. Elles demandent encore validation éditoriale avant sortie finale.
+
+## Correction de provenance V2.2
+
+Les photographies Wikimedia précédentes sont conservées comme historique de développement mais **ne sont plus choisies par la bibliothèque SichoSana**. Les postures affichent désormais les images PNG officielles référencées dans le snapshot Yoga API, téléchargées par le NAS au déploiement dans `static/media/yoga-api/`. Les ressources Flaticon ne sont pas committées dans le dépôt GitHub. Les crédits officiels (monkik, dDara, CC0 et Yoga API) se trouvent dans la rubrique **Profil → Sources et crédits des illustrations**. Les références locales correspondant à neuf des treize postures sont identifiées dans `static/data/pose-guidance.json`; quatre restent sans correspondance exacte, à ne pas présenter avec une pose erronée. Les 48 postures importées restent des fiches documentaires non intégrées à des séances sans révision des consignes françaises.
+
+L'application ne reproduit pas ni ne modifie par IA les illustrations Flaticon, conformément à leurs conditions. Vérifier les droits de republication et les éventuelles contraintes supplémentaires de chaque fournisseur avant diffusion commerciale.
