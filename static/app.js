@@ -8,7 +8,17 @@ const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) 
 const formatTime = (n) => { const s = Math.max(0, Math.ceil(n)); return Math.floor(s/60).toString().padStart(2,'0')+':'+(s%60).toString().padStart(2,'0'); };
 const todayKey = () => { const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); };
 const logo = '<img class="lotus-mark" src="/icon.svg" alt="" width="40" height="40">';
-const nav = [{id:'home',text:'Accueil',glyph:'⌂'},{id:'yoga',text:'Yoga',glyph:'♧'},{id:'meditate',text:'Méditer',glyph:'☼'},{id:'astro',text:'Astro',glyph:'☾'},{id:'profile',text:'Profil',glyph:'♙'}];
+const nav = [{id:'home',text:'Accueil',glyph:'home'},{id:'yoga',text:'Yoga',glyph:'lotus'},{id:'meditate',text:'Méditer',glyph:'sun'},{id:'astro',text:'Astro',glyph:'moon'},{id:'profile',text:'Profil',glyph:'user'}];
+const iconPaths={
+ home:'<path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/>',
+ lotus:'<path d="M12 20C7.5 17 6 11 12 4c6 7 4.5 13 0 16z"/><path d="M11 20c-5 1-9-3-9-9 4 0 8 2 9 9zm2 0c5 1 9-3 9-9-4 0-8 2-9 9z"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.5 1.5m11.2 11.2 1.5 1.5m0-14.2-1.5 1.5M6.4 17.6l-1.5 1.5"/>',
+ moon:'<path d="M20.3 15.7A9 9 0 0 1 8.3 3.7 9 9 0 1 0 20.3 15.7z"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 3.6-8 8-8s8 3 8 8"/>',
+ settings:'<circle cx="12" cy="12" r="3.5"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2.3 2.3m9.4 9.4L19 19m0-14-2.3 2.3m-9.4 9.4L5 19"/>',
+ bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9z"/><path d="M10 21h4"/>'
+};
+function uiIcon(key){return '<svg aria-hidden="true" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+(iconPaths[key]||iconPaths.lotus)+'</svg>';}
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
 let reflections={reflections:[]}, poseMedia={photos:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
@@ -28,12 +38,12 @@ async function save(auto=true){try{if(Accounts.user())await dbWrite('account:'+A
 function touch(){profile().modifiedAt=Date.now();save();}
 function notice(text){const e=$('#toast');e.textContent=text;e.classList.add('show');clearTimeout(notice.timeout);notice.timeout=setTimeout(()=>e.classList.remove('show'),4000);}
 function brand(){return '<div class="brand">'+logo+'<span>Sicho<span>Sana</span></span></div>';}
-function navButton(item){return '<button type="button" class="nav-link" data-action="page" data-value="'+item.id+'" '+(page===item.id?'aria-current="page"':'')+'><span class="nav-glyph">'+item.glyph+'</span><span>'+item.text+'</span></button>';}
+function navButton(item){return '<button type="button" class="nav-link" data-action="page" data-value="'+item.id+'" '+(page===item.id?'aria-current="page"':'')+'><span class="nav-glyph">'+uiIcon(item.glyph)+'</span><span>'+item.text+'</span></button>';}
 function renderShell(){
- const all=Accounts.user()?.role==='admin'?[...nav,{id:'admin',text:'Admin',glyph:'♧'}]:nav;
+ const all=Accounts.user()?.role==='admin'?[...nav,{id:'admin',text:'Admin',glyph:'settings'}]:nav;
  $('#sidebar').innerHTML=brand()+'<nav>'+all.map(navButton).join('')+'</nav><p class="sidebar-tag">Un moment pour soi,<br>à son rythme.</p>';
  $('#bottomnav').innerHTML=nav.map(navButton).join(''); // cinq onglets fixes, admin dans Profil
- $('#topbar').innerHTML='<div class="desktop-brand">'+brand()+'</div><div class="top-actions"><span class="connection-pill">'+(navigator.onLine?'● En ligne':'○ Hors ligne')+'</span><button class="icon-btn" type="button" data-action="notifications" aria-label="Notifications">♧</button><button class="profile-chip" type="button" data-action="page" data-value="profile"><span class="dot"></span>'+escapeHTML(Accounts.user()?.pseudo||'')+'</button></div>';
+ $('#topbar').innerHTML='<div class="desktop-brand">'+brand()+'</div><div class="top-actions"><span class="connection-pill">'+(navigator.onLine?'● En ligne':'○ Hors ligne')+'</span><button class="icon-btn" type="button" data-action="notifications" aria-label="Notifications">'+uiIcon('bell')+'</button><button class="profile-chip" type="button" data-action="page" data-value="profile"><span class="dot"></span>'+escapeHTML(Accounts.user()?.pseudo||'')+'</button></div>';
 }
 function heading(kicker,title,subtitle){return '<div class="page-heading"><div><div class="eyebrow">'+kicker+'</div><h1>'+title+'</h1>'+(subtitle?'<p class="subtitle">'+subtitle+'</p>':'')+'</div></div>';}
 function routineCard(r){
