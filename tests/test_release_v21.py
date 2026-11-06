@@ -59,5 +59,32 @@ class ReleaseValidation(unittest.TestCase):
         self.assertEqual(data['source'],'Sigastra')
         self.assertIn('/weekly?',fetch.call_args.args[0].full_url)
 
+
+class MediaHttpRange(unittest.TestCase):
+    def test_ios_audio_range_206(self):
+        import threading
+        from http.server import ThreadingHTTPServer
+        from urllib.request import Request, urlopen
+        from server import app
+        path=ROOT/'static/voice/vivienne-fr-v2/pose_balasana.mp3'
+        self.assertTrue(path.is_file())
+        with ThreadingHTTPServer(('127.0.0.1',0),app.Handler) as server:
+            worker=threading.Thread(target=server.serve_forever,daemon=True)
+            worker.start()
+            try:
+                url=f'http://127.0.0.1:{server.server_port}/voice/vivienne-fr-v2/pose_balasana.mp3'
+                with urlopen(Request(url,headers={'Range':'bytes=0-63'}),timeout=6) as response:
+                    self.assertEqual(response.status,206)
+                    self.assertEqual(response.headers['Accept-Ranges'],'bytes')
+                    self.assertTrue(response.headers['Content-Range'].startswith('bytes 0-63/'))
+                    self.assertEqual(response.headers['Content-Type'],'audio/mpeg')
+                    self.assertEqual(response.read(),path.read_bytes()[:64])
+                with urlopen(Request(url,method='HEAD'),timeout=6) as response:
+                    self.assertEqual(response.status,200)
+                    self.assertEqual(response.headers['Accept-Ranges'],'bytes')
+            finally:
+                server.shutdown()
+                worker.join(timeout=5)
+
 if __name__=='__main__':
     unittest.main()
