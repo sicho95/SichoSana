@@ -146,7 +146,7 @@ function astroPage(){
  const a=localAstro(),reflection=dailyReflection();
  return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture astrologique courte pour inviter au calme, sans certitude ni prédiction scientifique.')+
  '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+new Intl.DateTimeFormat('fr-FR',{dateStyle:'long'}).format(new Date())+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML(a.text)+'</p>'+
- '<p class="muted">Horoscope en français, à accueillir comme une invitation à réfléchir.</p>'+
+ '<p class="muted">Horoscope en français, à accueillir comme une invitation à réfléchir. <a href="https://sigastra.com/fr/horoscope-du-jour" target="_blank" rel="noopener noreferrer">Consulter l’horoscope à la source (Sigastra)</a>.</p>'+
  (a.available?'<p class="muted">Source : <a href="'+escapeHTML(a.sourceUrl||'https://sigastra.com/fr/horoscope-du-jour')+'" target="_blank" rel="noopener noreferrer">Sigastra</a></p>':'')+
  '<button class="secondary" data-action="page" data-value="profile">Choisir mon signe</button></div><div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Ferme les yeux quelques instants. Observe ta respiration, puis choisis une intention simple pour aujourd’hui.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
 }
@@ -257,11 +257,16 @@ function playReadyClip(clip,pack){
 }
 function playVoice(clip){
  if(!session)return;
- if(manifest){try{playReadyClip(clip,manifest);}catch(err){voiceStatus=err.message;if($('#audio-label'))$('#audio-label').textContent=voiceStatus;}return;}
- voiceStatus='Chargement de la voix…';
- voiceManifest().then(m=>{
-  if(session&&session.steps[stepIndex(session)]?.clip===clip)playReadyClip(clip,m);
- }).catch(()=>{voiceStatus='Le pack vocal ne peut pas être chargé.';if($('#audio-label'))$('#audio-label').textContent=voiceStatus;});
+ // Safari iOS exige que play() soit appelé directement dans le geste de l'utilisateur.
+ // La V2 produit un MP3 nommé exactement comme l'identifiant de la consigne.
+ const pack=manifest?.files?.[clip]?manifest:{packId:'vivienne-fr-v2',files:{[clip]:{src:clip+'.mp3'}}};
+ try{playReadyClip(clip,pack);}
+ catch(err){
+  voiceStatus='Impossible de lancer la voix. Appuie sur « Écouter la consigne ».';
+  if($('#audio-label'))$('#audio-label').textContent=voiceStatus;
+ }
+ // Le contrôle du manifeste se fait en parallèle, et ne retarde jamais play().
+ if(!manifest)voiceManifest().catch(()=>{});
 }
 function announceStep(){
  if(!session)return;const index=stepIndex(session);
@@ -358,7 +363,7 @@ async function cacheVoicePack(){
   }
   const mr=await fetch('/voice/'+encodeURIComponent(m.packId)+'/manifest.json');if(mr.ok)await cache.put('/voice/'+encodeURIComponent(m.packId)+'/manifest.json',mr);
   voiceStatus=done+' fichiers audio disponibles hors ligne.';render();notice('Pack vocal installé.');
- }catch(err){voiceStatus='Audio indisponible : '+err.message;render();notice(voiceStatus);}
+ }catch(err){voiceStatus='Téléchargement hors ligne bloqué par Safari. Les consignes restent accessibles en ligne ; réessaie depuis l’écran d’accueil ou un autre navigateur.';render();notice('Téléchargement audio non autorisé sur cet appareil.');}
 }
 async function exportData(){
  const blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'});
