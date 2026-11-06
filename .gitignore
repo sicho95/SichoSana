@@ -6,3 +6,8 @@ node_modules/
 *.zip
 .env
 .webapp-build/
+
+# Overrides Compose locaux NAS (ne pas partager avec le miroir public)
+compose.bridge.yaml
+compose.cloudflare.yaml
+.env.bak.*
