@@ -33,6 +33,8 @@ PY
 echo "[SichoSana] Mise à jour contrôlée GitHub : $BRANCH"
 git fetch --no-tags origin "$BRANCH"
 git merge --ff-only FETCH_HEAD
+echo "[SichoSana] Préparer images PNG Yoga API sans redistribuer dans Git."
+docker run --rm --network bridge -v "$ROOT:/workspace" -w /workspace python:3.12-slim python scripts/cache-yoga-api-media.py
 cp -p .env ".env.bak.$(date +%Y%m%d%H%M%S)"
 if grep -q '^SICHOSANA_BIND=' .env; then
   sed -i 's/^SICHOSANA_BIND=.*/SICHOSANA_BIND=192.168.1.69/' .env
