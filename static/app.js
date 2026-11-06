@@ -21,7 +21,7 @@ const iconPaths={
 function uiIcon(key){return '<svg aria-hidden="true" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+(iconPaths[key]||iconPaths.lotus)+'</svg>';}
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
 let reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
-const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
+const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',dailyGoal:'varie',dailyDuration:20,zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Essentielles', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
 function openDB(){
@@ -122,7 +122,19 @@ function dailyRoutine(){
  const recent=p.history.slice(-3).map(h=>h.ref);
  const hour=new Date().getHours();
  const hash=s=>s.split('').reduce((x,ch)=>(x*31+ch.charCodeAt(0))>>>0,7);
- const candidates=options.map(r=>({r,score:(hash(day+p.id+r.id)%17)/10+(recent.includes(r.id)?-9:0)+(hour<11&&r.id==='eveil-doux'?3:0)+(hour>=19&&r.id==='soir-calme'?3:0)+(p.favorites.includes(r.id)?.9:0)}));
+ const goal=p.dailyGoal||'varie',target=Number(p.dailyDuration)||20;
+ const candidates=options.map(r=>({
+   r,
+   score:(hash(day+p.id+r.id)%17)/10
+    +(recent.includes(r.id)?-9:0)
+    +(hour<11&&r.id==='eveil-doux'?2:0)
+    +(hour>=19&&r.id==='soir-calme'?2:0)
+    +(p.favorites.includes(r.id)?.9:0)
+    -Math.abs(r.duration-target)/5
+    +(goal==='detente'&&['soir-calme','detente','hatha-doux'].includes(r.id)?2.3:0)
+    +(goal==='energie'&&['eveil-doux','vinyasa-fluide'].includes(r.id)?2.3:0)
+    +(goal==='equilibre'&&['equilibre','hatha-doux'].includes(r.id)?2.3:0)
+ }));
  const chosen=candidates.sort((a,b)=>b.score-a.score)[0]?.r||yoga.routines[0];
  p.dailyChoice={date:day,id:chosen.id};
  save();
@@ -197,7 +209,7 @@ function profilePage(){
  return heading('Mon espace','Profil & progression','Retrouve tes séances et tes habitudes automatiquement sur tes appareils.')+
  '<div class="profile-layout"><div class="stack">'+Accounts.profilePanel()+
  '<section class="card"><div class="section-heading"><h2>Profils de pratique</h2><button class="small-btn" data-action="add-profile">+ Ajouter</button></div><div class="profile-options">'+state.profiles.map(x=>'<button class="profile-option '+(x.id===p.id?'active':'')+'" data-action="select-profile" data-value="'+escapeHTML(x.id)+'"><strong>'+escapeHTML(x.name)+'</strong><br><small>'+ (x.id===p.id?'Profil actuel':'Ouvrir ce profil')+'</small></button>').join('')+'</div><div class="field"><label for="profile-name">Nom du profil actuel</label><input id="profile-name" maxlength="50" value="'+escapeHTML(p.name)+'"></div><button class="secondary" data-action="save-name">Enregistrer le nom</button></section>'+
- '<section class="card"><h2>Mes préférences</h2><div class="field"><label>Univers graphique</label><div class="segment">'+[['linen','Lin & Sauge'],['horizon','Horizon & Sauge']].map(([id,name])=>'<button data-action="theme" data-value="'+id+'" aria-pressed="'+(p.theme===id)+'">'+name+'</button>').join('')+'</div></div><div class="field"><label for="zodiac">Signe astrologique (facultatif)</label><select id="zodiac"><option value="">Aucun</option>'+signs.map(s=>'<option value="'+s+'" '+(p.zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div><p class="muted">Aucune date de naissance nécessaire.</p></section>'+
+ '<section class="card"><h2>Mes préférences</h2><div class="field"><label>Univers graphique</label><div class="segment">'+[['linen','Lin & Sauge'],['horizon','Horizon & Sauge']].map(([id,name])=>'<button data-action="theme" data-value="'+id+'" aria-pressed="'+(p.theme===id)+'">'+name+'</button>').join('')+'</div></div><div class="field"><label for="daily-goal">Intention de la séance du jour</label><select id="daily-goal">'+[['varie','Variée'],['detente','Détente'],['energie','Énergie'],['equilibre','Équilibre']].map(([id,label])=>'<option value="'+id+'" '+((p.dailyGoal||'varie')===id?'selected':'')+'>'+label+'</option>').join('')+'</select></div><div class="field"><label for="daily-duration">Durée souhaitée</label><select id="daily-duration">'+[10,15,20,30].map(n=>'<option value="'+n+'" '+((Number(p.dailyDuration)||20)===n?'selected':'')+'>'+n+' minutes</option>').join('')+'</select></div><div class="field"><label for="zodiac">Signe astrologique (facultatif)</label><select id="zodiac"><option value="">Aucun</option>'+signs.map(s=>'<option value="'+s+'" '+(p.zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div><p class="muted">Aucune date de naissance nécessaire.</p></section>'+
  '<section class="card"><h2>Bibliothèque de yoga</h2><p>Préparation, version douce, posture finale, respiration et précautions sont détaillées dans les fiches.</p><button type="button" class="secondary" data-action="page" data-value="yoga">Explorer les postures</button><details class="yoga-credits"><summary>Sources et crédits des illustrations</summary><p>Postures et illustrations : <a href="https://github.com/alexcumplido/yoga-api" target="_blank" rel="noopener noreferrer">Yoga API · Alexandre C.</a></p><p><a href="https://www.flaticon.com/free-icons/easy" target="_blank" rel="noopener noreferrer">Easy icons created by monkik — Flaticon</a></p><p><a href="https://www.flaticon.com/free-icons/yoga" target="_blank" rel="noopener noreferrer">Yoga icons created by dDara — Flaticon</a></p><p>Les illustrations rouges de Yoga API sont sous CC0. Les images Flaticon conservent leurs droits ; attribution globale selon leurs conditions.</p></details></section>'+
  '<section class="card"><h2>Mes données</h2><p>La synchronisation fonctionne automatiquement dès que la connexion est disponible. Tu peux conserver une copie personnelle de tes séances.</p><div class="session-controls"><button class="secondary" data-action="export">Exporter mes données</button><button class="secondary" data-action="import">Importer mes données</button><input type="file" id="import-json" accept="application/json,.json" hidden></div></section></div>'+
  '<div class="stack"><section class="card"><h2>Mes progrès</h2>'+smallStats()+'<h3>Historique</h3>'+(p.history.length?'<div class="history-list">'+p.history.slice().reverse().slice(0,15).map(x=>'<div>'+escapeHTML(x.date)+' · '+escapeHTML(x.name)+' <small>'+x.duration+' min</small></div>').join('')+'</div>':'<p class="muted">Ta première séance apparaîtra ici.</p>')+'</section>'+
@@ -437,7 +449,7 @@ async function handle(action,value){
  if(action==='pose-filter'){poseFilter=value;render();return;}
  if(action==='med-filter'){meditationFilter=value;render();return;}
  if(action==='med-level'){profile().meditationStyle=value;touch();render();return;}
- if(action==='practice-mode'){profile().practiceMode=value;touch();render();return;}
+ if(action==='practice-mode'){profile().practiceMode=value;delete profile().dailyChoice;touch();render();return;}
  if(action==='theme'){profile().theme=value;touch();render();return;}
  if(action==='select-program'){profile().selectedProgram=value;touch();render();return;}
  if(action==='favorite'){const list=profile().favorites;profile().favorites=list.includes(value)?list.filter(x=>x!==value):[...list,value];touch();render();return;}
@@ -470,6 +482,11 @@ document.addEventListener('submit',(e)=>{
  e.preventDefault();Accounts.onSubmit(form).catch(err=>notice(err.message));
 });
 document.addEventListener('change',async(e)=>{
+ if(e.target.id==='daily-goal'||e.target.id==='daily-duration'){
+   if(e.target.id==='daily-goal')profile().dailyGoal=e.target.value;
+   else profile().dailyDuration=Number(e.target.value);
+   delete profile().dailyChoice;touch();render();
+ }
  if(e.target.id==='zodiac'||e.target.id==='astro-sign'){profile().zodiac=e.target.value;astrologyLive=null;touch();render();refreshAstrology();}
  if(e.target.id==='import-json'){
   const file=e.target.files?.[0];if(!file)return;
