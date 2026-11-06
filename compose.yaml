@@ -8,6 +8,8 @@ services:
     container_name: sichosana-app
     restart: unless-stopped
     init: true
+    # Convention NAS-DAMIEN : bridge Docker historique, IP NAS + port dédié.
+    network_mode: bridge
     environment:
       SICHOSANA_WEB_ROOT: /app/static
       SICHOSANA_DATA_DIR: /data
