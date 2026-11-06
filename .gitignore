@@ -11,3 +11,6 @@ node_modules/
 compose.bridge.yaml
 compose.cloudflare.yaml
 .env.bak.*
+
+.env.mail.*
+.smtp.*
