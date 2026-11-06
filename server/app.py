@@ -227,7 +227,7 @@ def too_many_attempts(ip):
 
 
 class Handler(SimpleHTTPRequestHandler):
-    server_version = "SichoSana/0.2"
+    server_version = "SichoSana/2.1"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(STATIC), **kwargs)
@@ -265,6 +265,73 @@ class Handler(SimpleHTTPRequestHandler):
             raise ValueError("Objet JSON attendu.")
         return data
 
+    def serve_audio(self, url_path, head_only=False):
+        """Réponses MP3 Range HTTP/1.1 compatibles iOS Safari et reprises audio."""
+        from urllib.parse import unquote
+        from pathlib import Path
+        import re
+        rel = unquote(url_path).lstrip("/")
+        file_path = (STATIC / rel).resolve()
+        if not file_path.is_relative_to(STATIC) or not file_path.is_file():
+            self.send_error(404, "Audio introuvable.")
+            return
+        size = file_path.stat().st_size
+        if not size:
+            self.send_error(404, "Audio vide.")
+            return
+        value = self.headers.get("Range", "")
+        start, end = 0, size - 1
+        partial = False
+        if value:
+            match = re.fullmatch(r"bytes=(\d*)-(\d*)", value.strip())
+            if not match or not (match.group(1) or match.group(2)):
+                self.send_response(416)
+                self.send_header("Content-Range", f"bytes */{size}")
+                self.send_header("Accept-Ranges", "bytes")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
+            first, last = match.groups()
+            if first:
+                start = int(first)
+                end = min(int(last), size - 1) if last else size - 1
+            else:
+                length = int(last)
+                start = max(0, size - length)
+            if start >= size or start > end:
+                self.send_response(416)
+                self.send_header("Content-Range", f"bytes */{size}")
+                self.send_header("Accept-Ranges", "bytes")
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return
+            partial = True
+        self.send_response(206 if partial else 200)
+        self.send_header("Content-Type", "audio/mpeg")
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(end - start + 1))
+        self.send_header("Cache-Control", "public, max-age=86400")
+        if partial:
+            self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+        self.end_headers()
+        if head_only:
+            return
+        with file_path.open("rb") as src:
+            src.seek(start)
+            remaining = end - start + 1
+            while remaining > 0:
+                data = src.read(min(64_000, remaining))
+                if not data:
+                    break
+                self.wfile.write(data)
+                remaining -= len(data)
+
+    def do_HEAD(self):
+        path = urlsplit(self.path).path
+        if path.startswith("/voice/") and path.endswith(".mp3"):
+            return self.serve_audio(path, head_only=True)
+        return super().do_HEAD()
+
     def do_GET(self):
         path = urlsplit(self.path).path
         try:
@@ -281,6 +348,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.json_response(200, current_snapshot(authenticated_group(self.headers)))
             if path.startswith("/api/"):
                 return self.json_response(404, {"error": "Route inexistante."})
+            if path.startswith("/voice/") and path.endswith(".mp3"):
+                return self.serve_audio(path)
             if path == "/":
                 self.path = "/index.html"
             return super().do_GET()
