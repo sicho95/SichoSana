@@ -21,6 +21,10 @@ jobs:
         run: |
           node --check static/app.js
           node --check static/sw.js
+      - name: Check deployment shell syntax
+        run: |
+          sh -n scripts/upgrade-v2.1-qnap.sh
+          sh -n scripts/configure-smtp-gmail-qnap.sh
       - name: Check Python syntax
         run: python -m compileall -q server scripts
       - name: API and SQLite tests
