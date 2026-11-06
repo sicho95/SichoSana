@@ -392,6 +392,7 @@ async function handle(action,value){
  if(action==='export')return exportData();
  if(action==='import')return $('#import-json')?.click();
  if(action==='cache-voice')return cacheVoicePack();
+ if(action==='replay-voice'){if(session)return playVoice(session.steps[stepIndex(session)].clip);return;}
  if(action==='notifications')return notifications();
 }
 document.addEventListener('click',(e)=>{
@@ -447,7 +448,8 @@ async function init(){
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
   try{const frozen=await fetch('/data/yoga-api-library.json');if(frozen.ok){const items=(await frozen.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...items.filter(p=>!ids.has(p.id)));}}catch(err){} // catalogue local, accessible même sans serveur
   try{const r=await fetch('/api/v1/poses');if(r.ok){const extra=(await r.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...extra.filter(p=>!ids.has(p.id)));}}catch(err){} // bibliothèque préchargée disponible hors réseau
-  await Accounts.resume();
+  voiceManifest().catch(()=>{});
+   await Accounts.resume();
   render();
   if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
  }catch(err){$('#main').innerHTML='<div class="attention"><h2>Initialisation impossible</h2><p>'+escapeHTML(err.message)+'</p><p>Vérifie la connexion initiale et le stockage de ton appareil.</p></div>';}
