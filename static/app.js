@@ -262,8 +262,11 @@ function playReadyClip(clip,pack){
   if($('#audio-label'))$('#audio-label').textContent=voiceStatus;
  }).catch(err=>{
   if(playId!==voicePlayId)return;
-  const blocked=err?.name==='NotAllowedError'||err?.name==='NotSupportedError';
-  voiceStatus=blocked?'Appuie sur « Écouter la consigne » pour activer le son.':'Audio inaccessible : vérifier le fichier ou la connexion.';
+  voiceStatus=err?.name==='NotAllowedError'
+   ?'Appuie sur « Écouter la consigne » pour autoriser la lecture.'
+   :err?.name==='NotSupportedError'
+   ?'Ce format audio n’est pas pris en charge par ce navigateur.'
+   :'Audio inaccessible : vérifier le fichier ou la connexion.';
   if($('#audio-label'))$('#audio-label').textContent=voiceStatus;
  });
 }
