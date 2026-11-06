@@ -87,7 +87,7 @@ export function adminScreen(){
    (u.id!==user().id?'<button class="small-btn" data-account="manage" data-admin-id="'+clean(u.id)+'" data-admin-action="delete">Supprimer</button>':'')+
    '</div></article>';
  }).join(''):'<div class="card"><p>Charge les comptes pour voir les demandes.</p></div>')+
- '<section class="card"><h3>Emails administratifs</h3><p>Les notifications sont envoyées à tous les administrateurs actifs après inscription. L’envoi nécessite un SMTP configuré sur le serveur.</p><button class="secondary" data-account="retry-emails">Réessayer les emails en attente</button></section></div>';
+ '<section class="card smtp-admin"><div class="eyebrow">Communication</div><h3>Emails administratifs</h3><p>Les inscriptions sont signalées à tous les administrateurs actifs. Les emails partent de l’adresse configurée sur le NAS.</p><p class="pill">'+(config?.emailConfigured?'Service SMTP déclaré':'SMTP à configurer sur le NAS')+'</p><p class="muted">Pour utiliser Gmail provisoirement, exécuter le script local de configuration avec un mot de passe d’application Google. Le secret ne doit jamais être saisi sur le site ni envoyé à ChatGPT.</p><button class="secondary" data-account="retry-emails">Réessayer les emails en attente</button></section></div>';
 }
 export async function onSubmit(form){
  const data=Object.fromEntries(new FormData(form));
