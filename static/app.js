@@ -23,7 +23,7 @@ const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance'
 let reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
-let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Tous', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
+let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Essentielles', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
 function openDB(){
  return new Promise((resolve,reject)=>{
    const request=indexedDB.open('sichosana-v1',1);
@@ -152,7 +152,7 @@ function posePicture(id,kind='thumb'){
 }
 function yogaPage(){
  const routines=yoga.routines.filter(r=>routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id)));
- const poses=yoga.poses.filter(p=>poseFilter==='Tous'||p.niveau===poseFilter);
+ const poses=yoga.poses.filter(p=>poseFilter==='Tous'||(poseFilter==='Essentielles'&&!p.id.startsWith('yoga-api-'))||(poseFilter==='Catalogue API'&&p.id.startsWith('yoga-api-'))||p.niveau===poseFilter);
  return heading('Pratiquer','Yoga','Une séance à ton rythme et une bibliothèque pour découvrir chaque posture.')+
  '<div class="card yoga-mode-panel"><div><div class="eyebrow">Pratique adaptée</div><h3>Comment souhaites-tu pratiquer ?</h3><p class="muted">Chaque posture peut être préparée et simplifiée avant sa version complète.</p></div><div class="segment yoga-practice-modes">'+[['initiation','Découvrir pas à pas'],['douce','Version douce'],['complete','Pratique complète']].map(([id,label])=>'<button type="button" data-action="practice-mode" data-value="'+id+'" aria-pressed="'+(practiceMode()===id)+'">'+label+'</button>').join('')+'</div></div>'+
  '<div class="yoga-tabs" role="tablist" aria-label="Explorer le yoga">'+
@@ -162,8 +162,8 @@ function yogaPage(){
  '<div class="section-heading"><h2>Les enchaînements</h2></div>'+pills(['Tous','Hatha','Vinyasa','Favoris'],routineFilter,'routine-filter')+
  '<div class="cards">'+(routines.length?routines.map(routineCard).join(''):'<p class="empty">Aucune séance pour ce filtre.</p>')+'</div>'+programsSection():
  '<div class="section-heading"><h2>Découvrir les postures</h2><span class="muted">'+poses.length+' postures</span></div>'+
- '<p class="muted">Une fiche pour chaque posture, avec consignes d’installation et précautions. Illustrations Yoga API locales : la provenance et les licences sont consultables dans le Profil.</p>'+
- pills(['Tous','Débutant','Intermédiaire'],poseFilter,'pose-filter')+
+ '<p class="muted">13 fiches essentielles guidées en trois étapes. Le catalogue Yoga API ajoute 48 fiches documentaires ; leurs descriptions anglaises restent à vérifier avant un usage comme séances guidées. Crédits dans Profil.</p>'+
+ pills(['Essentielles','Catalogue API','Tous','Débutant','Intermédiaire'],poseFilter,'pose-filter')+
  '<div class="pose-list">'+poses.map(p=>'<button class="pose-item" type="button" data-action="pose" data-value="'+escapeHTML(p.id)+'">'+posePicture(p.id,'thumb')+'<span><strong>'+escapeHTML(p.nom)+'</strong><small>'+escapeHTML(p.sanskrit)+' · '+escapeHTML(p.focus)+'</small></span></button>').join('')+'</div>'+
  '<p class="library-info">La bibliothèque fonctionne sans réseau après une première ouverture. Les postures doivent rester confortables et adaptées à chacun.</p>');
 }
