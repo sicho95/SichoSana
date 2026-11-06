@@ -53,7 +53,7 @@ printf '\n'
 curl -fsS --max-time 10 http://192.168.1.69:18887/api/v1/auth/config
 printf '\n'
 echo "[SichoSana] Pack voix :"
-docker exec sichosana-app python - <<'PY'
+docker exec -i sichosana-app python - <<'PY'
 import json
 from pathlib import Path
 p=Path('/app/static/voice/vivienne-fr-v2')
