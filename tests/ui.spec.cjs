@@ -22,6 +22,7 @@ test('iPhone: inscription non affichée après connexion, yoga et progression',a
  const navHeight=await page.locator('.bottom-nav').evaluate(n=>n.getBoundingClientRect().height);
  expect(navHeight).toBeLessThan(110);
  await expect(page.locator('.sidebar')).toBeHidden();
+ const expectedRoutine=await page.locator('.hero h2').innerText();
  await page.locator('[data-action="start-yoga"]').first().click();
  await expect(page.locator('#countdown')).toBeVisible();
  await expect(page.locator('.audio-replay')).toBeVisible();
@@ -30,7 +31,7 @@ test('iPhone: inscription non affichée après connexion, yoga et progression',a
  await page.locator('[data-action="pause"]').click();
  await page.locator('[data-action="finish"]').click();
  await page.locator('.bottom-nav [data-value="profile"]').click();
- await expect(page.locator('.history-list')).toContainText('Hatha doux');
+ await expect(page.locator('.history-list')).toContainText(expectedRoutine);
  await expect(page.getByRole('heading',{name:'Synchronisation NAS'})).toHaveCount(0);
  await expect(page.getByRole('button',{name:'Ouvrir l’administration'})).toBeVisible();
  await page.getByRole('button',{name:'Ouvrir l’administration'}).click();
