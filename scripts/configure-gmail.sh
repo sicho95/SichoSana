@@ -14,7 +14,7 @@ printf 'Adresse expéditrice [sicho95@gmail.com] : '
 IFS= read -r ADDRESS
 [ -n "$ADDRESS" ] || ADDRESS="sicho95@gmail.com"
 case "$ADDRESS" in
-  *[ ;#$`'"<>]*|'') echo "Adresse invalide." >&2; exit 1 ;;
+  *[!A-Za-z0-9._%+@-]*|\'\') echo "Adresse invalide." >&2; exit 1 ;;
 esac
 case "$ADDRESS" in *@*.*) : ;; *) echo "Adresse invalide." >&2; exit 1 ;; esac
 printf '%s\n' 'Utilise un mot de passe d’application Google (validation en 2 étapes requise).'
