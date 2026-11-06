@@ -7,8 +7,8 @@ const escapeHTML = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => 
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2));
 const formatTime = (n) => { const s = Math.max(0, Math.ceil(n)); return Math.floor(s/60).toString().padStart(2,'0')+':'+(s%60).toString().padStart(2,'0'); };
 const todayKey = () => { const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-'); };
-const logo = '<span class="brand-seal" aria-hidden="true">S</span>';
-const nav = [{id:'home',text:'Accueil',glyph:'⌂'},{id:'yoga',text:'Yoga',glyph:'◈'},{id:'meditate',text:'Méditer',glyph:'☼'},{id:'astro',text:'Astro',glyph:'☾'},{id:'profile',text:'Profil',glyph:'♙'}];
+const logo = '<img class="lotus-mark" src="/icon.svg" alt="" width="40" height="40">';
+const nav = [{id:'home',text:'Accueil',glyph:'⌂'},{id:'yoga',text:'Yoga',glyph:'♧'},{id:'meditate',text:'Méditer',glyph:'☼'},{id:'astro',text:'Astro',glyph:'☾'},{id:'profile',text:'Profil',glyph:'♙'}];
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
 let reflections={reflections:[]}, poseMedia={photos:[]}, astrologyLive=null, yogaTab='seances';
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
@@ -30,9 +30,9 @@ function notice(text){const e=$('#toast');e.textContent=text;e.classList.add('sh
 function brand(){return '<div class="brand">'+logo+'<span>Sicho<span>Sana</span></span></div>';}
 function navButton(item){return '<button type="button" class="nav-link" data-action="page" data-value="'+item.id+'" '+(page===item.id?'aria-current="page"':'')+'><span class="nav-glyph">'+item.glyph+'</span><span>'+item.text+'</span></button>';}
 function renderShell(){
- const all=Accounts.user()?.role==='admin'?[...nav,{id:'admin',text:'Admin',glyph:'⚙'}]:nav;
+ const all=Accounts.user()?.role==='admin'?[...nav,{id:'admin',text:'Admin',glyph:'♧'}]:nav;
  $('#sidebar').innerHTML=brand()+'<nav>'+all.map(navButton).join('')+'</nav><p class="sidebar-tag">Un moment pour soi,<br>à son rythme.</p>';
- $('#bottomnav').innerHTML=all.map(navButton).join('');
+ $('#bottomnav').innerHTML=nav.map(navButton).join(''); // cinq onglets fixes, admin dans Profil
  $('#topbar').innerHTML='<div class="desktop-brand">'+brand()+'</div><div class="top-actions"><span class="connection-pill">'+(navigator.onLine?'● En ligne':'○ Hors ligne')+'</span><button class="icon-btn" type="button" data-action="notifications" aria-label="Notifications">♧</button><button class="profile-chip" type="button" data-action="page" data-value="profile"><span class="dot"></span>'+escapeHTML(Accounts.user()?.pseudo||'')+'</button></div>';
 }
 function heading(kicker,title,subtitle){return '<div class="page-heading"><div><div class="eyebrow">'+kicker+'</div><h1>'+title+'</h1>'+(subtitle?'<p class="subtitle">'+subtitle+'</p>':'')+'</div></div>';}
@@ -103,7 +103,7 @@ function programsSection(){
 function home(){
  const r=yoga.routines[0],astro=localAstro(),reflection=dailyReflection(),n=profile().history.filter(x=>x.date===todayKey()).length;
  return heading('Bienvenue','Un moment pour soi','Du mouvement, de la douceur et un peu de temps pour toi.')+
- '<div class="home-desktop-layout"><div class="home-main"><section class="hero"><div class="hero-content"><span class="pill">✧ Séance du jour</span><h2>'+escapeHTML(r.name)+'</h2><p>'+escapeHTML(r.subtitle)+'</p><div class="meta"><span>'+r.duration+' min</span><span>'+escapeHTML(r.level)+'</span></div><button class="primary" type="button" data-action="start-yoga" data-value="'+r.id+'">▷ Commencer ma séance</button></div><div class="hero-art" aria-hidden="true">'+logo+'</div></section>'+
+ '<div class="home-desktop-layout"><div class="home-main"><section class="hero"><div class="hero-content"><span class="pill">Séance du jour</span><h2>'+escapeHTML(r.name)+'</h2><p>'+escapeHTML(r.subtitle)+'</p><div class="meta"><span>'+r.duration+' min</span><span>'+escapeHTML(r.level)+'</span></div><button class="primary" type="button" data-action="start-yoga" data-value="'+r.id+'">▷ Commencer ma séance</button></div><div class="hero-art" aria-hidden="true">'+logo+'</div></section>'+
  '<div class="wellness-row"><article class="tile"><div class="tile-icon">☼</div><h3>Méditation guidée</h3><p>Une parenthèse calme, avec un niveau de guidage qui respecte ton rythme.</p><button class="text-link" data-action="page" data-value="meditate">Découvrir les séances ›</button></article><article class="tile"><div class="tile-icon">☾</div><h3>Astro du jour</h3><p>'+escapeHTML(astro.text)+'</p><button class="text-link" data-action="page" data-value="astro">Mon inspiration ›</button></article></div>'+
  '<div class="section-heading"><h2>Explorer le yoga</h2><button class="text-link" data-action="page" data-value="yoga">Toutes les séances ›</button></div><div class="cards">'+yoga.routines.slice(1,4).map(routineCard).join('')+'</div></div>'+
  '<aside class="home-aside">'+programSidebar()+'<div class="card"><div class="eyebrow">Rituel de la semaine</div><h3>7 jours de présence</h3><p class="muted">La régularité se construit sans pression.</p>'+weeklyStats()+'<p class="muted">'+n+' séance'+(n>1?'s':'')+' terminée'+(n>1?'s':'')+' aujourd’hui.</p></div>'+
@@ -162,7 +162,7 @@ function profilePage(){
  '<section class="card"><h2>Mes préférences</h2><div class="field"><label>Univers graphique</label><div class="segment">'+[['linen','Lin & Sauge'],['horizon','Horizon & Sauge']].map(([id,name])=>'<button data-action="theme" data-value="'+id+'" aria-pressed="'+(p.theme===id)+'">'+name+'</button>').join('')+'</div></div><div class="field"><label for="zodiac">Signe astrologique (facultatif)</label><select id="zodiac"><option value="">Aucun</option>'+signs.map(s=>'<option value="'+s+'" '+(p.zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div><p class="muted">Aucune date de naissance nécessaire.</p></section>'+
  '<section class="card"><h2>Mes données</h2><p>La synchronisation fonctionne automatiquement dès que la connexion est disponible. Tu peux conserver une copie personnelle de tes séances.</p><div class="session-controls"><button class="secondary" data-action="export">Exporter mes données</button><button class="secondary" data-action="import">Importer mes données</button><input type="file" id="import-json" accept="application/json,.json" hidden></div></section></div>'+
  '<div class="stack"><section class="card"><h2>Mes progrès</h2>'+smallStats()+'<h3>Historique</h3>'+(p.history.length?'<div class="history-list">'+p.history.slice().reverse().slice(0,15).map(x=>'<div>'+escapeHTML(x.date)+' · '+escapeHTML(x.name)+' <small>'+x.duration+' min</small></div>').join('')+'</div>':'<p class="muted">Ta première séance apparaîtra ici.</p>')+'</section>'+
- '<section class="card"><h2>Notifications</h2><p>Les rappels seront proposés une fois les horaires choisis et les autorisations activées.</p><button class="secondary" data-action="notifications">Mes notifications</button></section></div></div>';
+ '<section class="card"><h2>Notifications</h2><p>Les rappels seront proposés une fois les horaires choisis et les autorisations activées.</p><button class="secondary" data-action="notifications">Mes notifications</button></section>'+(Accounts.user()?.role==='admin'?'<section class="card admin-entry"><div class="eyebrow">Espace administrateur</div><h2>Gestion des comptes</h2><p class="muted">Inscriptions, permissions et emails.</p><button class="primary" data-action="page" data-value="admin">Ouvrir l’administration</button></section>':'')+'</div></div>';
 }
 function poseModal(id){
  const p=yoga.poses.find(x=>x.id===id);if(!p)return;
@@ -180,7 +180,7 @@ function closeModal(){modal='';renderModal();}
 function sessionPage(){
  if(!session)return home();
  const i=stepIndex(session),step=session.steps[i],remaining=session.duration-session.elapsed,progress=Math.min(100,100*session.elapsed/session.duration);
- return '<div class="session"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><div class="session-stage"><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div>'+(step.imageId?'<div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>':'')+'<h2>'+escapeHTML(step.title)+'</h2><p>'+escapeHTML(step.text)+'</p><p class="muted" id="audio-label">'+escapeHTML(voiceStatus)+'</p></div><div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Étape suivante</button><button class="primary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="muted">Si une posture provoque une douleur, interromps-la. Les consignes vocales ne remplacent pas l’écoute de ton corps.</p></div>';
+ return '<div class="session"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><div class="session-stage"><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div>'+(step.imageId?'<div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>':'')+'<h2>'+escapeHTML(step.title)+'</h2><p>'+escapeHTML(step.text)+'</p><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Écouter la consigne</button></div></div><div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Étape suivante</button><button class="primary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="muted">Si une posture provoque une douleur, interromps-la. Les consignes vocales ne remplacent pas l’écoute de ton corps.</p></div>';
 }
 function stepIndex(s){
  let elapsed=0;const total=s.steps.reduce((x,p)=>x+p.weight,0)||1;
@@ -215,30 +215,53 @@ function startSession(type,id){
  page=type==='yoga'?'yoga':'meditate';render();
  announceStep();clearInterval(timer);timer=setInterval(tick,300);
 }
-function stopAudio(){if(audio){audio.pause();audio.src='';audio=null;}}
+let voicePlayId=0;
+function stopAudio(){
+ ++voicePlayId;
+ if(audio){audio.pause();audio.removeAttribute('src');audio.load();}
+}
 async function voiceManifest(){
  if(manifest)return manifest;
- let res=await fetch('/voice/vivienne-fr-v2/manifest.json');
- if(!res.ok)res=await fetch('/voice/vivienne-fr-v1/manifest.json');
- if(!res.ok)throw Error('Accompagnement audio non installé.');
- const obj=await res.json();
- if(obj.format!=='sichosana-voice-pack'||obj.voiceId!=='fr-FR-VivienneMultilingualNeural')throw Error('Identité vocale inconnue.');
- manifest=obj;return obj;
+ for(const path of ['/voice/vivienne-fr-v2/manifest.json','/voice/vivienne-fr-v1/manifest.json']){
+  const res=await fetch(path,{cache:'no-store'});
+  if(!res.ok)continue;
+  const obj=await res.json();
+  if(obj.format==='sichosana-voice-pack'&&obj.voiceId==='fr-FR-VivienneMultilingualNeural'){manifest=obj;return obj;}
+ }
+ throw Error('Le pack vocal ne semble pas installé.');
 }
-async function playVoice(clip){
- stopAudio();
- try{
-  const m=await voiceManifest(),record=m.files[clip];if(!record)throw Error('Segment absent : '+clip);
-  const path='/voice/'+encodeURIComponent(m.packId)+'/'+encodeURIComponent(record.src);
-  audio=new Audio(path);audio.preload='auto';audio.volume=0.94;
-   // La hauteur tonale reste identique à la coach Running, seule la cadence change.
-   audio.preservesPitch=true;
-   if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
-   const v2=m.packId==='vivienne-fr-v2';
-   audio.playbackRate=session?.type==='meditate'?(v2?0.94:0.72):(v2?0.98:0.86);
-  await audio.play();voiceStatus='Lecture en cours';
- }catch(err){voiceStatus='Audio indisponible : '+err.message;}
- const label=$('#audio-label');if(label)label.textContent=voiceStatus;
+function playReadyClip(clip,pack){
+ const record=pack.files?.[clip];
+ if(!record)throw Error('Cette consigne est absente du pack audio.');
+ const playId=++voicePlayId;
+ if(!audio){audio=document.createElement('audio');audio.preload='auto';audio.setAttribute('playsinline','');}
+ audio.pause();
+ audio.src='/voice/'+encodeURIComponent(pack.packId)+'/'+encodeURIComponent(record.src);
+ audio.volume=.94;
+ audio.playbackRate=pack.packId==='vivienne-fr-v2'?1:(session?.type==='meditate'?.76:.88);
+ audio.preservesPitch=true;
+ if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
+ voiceStatus='Lecture de la consigne…';
+ if($('#audio-label'))$('#audio-label').textContent=voiceStatus;
+ const promise=audio.play();
+ if(promise?.then)promise.then(()=>{
+  if(playId!==voicePlayId)return;
+  voiceStatus='Voix guidée active';
+  if($('#audio-label'))$('#audio-label').textContent=voiceStatus;
+ }).catch(err=>{
+  if(playId!==voicePlayId)return;
+  const blocked=err?.name==='NotAllowedError'||err?.name==='NotSupportedError';
+  voiceStatus=blocked?'Appuie sur « Écouter la consigne » pour activer le son.':'Audio inaccessible : vérifier le fichier ou la connexion.';
+  if($('#audio-label'))$('#audio-label').textContent=voiceStatus;
+ });
+}
+function playVoice(clip){
+ if(!session)return;
+ if(manifest){try{playReadyClip(clip,manifest);}catch(err){voiceStatus=err.message;if($('#audio-label'))$('#audio-label').textContent=voiceStatus;}return;}
+ voiceStatus='Chargement de la voix…';
+ voiceManifest().then(m=>{
+  if(session&&session.steps[stepIndex(session)]?.clip===clip)playReadyClip(clip,m);
+ }).catch(()=>{voiceStatus='Le pack vocal ne peut pas être chargé.';if($('#audio-label'))$('#audio-label').textContent=voiceStatus;});
 }
 function announceStep(){
  if(!session)return;const index=stepIndex(session);
