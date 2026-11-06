@@ -11,6 +11,7 @@
   "status": "candidate-awaiting-damien-audition",
   "catalogSha256": "48d126d87143fab06bf65e9ff5ab3b5c88a34758fd2736c3ed200c30791173c5",
   "yogaCatalogSha256": "9e4ea5b991da23c41c6816c931836c0f91440dd9b9e65dda7dbec6b47a927eb0",
+  "guidanceSha256": "ca453d4113bd082174174542421c860de8f833265d850365838fb41c591ca5bb",
   "files": {
     "ancrage_discrete_00": {
       "src": "ancrage_discrete_00.mp3",
@@ -264,6 +265,97 @@
       "textSha256": "7c06b75593bb6871d8223d69c0f3557396f95eb329457622de9958f2ed333489",
       "kind": "meditation"
     },
+    "easy_adho-mukha": {
+      "src": "easy_adho-mukha.mp3",
+      "sha256": "be97725dea64e3e5e2c7fbe555aacbd98ea77220b780cf6ddb18c7b7aa696fd0",
+      "bytes": 51408,
+      "textSha256": "a0e1bf41a853ffa3d6dc38325b6c2730a02421b1bf9870e48677e34a65c2e4e9",
+      "kind": "yoga"
+    },
+    "easy_anjaneyasana": {
+      "src": "easy_anjaneyasana.mp3",
+      "sha256": "36779ff9828514ba8b5107f38768fcb265998a712b0bfbb31a7280a52835dbb0",
+      "bytes": 49680,
+      "textSha256": "a9aa1ef36873eae63599db3a18f71e218ebc855061e71f925a1f31a5fd8e18ee",
+      "kind": "yoga"
+    },
+    "easy_baddha-konasana": {
+      "src": "easy_baddha-konasana.mp3",
+      "sha256": "b2d8c974ea00a1f5703ce09fb2c666b873d14b5835c34f31bf73d45fba57333e",
+      "bytes": 44352,
+      "textSha256": "b48fc429ae3a760511b4c408a6821ca4e97eb5dfc05bd797220e84bfa7e44fb6",
+      "kind": "yoga"
+    },
+    "easy_balasana": {
+      "src": "easy_balasana.mp3",
+      "sha256": "070c94788c0402356b6b306c49df9650d7dace9b4195f49a8546e851c4a0aac8",
+      "bytes": 53424,
+      "textSha256": "1985e50c41844a58a00158f7ff09e3e92da2e8de6d9e6c651dc1d28680173e62",
+      "kind": "yoga"
+    },
+    "easy_bhujangasana": {
+      "src": "easy_bhujangasana.mp3",
+      "sha256": "6a95c189de9bb88a7c34a18e4910357229a107f71fd4fb8a148169ac7a19e89c",
+      "bytes": 57744,
+      "textSha256": "a4184c54d180e9a8e0288b2dc4193de74b3c2501eb93df4702a51e2f0ea9fd3f",
+      "kind": "yoga"
+    },
+    "easy_marjaryasana": {
+      "src": "easy_marjaryasana.mp3",
+      "sha256": "2bd0b6dd3b364595041bf9c074b0370396c3e1597103e7e0dc2122c5094c1c5c",
+      "bytes": 47952,
+      "textSha256": "6ea9a7804787e5b9b4fff764aac9b8eb0610417983d9f8bd8f3c86bc64404c93",
+      "kind": "yoga"
+    },
+    "easy_paschimottanasana": {
+      "src": "easy_paschimottanasana.mp3",
+      "sha256": "80960a6b43bfb62e8ac14694e5bd6c54272e298f3341f216b2fcab0c3bfe2d51",
+      "bytes": 54144,
+      "textSha256": "75c49d5ccdf4e129e38832ebc71aa9465d6ee3faad36a9627c3fd4e489127259",
+      "kind": "yoga"
+    },
+    "easy_savasana": {
+      "src": "easy_savasana.mp3",
+      "sha256": "aa4ba1dbc90fdce7f578a46c82a173ef245c8e911914dc8297c208a46149f00e",
+      "bytes": 58896,
+      "textSha256": "e35f5e4ec2bce6fd0707c49b24cfa1c4d3e0c4fccd05478ef0e737e5517d96e2",
+      "kind": "yoga"
+    },
+    "easy_setu-bandha": {
+      "src": "easy_setu-bandha.mp3",
+      "sha256": "0c9f0ca358d930a3199771bf31e300d3bbfd47307a0dee8a2fc106fd57a8ec1e",
+      "bytes": 49968,
+      "textSha256": "9af7f711615b80b3071a853061e452a9fca751926f37ddc80f4d8fa157cdee53",
+      "kind": "yoga"
+    },
+    "easy_supta-matsyendrasana": {
+      "src": "easy_supta-matsyendrasana.mp3",
+      "sha256": "5f2942b731320b1ee4802cabcc3b05c45b5f4f3830b555c5452db2b27a4d3fb4",
+      "bytes": 47952,
+      "textSha256": "2c6f54ad4fe42ce0f5b28be8d343eae36357ebaf9cfd9ddc47d607173cac1cdc",
+      "kind": "yoga"
+    },
+    "easy_tadasana": {
+      "src": "easy_tadasana.mp3",
+      "sha256": "5fa2643c8db015769ed8e257e0d89ab00fe12460f0228a4b06e5365809e73e02",
+      "bytes": 51840,
+      "textSha256": "f5573b09e2d4eb8cc09dab4c59559a4ec2d192a2080eb5d2403555b4f753b691",
+      "kind": "yoga"
+    },
+    "easy_virabhadrasana2": {
+      "src": "easy_virabhadrasana2.mp3",
+      "sha256": "8777b1c9314aaba7e65d9c4ae7451c6b99813e6e9dcaca5945ced5fd1ca12dca",
+      "bytes": 44352,
+      "textSha256": "ec3d01acecac196ce6ec1752cb3b0c5abcbe79c9b64808ca5a8c1d9289fb208e",
+      "kind": "yoga"
+    },
+    "easy_vrksasana": {
+      "src": "easy_vrksasana.mp3",
+      "sha256": "e25782d07e900426b2b0d39b9e4a31389beef5834be4972c118e5ac4ce0cf154",
+      "bytes": 52128,
+      "textSha256": "221f9086ee05a7117860472ea0961946cebc441fb0358426f5ae2bffffc0f1ad",
+      "kind": "yoga"
+    },
     "gratitude_discrete_00": {
       "src": "gratitude_discrete_00.mp3",
       "sha256": "3e0b734ea252b7a4eec70f9126ab0afbf825db50b2336565fdd4141b34158ea1",
@@ -437,6 +529,97 @@
       "sha256": "00db0520127992b9602776e7543ab65ae60f9ec9f9f0fa5903c6e645361878de",
       "bytes": 60768,
       "textSha256": "301f9702de433dabddf8290bc7470705af99c20f13fdb4acfa6216cbd0585594",
+      "kind": "yoga"
+    },
+    "prepare_adho-mukha": {
+      "src": "prepare_adho-mukha.mp3",
+      "sha256": "1030aa61c1caa27ab14d65f7bd86cfc96b566f8dce9466ccf8618b7d4f261202",
+      "bytes": 58032,
+      "textSha256": "5a4644f82ec006f6bf3eaa68ae92e549c798b95efdeff2e33050b986c97f83f5",
+      "kind": "yoga"
+    },
+    "prepare_anjaneyasana": {
+      "src": "prepare_anjaneyasana.mp3",
+      "sha256": "1726a3fb4f504bb26e5ac273cab551087ca21ad79127ba086f645cbc002be35c",
+      "bytes": 48096,
+      "textSha256": "a30b67c8411cd285aee7d71f77dca2f9ba1594e2f2543fd80498520dff77e0f7",
+      "kind": "yoga"
+    },
+    "prepare_baddha-konasana": {
+      "src": "prepare_baddha-konasana.mp3",
+      "sha256": "af1ea2c78179d1a75fe2985d95669a0396077980610d24f0184b9ec787238f01",
+      "bytes": 43200,
+      "textSha256": "fe47bdc1f1570da50683607b81d493566c7b4f0f7afb02da6852229622c01efb",
+      "kind": "yoga"
+    },
+    "prepare_balasana": {
+      "src": "prepare_balasana.mp3",
+      "sha256": "48ce93ab69f3c2ea928bd38b0e2771e6efbf46b36e3fb9e67d9e14f2345e91af",
+      "bytes": 47376,
+      "textSha256": "fbb2c1ff67f94c97ec6e399a6be5f6b9ab8eeed10c75699b8793cb179bba0d17",
+      "kind": "yoga"
+    },
+    "prepare_bhujangasana": {
+      "src": "prepare_bhujangasana.mp3",
+      "sha256": "f1070286416cfca7430baef9ccd2e96d5e9d37d8d2c8298bf4fdd19bacf1942c",
+      "bytes": 48672,
+      "textSha256": "22ec547411d4dfdaa43856e64a9848c16c8fc33bc7ada3ee2378392168d048f9",
+      "kind": "yoga"
+    },
+    "prepare_marjaryasana": {
+      "src": "prepare_marjaryasana.mp3",
+      "sha256": "55bb05d2a838d7df50c3a97947e7cb207eb24e192fcaf9a5c7e96563a66175ee",
+      "bytes": 50688,
+      "textSha256": "c793253d5aa6ad4a3e037b993d0916ba2749414833d32bfdaec9e53317af82f5",
+      "kind": "yoga"
+    },
+    "prepare_paschimottanasana": {
+      "src": "prepare_paschimottanasana.mp3",
+      "sha256": "68ee4c19ba6118a3a5c99993b2f3dbeb5aaa344dcd0d128995bb554abec2f344",
+      "bytes": 51408,
+      "textSha256": "62da4f2ac4da02a1eb559939590852a166e66c790c5c5ec1157460b55e7f060a",
+      "kind": "yoga"
+    },
+    "prepare_savasana": {
+      "src": "prepare_savasana.mp3",
+      "sha256": "31f2960479f65a47e053c6af98298d2793b2147796edeeb433b49b4fb96cb010",
+      "bytes": 56592,
+      "textSha256": "e40a819d98a1d6c06f92453b50621452397a2967f3b8c19de9215d1d41e2e52d",
+      "kind": "yoga"
+    },
+    "prepare_setu-bandha": {
+      "src": "prepare_setu-bandha.mp3",
+      "sha256": "e39806b65dcda2e07e45279ae7efff00c43d4b24c71fdb4a8cd98fe8db0993d3",
+      "bytes": 49680,
+      "textSha256": "bfffc27eb2fe4ea33622620cc99ad5b782bd0293651a872c3275bbfa7744d8fc",
+      "kind": "yoga"
+    },
+    "prepare_supta-matsyendrasana": {
+      "src": "prepare_supta-matsyendrasana.mp3",
+      "sha256": "cb869d9cd26363b462f128e47bfbdc2fbf0bf1e0c40ca8eba9a2d184926daf80",
+      "bytes": 55728,
+      "textSha256": "f8f334d56a5717d813ce7c6a71489a03d76a02a9788942575f93e39dd6a80f57",
+      "kind": "yoga"
+    },
+    "prepare_tadasana": {
+      "src": "prepare_tadasana.mp3",
+      "sha256": "c369e6f3b39855e5f0e70b5d6d899d14170dd44a002c210e37f6ad6d6ce6315c",
+      "bytes": 48672,
+      "textSha256": "2e18e2b1be664cb91b3b3f94fef424023259ec0ee30a139ab35637ab8531bfbf",
+      "kind": "yoga"
+    },
+    "prepare_virabhadrasana2": {
+      "src": "prepare_virabhadrasana2.mp3",
+      "sha256": "4589e58779cbe5f3d502bd757d7c9f544a6418d5da84e3e82d9f49a2b421344d",
+      "bytes": 47520,
+      "textSha256": "d3ce0788c22b6d5c89ec9e478dab54764a9a290b883552aabfe365710f9a5256",
+      "kind": "yoga"
+    },
+    "prepare_vrksasana": {
+      "src": "prepare_vrksasana.mp3",
+      "sha256": "ce14b4e13dffcedcd11252558846d459148c26ce3a93607ffdb8bca6a41c61a8",
+      "bytes": 40032,
+      "textSha256": "f5caaec56180cc2946bcd04009f0c0432f2f475f5c9c48044bac68d9ce1ea258",
       "kind": "yoga"
     },
     "respirer_discrete_00": {
