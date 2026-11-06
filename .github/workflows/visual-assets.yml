@@ -67,6 +67,8 @@ jobs:
                   image.save('static/media/poses/'+ident+'.png',format='PNG',optimize=True,compress_level=9)
               print('Posture photo',ident,len(data))
           PY
+      - name: Homogénéiser le cadre et la colorimétrie des postures
+        run: python scripts/normalize-pose-media.py
       - name: Commit assets sur branche de préparation
         run: |
           set -euo pipefail
