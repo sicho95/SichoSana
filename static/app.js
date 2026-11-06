@@ -204,13 +204,18 @@ function profilePage(){
 }
 function poseModal(id){
  const p=yoga.poses.find(x=>x.id===id);if(!p)return;
- const photo=poseMedia.photos?.find(x=>x.id===id);
+ const guidance=poseGuidance.poses?.[id],image=yogaApiImage(id);
  modal='<div class="modal pose-modal" role="dialog" aria-modal="true" aria-label="Détail de posture">'+
  '<button class="icon-btn modal-close" data-action="close" aria-label="Fermer">×</button>'+
  '<div class="eyebrow">'+escapeHTML(p.niveau)+'</div><h2>'+escapeHTML(p.nom)+'</h2>'+
  '<p class="muted">'+escapeHTML(p.sanskrit)+'</p><div class="pose-modal-visual">'+posePicture(p.id,'large')+'</div>'+
- (photo?'<p class="image-credit"><a target="_blank" rel="noopener noreferrer" href="'+escapeHTML(photo.source)+'">'+escapeHTML(photo.credit)+'</a> · <a target="_blank" rel="noopener noreferrer" href="'+escapeHTML(photo.licenseUrl)+'">Licence</a></p>':'')+
- '<h3>Installation</h3><p>'+escapeHTML(p.instructions)+'</p><h3>À respecter</h3><p class="attention">'+escapeHTML(p.prudence||'Adapte la posture à ton confort.')+'</p></div>';
+ (image?'<p class="image-credit">Image : <a target="_blank" rel="noopener noreferrer" href="'+escapeHTML(image.source)+'">Yoga API</a> · crédits CC0 et Flaticon dans le Profil</p>':'<p class="image-credit">Pas d’illustration exacte identifiée dans Yoga API.</p>')+
+ (guidance?'<div class="pose-pedagogy"><section><div class="eyebrow">1 · Préparation</div><p>'+escapeHTML(guidance.preparation)+'</p></section>'+
+ '<section><div class="eyebrow">2 · Variante facile</div><p>'+escapeHTML(guidance.facile)+'</p></section>'+
+ '<section><div class="eyebrow">3 · Posture complète</div><p>'+escapeHTML(p.instructions)+'</p></section>'+
+ '<section><h3>Respiration</h3><p>'+escapeHTML(guidance.respiration)+'</p><h3>Alignement</h3><p>'+escapeHTML(guidance.alignement)+'</p></section></div>':
+ '<h3>Installation</h3><p>'+escapeHTML(p.instructions)+'</p>')+
+ '<h3>À respecter</h3><p class="attention">'+escapeHTML(guidance?.prudence||p.prudence||'Adapte la posture à ton confort.')+'</p></div>';
  renderModal();
 }
 function renderModal(){$('#overlay').innerHTML=modal;}
@@ -242,8 +247,18 @@ function startSession(type,id){
  if(session)return notice('Termine ou quitte la séance actuelle.');
  let steps=[],duration=0,name='';
  if(type==='yoga'){
-  const r=findRoutine(id);if(!r)return;name=r.name;duration=r.duration*60;
-  steps=r.poseIds.map((poseId)=>{const p=yoga.poses.find(x=>x.id===poseId);return {title:p?.nom||poseId,text:p?.instructions||'',weight:1,clip:'pose_'+poseId,imageId:poseId};});
+   const r=findRoutine(id);if(!r)return;name=r.name;duration=r.duration*60;
+   const mode=practiceMode();
+   for(const poseId of r.poseIds){
+    const p=yoga.poses.find(x=>x.id===poseId),guidance=poseGuidance.poses?.[poseId];
+    if(guidance&&mode!=='complete'){
+      steps.push({title:(p?.nom||poseId)+' · se préparer',text:guidance.preparation,weight:.20,clip:'prepare_'+poseId,imageId:poseId,phase:'preparation'});
+      steps.push({title:(p?.nom||poseId)+' · version douce',text:guidance.facile,weight:.35,clip:'easy_'+poseId,imageId:poseId,phase:'facile'});
+    }
+    if(mode!=='douce'||!guidance){
+      steps.push({title:p?.nom||poseId,text:p?.instructions||'',weight:1,clip:'pose_'+poseId,imageId:poseId,phase:'finale'});
+    }
+   }
  }else{
   const med=meditations.sessions.find(x=>x.id===id);if(!med)return;name=med.name;duration=med.minutes*60;
   steps=(med.scripts[profile().meditationStyle]||[]).map((x,i)=>({title:i===0?'S’installer':i===med.scripts[profile().meditationStyle].length-1?'Revenir': 'Prendre le temps',text:x.text,weight:Math.max(1,Number(x.pause)||1),clip:med.id+'_'+profile().meditationStyle+'_'+String(i).padStart(2,'0')}));
