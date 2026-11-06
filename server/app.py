@@ -272,9 +272,9 @@ class Handler(SimpleHTTPRequestHandler):
                 return
             if path == "/api/v1/content/horoscope":
                 params=parse_qs(urlsplit(self.path).query)
-                return self.json_response(200, astrology.daily(params.get('sign',[''])[0]))
+                return self.json_response(200, astrology.daily(params.get('sign',[''])[0], params.get('period',['daily'])[0]))
             if path == "/api/health":
-                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "0.2"})
+                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.1.0"})
             if path == "/api/v1/poses":
                 return self.json_response(200, pose_library())
             if path == "/api/v1/snapshot":
