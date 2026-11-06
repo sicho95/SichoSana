@@ -60,6 +60,31 @@ class ReleaseValidation(unittest.TestCase):
         self.assertIn('/weekly?',fetch.call_args.args[0].full_url)
 
 
+class YogaCurriculumValidation(unittest.TestCase):
+    def test_thirteen_guided_poses_and_safe_image_mapping(self):
+        guide=json.loads((ROOT/'static/data/pose-guidance.json').read_text(encoding='utf-8'))
+        original=json.loads((ROOT/'static/data/yoga.json').read_text(encoding='utf-8'))
+        api=json.loads((ROOT/'static/data/yoga-api-library.json').read_text(encoding='utf-8'))
+        ids={p['id'] for p in original['poses']}
+        api_ids={p['id'] for p in api['poses']}
+        self.assertEqual(set(guide['poses']),ids)
+        self.assertEqual(len(api['poses']),48)
+        for ident,entry in guide['poses'].items():
+            for required in ('preparation','facile','respiration','alignement','prudence'):
+                self.assertGreater(len(entry[required]),25,f'{ident}.{required}')
+            if entry['apiPose']:
+                self.assertIn(entry['apiPose'],api_ids)
+        self.assertIsNone(guide['poses']['bhujangasana']['apiPose'])
+        self.assertIsNone(guide['poses']['adho-mukha']['apiPose'])
+
+    def test_daily_and_practice_modes_visible(self):
+        app=(ROOT/'static/app.js').read_text(encoding='utf-8')
+        self.assertIn('function dailyRoutine()',app)
+        self.assertIn("['initiation','Découvrir pas à pas']",app)
+        self.assertIn("'prepare_'+poseId",app)
+        self.assertIn("'easy_'+poseId",app)
+        self.assertIn("p.dailyChoice={date:day,id:chosen.id}",app)
+
 class MediaHttpRange(unittest.TestCase):
     def test_ios_audio_range_206(self):
         import threading
