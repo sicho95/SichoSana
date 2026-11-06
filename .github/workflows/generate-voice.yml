@@ -1,4 +1,4 @@
-name: SichoSana — audio doux V2
+name: SichoSana — audio Vivienne progression V2
 on:
   workflow_dispatch:
   push:
@@ -6,6 +6,8 @@ on:
     paths:
       - scripts/generate-voice-pack.py
       - static/data/meditations.json
+      - static/data/pose-guidance.json
+      - static/data/yoga.json
       - .github/workflows/generate-voice.yml
 permissions:
   contents: write
@@ -29,7 +31,7 @@ jobs:
           assert m['voiceId']=='fr-FR-VivienneMultilingualNeural'
           assert m['rateYoga']=='-22%'
           assert m['rateMeditation']=='-32%'
-          assert len(m['files'])>=12
+          assert len(m['files'])>=110
           for key,item in m['files'].items():
               b=(p/item['src']).read_bytes()
               assert len(b)>=2000,key
