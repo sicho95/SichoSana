@@ -21,7 +21,7 @@ Daté du 5 novembre 2026. Les points non validés restent des questions, jamais 
 - URL publique cible : https://yoga.sicho.cc.cd.
 - Réutiliser le Cloudflare Tunnel NAS existant, ajouter uniquement la route SichoSana ; garder séparé l'accès privé des membres Tailscale/Funnel existant.
 - Dépôt canonique de travail **Forgejo sur NAS** ; miroir privé **sicho95/SichoSana sur GitHub**.
-- La branche dev/sichosana-20261105 du miroir GitHub est uniquement un espace de préparation : son contenu n'a pas encore été transféré sur le Forgejo canonique ni déployé.
+- La branche dev/sichosana-20261105 du miroir GitHub est la préparation active. Le déploiement initial a été réalisé sur le NAS le 5 novembre 2026 et l'accès yoga.sicho.cc.cd fonctionne ; la V2.2 n'est pas encore installée sur le NAS. Vérification de la synchronisation avec le Forgejo canonique encore nécessaire.
 - Déploiement Docker Compose non destructif, volume SQLite persistant, frontend local-first et sauvegarde/export.
 
 ## Questions à Damien (uniquement lorsqu'elles deviennent bloquantes)
@@ -41,12 +41,16 @@ Date : 5 novembre 2026.
 - Changement du mot de passe dans le profil ; « Mot de passe oublié » via email depuis l'écran de connexion avec lien limité dans le temps.
 - Synchronisation : complètement automatique après inscription et connexion, pour **tous** les profils de pratique du compte, avec reprise au retour réseau. Aucun contrôle visible pour l'association ou la « synchronisation NAS ». Garder export/import de sauvegarde volontaire.
 - Méditation : même identité vocale que la pratique yoga, plus lente que la voix Yoga, et avec davantage de pauses ; aucun nom de moteur ou modèle de voix dans l'interface.
-- Yoga : bibliothèque distincte de postures, photographies et consignes détaillées dans les fiches et pendant les séances ; **7/13 photos locales intégrées**, 6 restent à illustrer. Vérifier visuellement la qualité/les droits de tous les PNG.
+- Yoga : bibliothèque distincte de 13 postures éditoriales et 48 positions de Yoga API. V2.2 restaure la priorité aux PNG officiels Yoga API, avec crédits Flaticon dans Profil, neuf correspondances précises pour les 13 fiches. Quatre postures restent sans correspondance et les 48 descriptions anglaises doivent être revues. Préparation et variante douce ont été introduites pour les 13 postures, à valider en recette.
 - Astrologie : source externe réelle **en français**, texte court (1 à 2 phrases) dans l'univers yoga, réflexion et sérénité. Source candidate Sigastra, à vérifier sur le plan de la republication dans une application avec connexion (API désactivée par défaut).
 - Phrase du jour : environ **400** phrases originales, sélection quotidienne, aucune répétition exacte dans les dix derniers jours. Corpus candidat à relire.
 
 ## État d'exécution / limites
-- Les codes de la V2 sont versionnés sur la branche de préparation du miroir GitHub, sans déploiement sur le NAS ni modification DNS/Tailscale/Cloudflare.
+- Une version V2 de SichoSana a été déployée sur le NAS, avec Docker bridge et route Cloudflare existante vers http://192.168.1.69:18887 ; la V2.2 demeure uniquement candidate jusqu'à l'exécution du script local de mise à jour.
 - Le compte Sicho **n'a pas encore été créé sur le NAS**, la messagerie SMTP n'est **pas encore configurée** ; les emails réels ne peuvent être affirmés envoyés.
 - Les photographies de fond PNG et sept photographies de postures ont été ajoutées ; **l'approbation de la qualité de la maquette V2 reste à obtenir**.
 - La source Forgejo sur NAS reste la référence, et non cette note ni la conversation.
+
+## Révision de conformité V2.2
+
+Voir `docs/AUDIT_CAHIER_DES_CHARGES_V2.2.md` : référentiel Yoga API, crédits monkik/dDara/CC0, étapes pédagogiques, séances quotidiennes selon objectif/durée/historique, voix Vivienne 111 clips, SMTP à reprendre localement depuis SichoBooks, et limites restant ouvertes. Ne jamais déclarer la V2.2 déployée ni le SMTP réutilisé avant la confirmation réelle sur NAS.
