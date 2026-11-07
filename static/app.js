@@ -166,8 +166,8 @@ function yogaPage(){
  const routines=yoga.routines.filter(r=>routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id)));
  const poses=yoga.poses.filter(p=>poseFilter==='Tous'||(poseFilter==='Essentielles'&&!p.id.startsWith('yoga-api-'))||(poseFilter==='Catalogue API'&&p.id.startsWith('yoga-api-'))||p.niveau===poseFilter);
  return heading('Pratiquer','Yoga','Une séance à ton rythme et une bibliothèque pour découvrir chaque posture.')+
- '<div class="card yoga-mode-panel"><div><div class="eyebrow">Pratique adaptée</div><h3>Comment souhaites-tu pratiquer ?</h3><p class="muted">Chaque posture peut être préparée et simplifiée avant sa version complète.</p></div><div class="segment yoga-practice-modes">'+[['initiation','Découvrir pas à pas'],['douce','Version douce'],['complete','Pratique complète']].map(([id,label])=>'<button type="button" data-action="practice-mode" data-value="'+id+'" aria-pressed="'+(practiceMode()===id)+'">'+label+'</button>').join('')+'</div></div>'+
- '<div class="yoga-tabs" role="tablist" aria-label="Explorer le yoga">'+
+ '<div class="card yoga-mode-panel"><div><div class="eyebrow">Pratique adaptée</div><h3>Comment souhaites-tu pratiquer ?</h3><p class="muted">Chaque posture peut être préparée et simplifiée avant sa version complète.</p></div><div class="segment yoga-practice-modes sliding-segment" role="group" aria-label="Mode de pratique" style="--count:3;--index:'+['initiation','douce','complete'].indexOf(practiceMode())+'">'+[['initiation','Découvrir pas à pas'],['douce','Version douce'],['complete','Pratique complète']].map(([id,label])=>'<button type="button" data-action="practice-mode" data-value="'+id+'" aria-pressed="'+(practiceMode()===id)+'">'+label+'</button>').join('')+'</div></div>'+
+ '<div class="yoga-tabs sliding-segment" role="tablist" aria-label="Explorer le yoga" style="--count:2;--index:'+(yogaTab==='postures'?1:0)+'">'+
  '<button type="button" role="tab" aria-selected="'+(yogaTab==='seances')+'" data-action="yoga-tab" data-value="seances">Mes séances</button>'+
  '<button type="button" role="tab" aria-selected="'+(yogaTab==='postures')+'" data-action="yoga-tab" data-value="postures">Bibliothèque des postures <small>'+yoga.poses.length+'</small></button></div>'+
  (yogaTab==='seances'?
@@ -186,7 +186,7 @@ function meditationPage(){
  return heading('Ralentir','Méditation','Silence, présence et paroles à la juste mesure.')+
  '<div class="card meditation-intro"><div><div class="eyebrow">Un accompagnement à ton rythme</div><h3>Une voix apaisante, et des silences pour respirer</h3><p>Prends le temps d’écouter, de ressentir ou de savourer les pauses. L’accompagnement reste disponible sans réseau après téléchargement.</p></div><button class="secondary" data-action="cache-voice">Rendre les séances disponibles hors ligne</button><small id="voice-status">'+escapeHTML(voiceStatus)+'</small></div>'+
  '<div class="section-heading"><h2>Intensité du guidage</h2></div>'+
- '<div class="segment meditation-levels">'+[['discrete','Discrète'],['equilibree','Équilibrée'],['enveloppante','Enveloppante']].map(([id,t])=>'<button data-action="med-level" data-value="'+id+'" aria-pressed="'+(profile().meditationStyle===id)+'">'+t+'</button>').join('')+'</div><p class="muted">Discrète : longs silences · Équilibrée : quelques repères · Enveloppante : accompagnement plus présent.</p>'+
+ '<div class="segment meditation-levels sliding-segment" role="group" aria-label="Intensité du guidage" style="--count:3;--index:'+['discrete','equilibree','enveloppante'].indexOf(profile().meditationStyle)+'">'+[['discrete','Discrète'],['equilibree','Équilibrée'],['enveloppante','Enveloppante']].map(([id,t])=>'<button data-action="med-level" data-value="'+id+'" aria-pressed="'+(profile().meditationStyle===id)+'">'+t+'</button>').join('')+'</div><p class="muted">Discrète : longs silences · Équilibrée : quelques repères · Enveloppante : accompagnement plus présent.</p>'+
  '<div class="section-heading"><h2>Choisir un moment</h2></div>'+pills(opts,meditationFilter,'med-filter')+
  '<div class="cards">'+subset.map(medCard).join('')+'</div>';
 }
@@ -195,7 +195,7 @@ function astroPage(){
  const link=escapeHTML(a.sourceUrl||'https://sigastra.com/fr/horoscope-du-jour');
  return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture culturelle et symbolique, sans prédiction scientifique.')+
  '<div class="astro-controls"><div class="field"><label for="astro-sign">Mon signe astrologique</label><select id="astro-sign"><option value="">Choisir un signe</option>'+signs.map(s=>'<option value="'+s+'" '+(profile().zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
- '<div class="segment astro-periods" role="group" aria-label="Période">'+[['daily','Aujourd’hui'],['weekly','Cette semaine'],['monthly','Ce mois']].map(([id,name])=>'<button type="button" data-action="astro-period" data-value="'+id+'" aria-pressed="'+(astroPeriod===id)+'">'+name+'</button>').join('')+'</div></div>'+
+ '<div class="segment astro-periods sliding-segment" role="group" aria-label="Période" style="--count:3;--index:'+['daily','weekly','monthly'].indexOf(astroPeriod)+'">'+[['daily','Aujourd’hui'],['weekly','Cette semaine'],['monthly','Ce mois']].map(([id,name])=>'<button type="button" data-action="astro-period" data-value="'+id+'" aria-pressed="'+(astroPeriod===id)+'">'+name+'</button>').join('')+'</div></div>'+
  '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+new Intl.DateTimeFormat('fr-FR',{dateStyle:'long'}).format(new Date())+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML(a.text)+'</p>'+
  '<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="/astro-source.html">Horoscopes publics</a></div></div>'+
  '<div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Observe ta respiration et choisis une intention simple.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
@@ -471,6 +471,50 @@ async function handle(action,value){
  if(action==='replay-voice'){if(session)return playVoice(session.steps[stepIndex(session)].clip);return;}
  if(action==='notifications')return notifications();
 }
+/* iOS : les sélecteurs se pilotent au toucher ou à la souris par glissement,
+   en plus du clic, sans bloquer le défilement vertical ni le clavier. */
+let activeSlider=null, suppressSegmentClickUntil=0;
+document.addEventListener('pointerdown',e=>{
+ const group=e.target.closest('.sliding-segment');
+ if(!group||!e.isPrimary||(e.pointerType==='mouse'&&e.button!==0))return;
+ const box=group.getBoundingClientRect();
+ activeSlider={group,id:e.pointerId,startX:e.clientX,lastX:e.clientX,
+   width:box.width,left:box.left,dragged:false,previous:group.style.getPropertyValue('--index')};
+ group.setPointerCapture?.(e.pointerId);
+});
+document.addEventListener('pointermove',e=>{
+ const current=activeSlider;
+ if(!current||e.pointerId!==current.id)return;
+ current.lastX=e.clientX;
+ if(Math.abs(e.clientX-current.startX)<8&&!current.dragged)return;
+ current.dragged=true;
+ const count=current.group.querySelectorAll('button').length;
+ const index=Math.min(count-1,Math.max(0,Math.floor((e.clientX-current.left)/current.width*count)));
+ current.group.style.setProperty('--index',index);
+});
+document.addEventListener('pointerup',e=>{
+ const current=activeSlider;
+ if(!current||e.pointerId!==current.id)return;
+ activeSlider=null;
+ if(!current.dragged)return;
+ const buttons=[...current.group.querySelectorAll('button')];
+ const index=Math.min(buttons.length-1,Math.max(0,Math.floor((e.clientX-current.left)/current.width*buttons.length)));
+ const button=buttons[index];
+ if(!button||button.disabled)return;
+ suppressSegmentClickUntil=Date.now()+300;
+ e.preventDefault();
+ Promise.resolve(handle(button.dataset.action,button.dataset.value||'')).catch(err=>notice(err.message));
+});
+document.addEventListener('pointercancel',e=>{
+ if(activeSlider?.id!==e.pointerId)return;
+ activeSlider.group.style.setProperty('--index',activeSlider.previous);
+ activeSlider=null;
+});
+document.addEventListener('click',e=>{
+ if(Date.now()<suppressSegmentClickUntil&&e.target.closest('.sliding-segment')){
+  e.preventDefault();e.stopImmediatePropagation();
+ }
+},true);
 document.addEventListener('click',(e)=>{
  const accountButton=e.target.closest('[data-account]');
  if(accountButton){e.preventDefault();Promise.resolve(Accounts.onAction(accountButton.dataset.account,accountButton)).catch(err=>notice(err.message));return;}
