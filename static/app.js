@@ -445,7 +445,8 @@ function notifications(){
 }
 async function handle(action,value){
  if(action==='page'){if(session)abortSession();page=value;render();if(page==='admin')await Accounts.refreshAdmin();if(page==='astro')refreshAstrology();window.scrollTo(0,0);return;}
- if(action==='routine-filter'){routineFilter=value;render();return;}
+ if(action==='yoga-tab'){yogaTab=value;render();return;}
+  if(action==='routine-filter'){routineFilter=value;render();return;}
  if(action==='pose-filter'){poseFilter=value;render();return;}
  if(action==='med-filter'){meditationFilter=value;render();return;}
  if(action==='med-level'){profile().meditationStyle=value;touch();render();return;}
