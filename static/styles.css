@@ -413,3 +413,140 @@ html,body{width:100%;max-width:100%;overflow-x:clip}
  .pose-pedagogy{grid-template-columns:1fr}
  .pose-pedagogy>section{padding:13px}
 }
+
+
+/* SichoSana V2.3 — palette Lin & Sauge et composants iOS tactile/glassy.
+   Les touches sauge sont des ACCENTS, le lin est le fond dominant. */
+:root:not([data-theme="horizon"]){
+ --ink:#403f36;
+ --muted:#7d7c70;
+ --sage:#8c9f83;
+ --sage-dark:#4b6954;
+ --sage-light:#e8ece4;
+ --linen:#f5f1e8;
+ --surface:#fffcf6;
+ --line:#e6dbcd;
+ --peach:#e5d7c7;
+ --sand:#d7b698;
+ --shadow:0 9px 30px rgba(86,75,62,.055);
+ --radius:19px;
+}
+:root[data-theme="horizon"]{--sand:#d7b698}
+body{background:var(--linen)}
+.topbar{background:color-mix(in srgb,var(--linen) 86%,transparent);backdrop-filter:blur(22px) saturate(1.25)}
+.card,.tile{background:var(--surface);box-shadow:var(--shadow);border-color:var(--line)}
+.yoga-mode-panel{
+ background:linear-gradient(140deg,var(--surface) 18%,color-mix(in srgb,var(--linen) 78%,var(--sage-light)));
+ border:1px solid var(--line);
+}
+.sliding-segment{
+ --count:3;
+ --index:0;
+ position:relative;
+ display:grid!important;
+ grid-template-columns:repeat(var(--count),minmax(0,1fr));
+ align-items:stretch;
+ gap:0!important;
+ padding:4px!important;
+ border:1px solid rgba(255,255,255,.78);
+ border-radius:17px;
+ background:linear-gradient(146deg,rgba(224,216,202,.70),rgba(249,246,240,.88))!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.7),0 2px 12px rgba(86,68,54,.04);
+ backdrop-filter:blur(18px) saturate(1.18);
+ -webkit-backdrop-filter:blur(18px) saturate(1.18);
+ touch-action:pan-y;
+ user-select:none;
+ -webkit-user-select:none;
+ isolation:isolate;
+}
+.sliding-segment::before{
+ content:"";
+ position:absolute;
+ z-index:0;
+ top:4px;bottom:4px;left:4px;
+ width:calc((100% - 8px) / var(--count));
+ transform:translateX(calc(var(--index)*100%));
+ transition:transform 220ms cubic-bezier(.22,.83,.32,1);
+ background:linear-gradient(140deg,rgba(255,254,251,.98),rgba(249,247,240,.91));
+ border-radius:13px;
+ box-shadow:0 3px 12px rgba(74,74,56,.11),inset 0 1px 1px #fff;
+ border:1px solid rgba(255,255,255,.92);
+ pointer-events:none;
+}
+.sliding-segment>button,
+.segment.sliding-segment>button,
+.yoga-tabs.sliding-segment>button{
+ position:relative;
+ z-index:1;
+ width:100%;
+ min-width:0;
+ box-shadow:none!important;
+ background:transparent!important;
+ border:0!important;
+ color:var(--muted);
+ border-radius:12px;
+ transition:color 150ms ease;
+ text-align:center;
+ padding:12px 9px;
+ font-weight:550;
+}
+.sliding-segment>button[aria-selected="true"],
+.sliding-segment>button[aria-pressed="true"]{
+ color:var(--sage-dark);
+ font-weight:720;
+}
+.sliding-segment>button:focus-visible{
+ outline:2px solid var(--sage-dark);
+ outline-offset:-3px;
+}
+.yoga-tabs.sliding-segment{
+ margin:12px 0 20px;
+ max-width:100%;
+}
+.yoga-tabs.sliding-segment>button{
+ font-size:14px;
+ line-height:1.25;
+}
+.yoga-tabs.sliding-segment>button small{display:inline-block;font-size:11px;color:var(--muted)}
+.yoga-practice-modes.sliding-segment button{font-size:12px;line-height:1.28;padding:10px 5px}
+.meditation-levels.sliding-segment,.astro-periods.sliding-segment{max-width:100%}
+.hero{border-radius:23px}
+.hero h2{font-size:clamp(27px,3.2vw,43px);line-height:1.17}
+.hero-content{padding:clamp(17px,2.9vw,31px)}
+.hero .meta{margin:8px 0}
+.hero .primary{min-height:40px}
+.routine-card{border-radius:19px}
+.routine-visual{height:110px}
+.routine-body{padding:15px 16px 17px}
+.routine-body h3{font-size:20px}
+.routine-body p{font-size:13px;line-height:1.45}
+.cards{gap:13px}
+.session-stage{background:linear-gradient(150deg,#f0ebe3,#fffcf7 74%)}
+@media(max-width:779px){
+ main{padding:15px 15px calc(89px + env(safe-area-inset-bottom))}
+ .topbar{height:62px;padding:7px 14px}
+ .page-heading{margin-bottom:15px}
+ .page-heading h1{font-size:clamp(28px,7.1vw,35px)}
+ .page-heading .subtitle{font-size:14px;line-height:1.45}
+ .card,.tile{padding:16px}
+ .yoga-mode-panel{padding:15px;gap:10px;margin-bottom:14px}
+ .yoga-mode-panel h3{font-size:19px}
+ .yoga-mode-panel p{font-size:13px;line-height:1.45}
+ .yoga-practice-modes.sliding-segment>button{font-size:11px;padding:10px 3px}
+ .yoga-tabs.sliding-segment>button{padding:11px 5px;font-size:12px}
+ .yoga-tabs.sliding-segment{margin:10px 0 14px}
+ .hero{min-height:225px}
+ .hero-content{min-height:225px;padding:20px}
+ .hero h2{font-size:33px}
+ .hero p{font-size:13px}
+ .routine-visual{height:90px}
+ .routine-body{padding:13px 14px}
+ .routine-body h3{font-size:19px}
+ .section-heading{margin:22px 0 12px}
+ .section-heading h2{font-size:23px}
+ .session-stage{padding:13px 12px}
+ .session-stage h2{font-size:24px}
+ .session-stage p{font-size:13px}
+ .bottom-nav{background:rgba(253,250,244,.93);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+}
+@media(prefers-reduced-motion:reduce){.sliding-segment::before{transition:none!important}}
