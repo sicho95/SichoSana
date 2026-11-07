@@ -153,3 +153,27 @@ test('audio Safari: réponses partielles 206 conservées avec le service worker 
  expect(result.suffixLength).toBe(32);
  expect(result.supported).not.toBe('');
 });
+
+
+test('iPhone: onglets yoga et sélecteur glassy au doigt',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await signIn(page);
+ await page.locator('.bottom-nav [data-value="yoga"]').click();
+ const tabs=page.locator('.yoga-tabs.sliding-segment');
+ await expect(tabs).toBeVisible();
+ await expect(tabs.locator('button[role="tab"]')).toHaveCount(2);
+ await tabs.locator('[data-value="postures"]').click();
+ await expect(page.locator('.pose-list .pose-item')).toHaveCount(13);
+ await tabs.locator('[data-value="seances"]').click();
+ await expect(page.locator('.routine-card')).not.toHaveCount(0);
+ const slider=page.locator('.yoga-practice-modes.sliding-segment');
+ await expect(slider).toBeVisible();
+ const box=await slider.boundingBox();
+ await page.mouse.move(box.x+box.width/6,box.y+box.height/2);
+ await page.mouse.down();
+ await page.mouse.move(box.x+box.width*5/6,box.y+box.height/2,{steps:7});
+ await page.mouse.up();
+ await expect(page.locator('.yoga-practice-modes [data-value="complete"]')).toHaveAttribute('aria-pressed','true');
+ await expect(page.locator('.yoga-practice-modes')).toHaveAttribute('style',/--index:2/);
+ await page.screenshot({path:'screenshots/yoga-iphone-glassy.png',fullPage:true});
+});
