@@ -26,6 +26,8 @@ test('iPhone: inscription non affichée après connexion, yoga et progression',a
  await page.locator('[data-action="start-yoga"]').first().click();
  await expect(page.locator('#countdown')).toBeVisible();
  await expect(page.locator('.audio-replay')).toBeVisible();
+ await page.locator('.audio-replay').click();
+ await expect(page.locator('#audio-label')).toContainText('Voix guidée active',{timeout:15000});
  await page.locator('[data-action="pause"]').click();
  await expect(page.locator('[data-action="pause"]')).toContainText('Reprendre');
  await page.locator('[data-action="pause"]').click();
