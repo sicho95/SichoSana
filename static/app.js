@@ -300,9 +300,12 @@ function playReadyClip(clip,pack){
  const record=pack.files?.[clip];
  if(!record)throw Error('Cette consigne est absente du pack audio.');
  const playId=++voicePlayId;
- if(!audio){audio=document.createElement('audio');audio.preload='auto';audio.setAttribute('playsinline','');}
- audio.pause();
- audio.src='/voice/'+encodeURIComponent(pack.packId)+'/'+encodeURIComponent(record.src);
+ // Identique au lecteur qui fonctionne dans ResurGo Running :
+ // un Audio neuf par consigne, play() lancé directement depuis l'interaction.
+ if(audio)audio.pause();
+ const url='/voice/'+encodeURIComponent(pack.packId)+'/'+encodeURIComponent(record.src);
+ audio=new Audio(url);
+ audio.preload='auto';
  audio.volume=.94;
  audio.playbackRate=pack.packId==='vivienne-fr-v2'?1:(session?.type==='meditate'?.76:.88);
  audio.preservesPitch=true;
@@ -319,8 +322,8 @@ function playReadyClip(clip,pack){
   voiceStatus=err?.name==='NotAllowedError'
    ?'Appuie sur « Écouter la consigne » pour autoriser la lecture.'
    :err?.name==='NotSupportedError'
-   ?'Ce format audio n’est pas pris en charge par ce navigateur.'
-   :'Audio inaccessible : vérifier le fichier ou la connexion.';
+   ?'La lecture du MP3 a échoué (ressource ou cache). Réessaie « Écouter la consigne ».'
+   :'Audio inaccessible : vérifie le réseau, puis relance la consigne.';
   if($('#audio-label'))$('#audio-label').textContent=voiceStatus;
  });
 }
