@@ -120,3 +120,36 @@ test('synchronisation de tous les profils sans réglage NAS',async({browser})=>{
   await expect(b.locator('#sync-code')).toHaveCount(0);
  }finally{await c1.close();await c2.close();}
 });
+
+
+test('audio Safari: réponses partielles 206 conservées avec le service worker et offline',async({page})=>{
+ await page.goto(url);
+ await page.evaluate(async()=>{await navigator.serviceWorker.ready;});
+ await page.reload();
+ await expect.poll(()=>page.evaluate(()=>!!navigator.serviceWorker.controller),{timeout:12000}).toBe(true);
+ const file='/voice/vivienne-fr-v2/pose_balasana.mp3';
+ const result=await page.evaluate(async file=>{
+  const full=await fetch(file,{cache:'no-store'});
+  if(!full.ok)throw new Error('MP3 manquant : '+full.status);
+  const bytes=await full.arrayBuffer();
+  // Installation du fichier entier dans le cache hors ligne par l'utilisateur.
+  const cache=await caches.open('sichosana-vivienne-test');
+  await cache.put(file,new Response(bytes,{status:200,headers:{'Content-Type':'audio/mpeg'}}));
+  const part=await fetch(file,{headers:{Range:'bytes=0-63'}});
+  const data=await part.arrayBuffer();
+  const suffix=await fetch(file,{headers:{Range:'bytes=-32'}});
+  const data2=await suffix.arrayBuffer();
+  return {code:part.status,length:data.byteLength,
+    contentRange:part.headers.get('Content-Range'),
+    accepts:part.headers.get('Accept-Ranges'),
+    suffixCode:suffix.status,suffixLength:data2.byteLength,
+    supported:document.createElement('audio').canPlayType('audio/mpeg')};
+ },file);
+ expect(result.code).toBe(206);
+ expect(result.length).toBe(64);
+ expect(result.contentRange).toMatch(/^bytes 0-63\/\d+$/);
+ expect(result.accepts).toBe('bytes');
+ expect(result.suffixCode).toBe(206);
+ expect(result.suffixLength).toBe(32);
+ expect(result.supported).not.toBe('');
+});
