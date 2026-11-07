@@ -1,3 +1,5 @@
+> **Version de préparation V2.3 (7 novembre 2026)** — le NAS de production reste en V2.2 tant que le script de migration n'a pas été exécuté. Le correctif audio iOS empêche désormais le service worker de mettre en cache les réponses partielles HTTP 206 ; le lecteur reprend `new Audio(url)` de ResurGo. La navigation Yoga et les sélecteurs glissants ont été réparés. La photothèque originale est encore en recette : 38 candidats / 48 postures API, 10 images exactes manquantes ; ne pas annoncer 48/48. Voir `docs/CHARTE_ILLUSTRATIONS_ET_RECETTE_V2_3.md`.
+
 # SichoSana
 
 PWA française de yoga, méditation et équilibre. Deux thèmes validés : Lin & Sauge et Horizon & Sauge. Interfaces dédiées au téléphone (navigation basse), à l'iPad (navigation horizontale et zones multiples) et à l'ordinateur (barre latérale).
