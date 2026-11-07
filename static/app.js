@@ -484,14 +484,18 @@ document.addEventListener('pointerdown',e=>{
  const box=group.getBoundingClientRect();
  activeSlider={group,id:e.pointerId,startX:e.clientX,lastX:e.clientX,
    width:box.width,left:box.left,dragged:false,previous:group.style.getPropertyValue('--index')};
- group.setPointerCapture?.(e.pointerId);
+ // Ne pas capturer un simple tap : Safari / Chromium doivent continuer
+ // à adresser le clic à leur bouton, pas au conteneur du segment.
 });
 document.addEventListener('pointermove',e=>{
  const current=activeSlider;
  if(!current||e.pointerId!==current.id)return;
  current.lastX=e.clientX;
  if(Math.abs(e.clientX-current.startX)<8&&!current.dragged)return;
- current.dragged=true;
+ if(!current.dragged){
+   current.dragged=true;
+   current.group.setPointerCapture?.(e.pointerId);
+ }
  const count=current.group.querySelectorAll('button').length;
  const index=Math.min(count-1,Math.max(0,Math.floor((e.clientX-current.left)/current.width*count)));
  current.group.style.setProperty('--index',index);
