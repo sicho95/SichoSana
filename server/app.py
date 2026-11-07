@@ -227,7 +227,7 @@ def too_many_attempts(ip):
 
 
 class Handler(SimpleHTTPRequestHandler):
-    server_version = "SichoSana/2.2"
+    server_version = "SichoSana/2.3"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(STATIC), **kwargs)
@@ -341,7 +341,7 @@ class Handler(SimpleHTTPRequestHandler):
                 params=parse_qs(urlsplit(self.path).query)
                 return self.json_response(200, astrology.daily(params.get('sign',[''])[0], params.get('period',['daily'])[0]))
             if path == "/api/health":
-                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.2.0"})
+                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.0"})
             if path == "/api/v1/poses":
                 return self.json_response(200, pose_library())
             if path == "/api/v1/snapshot":
