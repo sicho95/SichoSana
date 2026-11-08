@@ -12,6 +12,7 @@
   "catalogSha256": "48d126d87143fab06bf65e9ff5ab3b5c88a34758fd2736c3ed200c30791173c5",
   "yogaCatalogSha256": "9e4ea5b991da23c41c6816c931836c0f91440dd9b9e65dda7dbec6b47a927eb0",
   "guidanceSha256": "ca453d4113bd082174174542421c860de8f833265d850365838fb41c591ca5bb",
+  "salutationsSha256": "f61ca417d47f7edba9b42e1437e24cd323ae4754844a6f2b0a8cf0b813b4bf27",
   "files": {
     "ancrage_discrete_00": {
       "src": "ancrage_discrete_00.mp3",
@@ -454,6 +455,20 @@
       "textSha256": "8fafc12a1ed9b4d1bd1a5b7da1206ae4d67223e04c34bfaa815d752e20a968d1",
       "kind": "yoga"
     },
+    "pose_ardha-chandra-lateral": {
+      "src": "pose_ardha-chandra-lateral.mp3",
+      "sha256": "1a150d9972340448b2a835a693df04c18209f1ba62a10f3358a434ffbc38b7fc",
+      "bytes": 103968,
+      "textSha256": "b855be8b43841e43a1b17cac0221b8f91e6ac32c838af125a0878af496414cc0",
+      "kind": "yoga"
+    },
+    "pose_ardha-uttanasana": {
+      "src": "pose_ardha-uttanasana.mp3",
+      "sha256": "e0a6cd0dd1269efc14a79ac0ef8c3adcd93270060fdcd5a8f2a3833908fae3b9",
+      "bytes": 102960,
+      "textSha256": "f2462c2493ef559c200c8d78149a33d4471ce26ada6e07d8b2958a9b86cadb9e",
+      "kind": "yoga"
+    },
     "pose_baddha-konasana": {
       "src": "pose_baddha-konasana.mp3",
       "sha256": "03d87b7b1843535ca6b1e82a02fdb2592dbb0608bd08ca1de2b605b5a84fb57b",
@@ -475,6 +490,13 @@
       "textSha256": "56168b2c12b4e59cfcaff0f3a584176049953287f5d815edd415d29c607d5951",
       "kind": "yoga"
     },
+    "pose_chaturanga": {
+      "src": "pose_chaturanga.mp3",
+      "sha256": "8f4a2618910264f46c796adbdff69b2112773f066ff6cd0ed26ca028b3358d9a",
+      "bytes": 98208,
+      "textSha256": "19e95f086daf607ff73b08a40f368acfd361cd4c94280d9015e0e551f2683374",
+      "kind": "yoga"
+    },
     "pose_marjaryasana": {
       "src": "pose_marjaryasana.mp3",
       "sha256": "ca5fd95995001f16cf0480e5509d7cdd7ba801d8ee7efaf1acfb521bb30f51a3",
@@ -482,11 +504,25 @@
       "textSha256": "419578328f42c35301ca9942a7999110191e663d0fab1ce8527508039ce629d2",
       "kind": "yoga"
     },
+    "pose_parsvottanasana": {
+      "src": "pose_parsvottanasana.mp3",
+      "sha256": "01823be0c7b0a7c61fd3b01e037cbc6858afb189cee33d0f0ac65a107acfb43d",
+      "bytes": 98208,
+      "textSha256": "5a0e54b8e168c0c4ac6561f9bae78a01fd790499a3638a43cdcbc390fa6eacda",
+      "kind": "yoga"
+    },
     "pose_paschimottanasana": {
       "src": "pose_paschimottanasana.mp3",
       "sha256": "1bdfa33618bda9adf4e003830f047a94622661d9655379d571b3487f41ee495b",
       "bytes": 77760,
       "textSha256": "357bfb3790da919b24ff0f688beff33ec45753b722ab02de854d243b9d620102",
+      "kind": "yoga"
+    },
+    "pose_phalakasana": {
+      "src": "pose_phalakasana.mp3",
+      "sha256": "83f94db32119bc4e05b41bb0a88dee39ad832130f116bf2722a331bdc64f979a",
+      "bytes": 99072,
+      "textSha256": "06a5a53d9fdcf42c8348906316adb92524c0dbcf197f0dd60ba4513686b70fac",
       "kind": "yoga"
     },
     "pose_savasana": {
@@ -503,6 +539,13 @@
       "textSha256": "a1cdd6ba6302f533bd63235980155d9dad8233633ac163985e6a4b12f614b04a",
       "kind": "yoga"
     },
+    "pose_skandasana": {
+      "src": "pose_skandasana.mp3",
+      "sha256": "c9d8b6dbb415e7ff62743dad8afdfcbe75df8c5d99da3367e2ad5aadcfe6fb3e",
+      "bytes": 103248,
+      "textSha256": "0e37bb666a674ccb7d6b88b5e064d9c055b4d457ad48ac855196f56c65805570",
+      "kind": "yoga"
+    },
     "pose_supta-matsyendrasana": {
       "src": "pose_supta-matsyendrasana.mp3",
       "sha256": "aef9695d14fa51af9f4c7a064d4bbce1b7bb7ae022859c59676c2c6d56b15827",
@@ -515,6 +558,48 @@
       "sha256": "29d58c64c5089215873b428cbb54d2c534002fea8c9d4b83a652016f1efe8fb2",
       "bytes": 58896,
       "textSha256": "0c4b677407e79a21a2d38df5fd5fa965b523df60757fe7ae5cd503713d197953",
+      "kind": "yoga"
+    },
+    "pose_trikonasana": {
+      "src": "pose_trikonasana.mp3",
+      "sha256": "02f181a4c42736116132db9ec0992cee92b6e7149038edba3f4d9b98e39c550d",
+      "bytes": 100224,
+      "textSha256": "40f0440e0e7c7cc55afbc2ee6cdfa2a579534981cb36e95f984c74efa4816a00",
+      "kind": "yoga"
+    },
+    "pose_urdhva-hastasana": {
+      "src": "pose_urdhva-hastasana.mp3",
+      "sha256": "0275294dd62f139a786ec06b164dc601a0dc5819857f08a24123b76c239abae2",
+      "bytes": 95328,
+      "textSha256": "37f12a1958084111257992faee4925b288ce91123a495f097ab56ddb88306fa3",
+      "kind": "yoga"
+    },
+    "pose_urdhva-mukha": {
+      "src": "pose_urdhva-mukha.mp3",
+      "sha256": "a3f6b2eed864ff0d417c944eac560c0e576d6f2a10aea107680668589ab59687",
+      "bytes": 111312,
+      "textSha256": "091e0e927c22f5d54587debe8960305a557eb57950779a7cdcf73d395143a932",
+      "kind": "yoga"
+    },
+    "pose_utkata-konasana": {
+      "src": "pose_utkata-konasana.mp3",
+      "sha256": "cd9ad58d24863037b7e9dfd7266ff195898ac27cda36fe925d055b180084cedd",
+      "bytes": 99504,
+      "textSha256": "b48123bd7bece2821c76019e4b05c165ae155b3a766e3a5c4cbcc2b39228e328",
+      "kind": "yoga"
+    },
+    "pose_uttanasana": {
+      "src": "pose_uttanasana.mp3",
+      "sha256": "7368a62a094ed99d995f585da433a06e1264d927e63e86081d5b5a070083e939",
+      "bytes": 101808,
+      "textSha256": "bdea1f58de8dc3ffbae2826292a71eed0bed9dc5a1438d86dc3178ae914d6547",
+      "kind": "yoga"
+    },
+    "pose_utthita-tadasana": {
+      "src": "pose_utthita-tadasana.mp3",
+      "sha256": "f1f07f5ffedf926643a9228392d1b00776563197f6a2d34bb7bef2f0f3ec0081",
+      "bytes": 93888,
+      "textSha256": "f58767060e29ca92a3d7409eba0ca24e6cd0ed20880a79ec1e85de3c1c3cf08f",
       "kind": "yoga"
     },
     "pose_virabhadrasana2": {
@@ -705,6 +790,426 @@
       "bytes": 40320,
       "textSha256": "65b07ff4c51f1cbb00a59c2e23c879823a493433f516acf06f2b8ce442ed2efa",
       "kind": "meditation"
+    },
+    "salutation_salutation-lune_00_easy": {
+      "src": "salutation_salutation-lune_00_easy.mp3",
+      "sha256": "a6ae4d920033de64d34249a86d7d48e28f9da95b957f64c0526f46e8e4d06870",
+      "bytes": 54576,
+      "textSha256": "94b7999e300dbeae6f6302660f74dd562d2335db21a4772c0fe4042964741765",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_00_full": {
+      "src": "salutation_salutation-lune_00_full.mp3",
+      "sha256": "c6eb1a9324168690a92126ccef87d6f6da7ecde3d6134a6915e2bd7f0cf96ade",
+      "bytes": 54576,
+      "textSha256": "94b7999e300dbeae6f6302660f74dd562d2335db21a4772c0fe4042964741765",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_01_easy": {
+      "src": "salutation_salutation-lune_01_easy.mp3",
+      "sha256": "88f7c799592a15642451cc4bf0c40abb0151e11e969b97fd33cbcdf6514a2461",
+      "bytes": 43920,
+      "textSha256": "7a97674a937a302c6b73844e8907e6622eacf134b5a06da352b86bb8f38190a9",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_01_full": {
+      "src": "salutation_salutation-lune_01_full.mp3",
+      "sha256": "8670af51bd9fe1d48f1d298f2642e623746bfe35b25c6f033770b4ab86dfd30e",
+      "bytes": 43920,
+      "textSha256": "7a97674a937a302c6b73844e8907e6622eacf134b5a06da352b86bb8f38190a9",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_02_easy": {
+      "src": "salutation_salutation-lune_02_easy.mp3",
+      "sha256": "e1971d30bdb74a81354e110a585436e83c08335f9b235c673dbf69ebf8229282",
+      "bytes": 40176,
+      "textSha256": "66ea262194b9e106d956b930ded571c635b7e33d8d8bdc1c2fbbc4046bb8fbdd",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_02_full": {
+      "src": "salutation_salutation-lune_02_full.mp3",
+      "sha256": "c0e73fda745dd73fca1aa6fbbde1b2b96d44f8da116d62f0b6d5f0a961a3be1d",
+      "bytes": 40032,
+      "textSha256": "66ea262194b9e106d956b930ded571c635b7e33d8d8bdc1c2fbbc4046bb8fbdd",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_03_easy": {
+      "src": "salutation_salutation-lune_03_easy.mp3",
+      "sha256": "1eba9a6987a880b5b248f203c91bb5a94b321ff7a394e2e4eb0921d2628d755f",
+      "bytes": 41472,
+      "textSha256": "bf76b42e2a39006e15efefe69c33ab45d5c8af8c1c06b7a840f06597d5bf4427",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_03_full": {
+      "src": "salutation_salutation-lune_03_full.mp3",
+      "sha256": "9c0fa56a8e9926760b49a818f92dcafeb1acd07ff1b83f6f69ff1465a80381bf",
+      "bytes": 41472,
+      "textSha256": "bf76b42e2a39006e15efefe69c33ab45d5c8af8c1c06b7a840f06597d5bf4427",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_04_easy": {
+      "src": "salutation_salutation-lune_04_easy.mp3",
+      "sha256": "ea2e6b2d0c6ac829adae96db4611699ba5ac762c560ea3c6d3892f8bc5846da7",
+      "bytes": 48672,
+      "textSha256": "2fc5b269ac7057ab89c3926cde37c50c9e172fb05290356002c04d1b0d7792e5",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_04_full": {
+      "src": "salutation_salutation-lune_04_full.mp3",
+      "sha256": "2312ae222e7930f3fa19ef505660b0e12e2d01fab3836f6273febe3d3a635afc",
+      "bytes": 48816,
+      "textSha256": "2fc5b269ac7057ab89c3926cde37c50c9e172fb05290356002c04d1b0d7792e5",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_05_easy": {
+      "src": "salutation_salutation-lune_05_easy.mp3",
+      "sha256": "e48e887ba80475c0d64652f4716838f6051e33377c1beed74a19c08b8a5b8834",
+      "bytes": 45648,
+      "textSha256": "fb83805b9b50e364a5b0a740128697e4c09fa890f7f00f24a6bd4c5e4de92cca",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_05_full": {
+      "src": "salutation_salutation-lune_05_full.mp3",
+      "sha256": "159b83b2a3366c7b7361f00bc7f8db48d021c7997f17d34f07b6dd5b403a058b",
+      "bytes": 46512,
+      "textSha256": "fb83805b9b50e364a5b0a740128697e4c09fa890f7f00f24a6bd4c5e4de92cca",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_06_easy": {
+      "src": "salutation_salutation-lune_06_easy.mp3",
+      "sha256": "d1c8ff3fb07e56b056295c2c4db612aae7d2a4279c6c7014b3819776d81739bc",
+      "bytes": 40896,
+      "textSha256": "c0398acb7749977dbbee68e15af9abb2d5a191d4a54d6bc8786c6f41d770d7a8",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_06_full": {
+      "src": "salutation_salutation-lune_06_full.mp3",
+      "sha256": "de2259017962c2d524ff7053a91f9ef18ea9f7d6d206b6402ecd6381446bddc9",
+      "bytes": 40896,
+      "textSha256": "c0398acb7749977dbbee68e15af9abb2d5a191d4a54d6bc8786c6f41d770d7a8",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_07_easy": {
+      "src": "salutation_salutation-lune_07_easy.mp3",
+      "sha256": "a92f0676c4af2cfda0d10606c5e3f90805322fa12975f6991a03f09d717e693c",
+      "bytes": 54432,
+      "textSha256": "353dabbed0f4dddd586898c5d9b4f79f3358c7e2609577fe4bd6fcfe430408f9",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_07_full": {
+      "src": "salutation_salutation-lune_07_full.mp3",
+      "sha256": "14da7d321462716e2300806a09db761541d7350e9b6cd83dd02b633532ad49f8",
+      "bytes": 54432,
+      "textSha256": "353dabbed0f4dddd586898c5d9b4f79f3358c7e2609577fe4bd6fcfe430408f9",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_08_easy": {
+      "src": "salutation_salutation-lune_08_easy.mp3",
+      "sha256": "cf913ebc153b4ff11cd83e777733522b03fc5a75dc7a2c48510b2c8ed7f6b7f6",
+      "bytes": 52992,
+      "textSha256": "34a97bf1d7c83b62d4369dba8d0eea6dec66bdf2f0da2112097ca54a123ba687",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_08_full": {
+      "src": "salutation_salutation-lune_08_full.mp3",
+      "sha256": "f83b2c1bec1bb10ae6d2181ad15205a3a07784c81359a9f9710822f4026c3faa",
+      "bytes": 52704,
+      "textSha256": "34a97bf1d7c83b62d4369dba8d0eea6dec66bdf2f0da2112097ca54a123ba687",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_09_easy": {
+      "src": "salutation_salutation-lune_09_easy.mp3",
+      "sha256": "c60c11718ba5ba8d999c66020bb99f90d4224a264c2189e571cb85e79f2a3905",
+      "bytes": 49680,
+      "textSha256": "ad6c14e7c9267eb56028074eef0874730ae2ffc9a0b4787d8f1595b3718f737b",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_09_full": {
+      "src": "salutation_salutation-lune_09_full.mp3",
+      "sha256": "6e001c178eb0a50d47144dad5100d87b6d7a9c8c2662a7771d40eb4df10ba9e1",
+      "bytes": 49680,
+      "textSha256": "ad6c14e7c9267eb56028074eef0874730ae2ffc9a0b4787d8f1595b3718f737b",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_10_easy": {
+      "src": "salutation_salutation-lune_10_easy.mp3",
+      "sha256": "2b609e5e52652431ea6b9b81f1719fa349b1a4163144fe6899a569fc46256bbc",
+      "bytes": 39312,
+      "textSha256": "db0d4e97add69e5b18f617d24f794336ce290878494063db81d02c5552715268",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_10_full": {
+      "src": "salutation_salutation-lune_10_full.mp3",
+      "sha256": "4da8f3b7e357e1c4a6eb676a60a882acc3932c867a48cb55814ebc9b54faa4bf",
+      "bytes": 39456,
+      "textSha256": "db0d4e97add69e5b18f617d24f794336ce290878494063db81d02c5552715268",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_11_easy": {
+      "src": "salutation_salutation-lune_11_easy.mp3",
+      "sha256": "1a804bb88e24c7e10247aca4d0ab9a737fbd35dea8c5b436fc260797455af172",
+      "bytes": 36864,
+      "textSha256": "8db55af2afcac623b85c4807733950867e72e62ac3fec57e74e86da4ff6d4d34",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_11_full": {
+      "src": "salutation_salutation-lune_11_full.mp3",
+      "sha256": "50c8f730235ebcba715dee4bdb6e43204eeaa299662d5d65f90b55be17a50d88",
+      "bytes": 36720,
+      "textSha256": "8db55af2afcac623b85c4807733950867e72e62ac3fec57e74e86da4ff6d4d34",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_12_easy": {
+      "src": "salutation_salutation-lune_12_easy.mp3",
+      "sha256": "5e58d685957fc76d5503a17f84ad8e9954821941e17bf6213a554d081f82584f",
+      "bytes": 34848,
+      "textSha256": "022603264e9881f62c1a911b202a7551d739c795d9e9546c429e649a21b3ee25",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_12_full": {
+      "src": "salutation_salutation-lune_12_full.mp3",
+      "sha256": "bf1d717594b2e0bea5b487b9e8ea9a944107c8bca09ad49f539895776b6b746d",
+      "bytes": 34848,
+      "textSha256": "022603264e9881f62c1a911b202a7551d739c795d9e9546c429e649a21b3ee25",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_13_easy": {
+      "src": "salutation_salutation-lune_13_easy.mp3",
+      "sha256": "531d523bbf60354759ae67dda2cee23d3f386a18740a6e9107d983ee33c15f86",
+      "bytes": 49104,
+      "textSha256": "b38b4d35253df569c6eb639ef70106f6fee1c466b9f84f661a67e2af42aa9049",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_13_full": {
+      "src": "salutation_salutation-lune_13_full.mp3",
+      "sha256": "e4f8c73536d4812d83b2a677d7a9803e490220232442e7120a0f40e57c07dbf8",
+      "bytes": 49104,
+      "textSha256": "b38b4d35253df569c6eb639ef70106f6fee1c466b9f84f661a67e2af42aa9049",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_14_easy": {
+      "src": "salutation_salutation-lune_14_easy.mp3",
+      "sha256": "79bbfb89e669044744dd45b88e581cc028ae25fd569fb32261f6754ace991246",
+      "bytes": 38016,
+      "textSha256": "f7492f5a1ff8d6549fc5026599c2c00aa19f8f5f3a1cf428ccbad564fd1d36d2",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_14_full": {
+      "src": "salutation_salutation-lune_14_full.mp3",
+      "sha256": "17ebe293ed36c764ba7edaa9cf3b95fd8ca38b4ca33d920574c514f3384dc34a",
+      "bytes": 38160,
+      "textSha256": "f7492f5a1ff8d6549fc5026599c2c00aa19f8f5f3a1cf428ccbad564fd1d36d2",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_15_easy": {
+      "src": "salutation_salutation-lune_15_easy.mp3",
+      "sha256": "a2395eb6be408f8a5658d5f159627dfe84c3f2d97c97927bcdbfd572f7d72d3e",
+      "bytes": 46800,
+      "textSha256": "819f9b774350eac58963d43ab2d3a4392a1f86fd2e5a693ffe5e3103e30fb3d4",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_15_full": {
+      "src": "salutation_salutation-lune_15_full.mp3",
+      "sha256": "b675229203784bf65232645d7c83b1be0258a2ca6b8234592e9dff15aef55034",
+      "bytes": 46656,
+      "textSha256": "819f9b774350eac58963d43ab2d3a4392a1f86fd2e5a693ffe5e3103e30fb3d4",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_16_easy": {
+      "src": "salutation_salutation-lune_16_easy.mp3",
+      "sha256": "2d511f177187a030fabe5fd2ac0119013f7b2617ad20cc942b8f0eb09e68f6e6",
+      "bytes": 46944,
+      "textSha256": "8fc8489a39a634980691ca6c32236ed0515da8944acabe3171e4ffcc042c5ae6",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_16_full": {
+      "src": "salutation_salutation-lune_16_full.mp3",
+      "sha256": "d167b9e1dfed50e05eb58a4f998b85843eb348af6c80f677acc1dcfbe905f801",
+      "bytes": 46368,
+      "textSha256": "8fc8489a39a634980691ca6c32236ed0515da8944acabe3171e4ffcc042c5ae6",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_17_easy": {
+      "src": "salutation_salutation-lune_17_easy.mp3",
+      "sha256": "3ae7b5281defb35425d5ae3604a67c2acb7670f48fcf4d20a98a12587638208f",
+      "bytes": 49536,
+      "textSha256": "525162771cd6b35f3495cea84339af818b4c182fbed14231c9490a0c17fa4c80",
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_17_full": {
+      "src": "salutation_salutation-lune_17_full.mp3",
+      "sha256": "4d7b77085f7c232556104c9440dcf10dc7f22a8e7fcd90196c79597af2ca771a",
+      "bytes": 49824,
+      "textSha256": "525162771cd6b35f3495cea84339af818b4c182fbed14231c9490a0c17fa4c80",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_00_easy": {
+      "src": "salutation_salutation-soleil_00_easy.mp3",
+      "sha256": "07fd12d003b129f636302d667353ab26ea9c2b8cd6dacf5f91b8d2237d02d38b",
+      "bytes": 55872,
+      "textSha256": "490472e482cf3873a3fbcf6b824f614250638a7b301721d14b902db3dde5bac6",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_00_full": {
+      "src": "salutation_salutation-soleil_00_full.mp3",
+      "sha256": "245a52460228f64a75ac28aa085250da910f9f04ba1a9afe73e7a893b46cae5e",
+      "bytes": 54576,
+      "textSha256": "490472e482cf3873a3fbcf6b824f614250638a7b301721d14b902db3dde5bac6",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_01_easy": {
+      "src": "salutation_salutation-soleil_01_easy.mp3",
+      "sha256": "9825b178c379ce221bf48d9532616c8a36209097d774cc9923e0822e6fc33c2e",
+      "bytes": 43488,
+      "textSha256": "662322efabc2acf7d3741779ed9126a252706ecfa8cad3f5316a00b147ab1f9a",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_01_full": {
+      "src": "salutation_salutation-soleil_01_full.mp3",
+      "sha256": "904b940c8f61cd04261918ced4bf8a092c9c3af030116135379da2ae0e261672",
+      "bytes": 43488,
+      "textSha256": "662322efabc2acf7d3741779ed9126a252706ecfa8cad3f5316a00b147ab1f9a",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_02_easy": {
+      "src": "salutation_salutation-soleil_02_easy.mp3",
+      "sha256": "1d21d21d4e0b3bafc9f62aded3681cbe1ce36c99c243daba99aed323eb302963",
+      "bytes": 48528,
+      "textSha256": "8502ca431ff90d5c7877fda147d1e4946be5c9cf34dc02c3f1168bea140a7f06",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_02_full": {
+      "src": "salutation_salutation-soleil_02_full.mp3",
+      "sha256": "e73ace0ade4f76e91e22617db915e914554305a5696e9df1534ec4017f28288b",
+      "bytes": 48528,
+      "textSha256": "8502ca431ff90d5c7877fda147d1e4946be5c9cf34dc02c3f1168bea140a7f06",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_03_easy": {
+      "src": "salutation_salutation-soleil_03_easy.mp3",
+      "sha256": "dd11e2a7608c25c44b40b1344a3b95b6ca1b0b86075cd797e6c52aacaaf1e4c6",
+      "bytes": 55440,
+      "textSha256": "b075887103a0cf94d14199bdeca2c9def376a74c50f78e050036bd6a2ee03e15",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_03_full": {
+      "src": "salutation_salutation-soleil_03_full.mp3",
+      "sha256": "1595dd2cc2aa871da4cce0271874f40d6900a1de2b48488acc1c7bd745ffc9a4",
+      "bytes": 55440,
+      "textSha256": "b075887103a0cf94d14199bdeca2c9def376a74c50f78e050036bd6a2ee03e15",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_04_easy": {
+      "src": "salutation_salutation-soleil_04_easy.mp3",
+      "sha256": "61315a995c911d4fa0e3549e3cba102246a2a7a7a51a9595372e4117baab8306",
+      "bytes": 42192,
+      "textSha256": "5878dad4cc48ed257e6fc6536e74e8d38937171066db70e744070948b12b96ec",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_04_full": {
+      "src": "salutation_salutation-soleil_04_full.mp3",
+      "sha256": "413114970f0f99879a801ca2a5e337fdf90fe50163f3c56f8e1facafd67be7c3",
+      "bytes": 42048,
+      "textSha256": "5878dad4cc48ed257e6fc6536e74e8d38937171066db70e744070948b12b96ec",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_05_easy": {
+      "src": "salutation_salutation-soleil_05_easy.mp3",
+      "sha256": "a57c60ee0091e1d7eec6866a778b0eb9c2de896f6c31d5dcce429dea2cf59454",
+      "bytes": 61200,
+      "textSha256": "33940f90117f5502e4e699acf698be6579ab0af5163aa2c76086827fe84e9b76",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_05_full": {
+      "src": "salutation_salutation-soleil_05_full.mp3",
+      "sha256": "28ea7cba8c3e2a212ec28fbf9c6afae550c88d917c614544f90874a2c78867b3",
+      "bytes": 63648,
+      "textSha256": "85e4089848cb452bc29720fc5ae9c6191d88c9571b07f3a8adc2cbcce32eeb46",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_06_easy": {
+      "src": "salutation_salutation-soleil_06_easy.mp3",
+      "sha256": "f59e384e1dbe08e26d03623ef0c25bc692b4ec079df08d8f4969a35fa3161bd9",
+      "bytes": 70848,
+      "textSha256": "061e5450d77c46a32aacd40e02b9b7593ea7bbd821a9ee99c75bbb477fda3af2",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_06_full": {
+      "src": "salutation_salutation-soleil_06_full.mp3",
+      "sha256": "48ee213a620b082fbd519258d314577913fb7cb072f05b9ff63d93402c4fe4a7",
+      "bytes": 72144,
+      "textSha256": "89327546ec4e0e2ace5a74710ae829a2bf7b18bfcf5952b8245c195f8ebe6bad",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_07_easy": {
+      "src": "salutation_salutation-soleil_07_easy.mp3",
+      "sha256": "4b63885c6c48855c68df9a55e1e268372c127e268f8bbe065aa80887eb9e36c2",
+      "bytes": 59904,
+      "textSha256": "a645b76d7c4d228b4ee0452b33be4fe0a8cde86a058370927b4661fc66e572db",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_07_full": {
+      "src": "salutation_salutation-soleil_07_full.mp3",
+      "sha256": "c59cef70070d5a797190742470dbd8ca9190267c93ebaec4a3724f9109a4908d",
+      "bytes": 59472,
+      "textSha256": "a645b76d7c4d228b4ee0452b33be4fe0a8cde86a058370927b4661fc66e572db",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_08_easy": {
+      "src": "salutation_salutation-soleil_08_easy.mp3",
+      "sha256": "bff44fccdbe6ba4317c84dc9492427d5f61e8671982100e09d955f23d8f9a4d2",
+      "bytes": 45216,
+      "textSha256": "038367757896366e2979ce14a0a0f36bf6c87932a06874511ff21f5f2f1cf9b0",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_08_full": {
+      "src": "salutation_salutation-soleil_08_full.mp3",
+      "sha256": "349b72d6dd0a037cc1e1917a3fcc66dd17b4ce1c7336bdb636b5874ab23ef39b",
+      "bytes": 44928,
+      "textSha256": "038367757896366e2979ce14a0a0f36bf6c87932a06874511ff21f5f2f1cf9b0",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_09_easy": {
+      "src": "salutation_salutation-soleil_09_easy.mp3",
+      "sha256": "bd49bb5867f94e21323ceed593e7ab26542e6120e0e1d7216ca8e2c7c48ffbbf",
+      "bytes": 48672,
+      "textSha256": "abfc007e45288ec3ca4196518fe7b9cd863ee6dd3c778b496dae2f3cd39848c3",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_09_full": {
+      "src": "salutation_salutation-soleil_09_full.mp3",
+      "sha256": "d366a88061cee899ff71f049d296b11c1a0a6d4bd5af9fa478f95993d814d72e",
+      "bytes": 48672,
+      "textSha256": "abfc007e45288ec3ca4196518fe7b9cd863ee6dd3c778b496dae2f3cd39848c3",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_10_easy": {
+      "src": "salutation_salutation-soleil_10_easy.mp3",
+      "sha256": "804b322ca1daf9faa047ca58b60e76d8931b6719ed7830e9cc7b2b5908f63c8c",
+      "bytes": 45792,
+      "textSha256": "3a2116b9855cbf5f70456c5172cdd563e94fc8ff4bde6600e804c409bceec994",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_10_full": {
+      "src": "salutation_salutation-soleil_10_full.mp3",
+      "sha256": "b4e6f00579574050ffd6a0eef5beff66e959e3d372ea8560a7ab54199b1954bb",
+      "bytes": 45936,
+      "textSha256": "3a2116b9855cbf5f70456c5172cdd563e94fc8ff4bde6600e804c409bceec994",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_11_easy": {
+      "src": "salutation_salutation-soleil_11_easy.mp3",
+      "sha256": "5043b69157b40cb168010e89b44d8b97169d9f38a113c6ba63f8503152fd9c0b",
+      "bytes": 45936,
+      "textSha256": "ef0d3d0a7344ca274d184ad39f63bd64164f20c1a7f4c3338d0f2a2e21e7f36d",
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_11_full": {
+      "src": "salutation_salutation-soleil_11_full.mp3",
+      "sha256": "5ba6b20be61efae007f3493a3b9a646bc752381e02686ac727e7eb071d29f53b",
+      "bytes": 45936,
+      "textSha256": "ef0d3d0a7344ca274d184ad39f63bd64164f20c1a7f4c3338d0f2a2e21e7f36d",
+      "kind": "yoga"
     },
     "sommeil_discrete_00": {
       "src": "sommeil_discrete_00.mp3",
