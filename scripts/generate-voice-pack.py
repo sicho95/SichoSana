@@ -13,7 +13,7 @@ RATE_YOGA, RATE_MEDITATION, PITCH, VOLUME = "-22%", "-32%", "-1Hz", "+0%"
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
-def clips(catalog, yoga, guidance):
+def clips(catalog, yoga, guidance, salutations):
     found = []
     for session in catalog["sessions"]:
         for level in ("discrete", "equilibree", "enveloppante"):
@@ -34,6 +34,20 @@ def clips(catalog, yoga, guidance):
                           pose["nom"]+". Préparation. "+progression["preparation"], "yoga"))
             found.append(("easy_"+pose["id"],
                           pose["nom"]+". Variante douce. "+progression["facile"], "yoga"))
+    for pose in salutations.get("extraPoses", []):
+        found.append(("pose_" + pose["id"], pose["nom"]+". "+pose["instructions"]+" "+pose["prudence"], "yoga"))
+    # Les deux voix par étape sont générées en avance, aucune synthèse sur le NAS.
+    for routine in salutations.get("routines", []):
+        for i, step in enumerate(routine.get("steps", [])):
+            for variant in ("full", "easy"):
+                pose_id = step.get("easyPoseId", step["poseId"]) if variant=="easy" else step["poseId"]
+                cue = step.get("cue", "")
+                # Sauf dérogation douce (cobra / genoux), la consigne reste identique.
+                title = next((p["nom"] for p in
+                    salutations.get("extraPoses", [])+yoga.get("poses", [])
+                    if p["id"] == pose_id), step["poseId"])
+                text = (title+". "+("Inspire. " if step.get("breath")=="inspiration" else "Expire. ")+cue).strip()
+                found.append(("salutation_"+routine["id"]+"_"+str(i).zfill(2)+"_"+variant, text, "yoga"))
     if len(set(k for k, _, _ in found)) != len(found):
         raise ValueError("Segments vocaux en doublon")
     return found
@@ -44,12 +58,14 @@ async def main():
     parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v2"))
     parser.add_argument("--yoga", type=Path, default=Path("static/data/yoga.json"))
     parser.add_argument("--guidance", type=Path, default=Path("static/data/pose-guidance.json"))
+    parser.add_argument("--salutations", type=Path, default=Path("static/data/salutations.json"))
     parser.add_argument("--jobs", type=int, default=3)
     args = parser.parse_args()
     from edge_tts import Communicate
     source = json.loads(args.catalog.read_text(encoding="utf-8"))
     yoga = json.loads(args.yoga.read_text(encoding="utf-8"))
     guidance = json.loads(args.guidance.read_text(encoding="utf-8"))
+    salutations = json.loads(args.salutations.read_text(encoding="utf-8"))
     dest = args.out
     dest.mkdir(parents=True, exist_ok=True)
     lock = asyncio.Semaphore(min(max(args.jobs, 1), 4))
@@ -76,7 +92,7 @@ async def main():
             "kind": kind
         }
 
-    await asyncio.gather(*(render(k, t, kind) for k, t, kind in clips(source, yoga, guidance)))
+    await asyncio.gather(*(render(k, t, kind) for k, t, kind in clips(source, yoga, guidance, salutations)))
     manifest = {
         "format": "sichosana-voice-pack", "packId": "vivienne-fr-v2",
         "locale": "fr-FR", "voiceId": VOICE, "rateYoga": RATE_YOGA,
@@ -85,7 +101,7 @@ async def main():
         "sourceIdentity": "ResurGo_Fitness Running female coach v2",
         "status": "candidate-awaiting-damien-audition",
         "catalogSha256": sha(args.catalog), "yogaCatalogSha256": sha(args.yoga),
-        "guidanceSha256": sha(args.guidance),
+        "guidanceSha256": sha(args.guidance), "salutationsSha256": sha(args.salutations),
         "files": dict(sorted(entries.items()))
     }
     (dest / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
