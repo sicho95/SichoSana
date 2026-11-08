@@ -8,6 +8,7 @@ on:
       - static/data/meditations.json
       - static/data/pose-guidance.json
       - static/data/yoga.json
+      - static/data/salutations.json
       - .github/workflows/generate-voice.yml
 permissions:
   contents: write
