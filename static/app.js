@@ -650,9 +650,8 @@ async function init(){
   try{
     const q=await fetch('/data/original-art.json');
     if(q.ok){const d=await q.json();if(Array.isArray(d.files))originalArt=d;}
-    const ids=['tadasana','yoga-api-48','utthita-tadasana'];
-    const checks=await Promise.all(ids.map(id=>fetch('/media/original/'+id+'.png',{method:'HEAD',cache:'no-store'}).then(r=>r.ok).catch(()=>false)));
-    originalBundleReady=checks.every(Boolean)&&originalArt.files?.length===73;
+    const status=await fetch('/api/v1/media/original-status',{cache:'no-store'}).then(r=>r.ok?r.json():null);
+    originalBundleReady=Boolean(status?.ready&&status?.installed===73&&originalArt.files?.length===73);
   }catch(e){originalBundleReady=false;}
    try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
