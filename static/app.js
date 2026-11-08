@@ -193,7 +193,7 @@ function yogaApiImage(id){
 function posePicture(id,kind='thumb'){
  const media=yogaApiImage(id),photo=poseMedia.photos?.find(x=>x.id===id);
  const fallback=media?.src||photo?.src||'';
- const original=originalArt.files?.includes(id);
+ const original=originalBundleReady&&originalArt.files?.includes(id);
  if(!original&&!fallback)return '<span class="pose-missing" aria-label="Illustration exacte non disponible">Illustration exacte à compléter</span>';
  const src=original?'/media/original/'+encodeURIComponent(id)+'.png':fallback;
  return '<img loading="lazy" decoding="async" data-pose-image="'+escapeHTML(id)+'"'+
