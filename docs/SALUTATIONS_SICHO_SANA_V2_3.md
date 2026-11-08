@@ -60,18 +60,18 @@ La source de vérité exécutable est `static/data/salutations.json`.
 - Les deux salutations s'affichent comme parcours, avec liste cliquable des postures non encore déclarées maîtrisées.
 - 8 prérequis distincts pour le soleil complet et 7 pour la version douce avec Cobra ; 8 pour la Lune. Ces validations sont synchronisées entre appareils avec résolution par date des modifications.
 - `static/data/programs.json` propose maintenant un parcours pédagogique « Apprendre les salutations » en 7 étapes. Les deux séquences ne démarrent que si leurs prérequis sont complets.
-- Le guidage propose les instructions à l'écran, le souffle et des clips MP3 précalculés. **Génération des nouveaux clips Vivienne encore à confirmer : l'outil edge-tts a retourné NoAudioReceived** lors des premières tentatives. Ne pas annoncer les pistes comme disponibles avant vérification du manifeste et des MP3 réels.
+- Le guidage propose les instructions à l'écran, le souffle et des clips MP3 précalculés. **Les 60 consignes Vivienne des deux salutations sont désormais présentes dans le dépôt, au sein de 183 MP3 au total** après relance réussie de la génération. Le test sur Safari iPhone réel reste une étape distincte avant validation complète.
 
 ## Audit illustrations
 
 **48/48** fichiers PNG d'origine candidates pour le catalogue Yoga API, **13/13** pour les positions essentielles historiques.
 
-Pour les 12 postures/mouvements supplémentaires introduits par les salutations, **8/12** PNG originaux individuels candidats. **Quatre vrais manques** : `ardha-uttanasana`, `chaturanga`, `ardha-chandra-lateral`, `utthita-tadasana`. Ne pas remplacer par une mauvaise posture.
+Pour les 12 postures/mouvements supplémentaires introduits par les salutations, **12/12** PNG individuels candidats sont rassemblés dans `SichoSana_V2.3_73_illustrations_originales.zip`. Les quatre dernières images (demi-relevé, Chaturanga, inclinaison latérale, étoile) sont des retouches/compositions et leur netteté mérite une vérification sur grand écran.
 
-- Soleil complet + adaptation : 7/9 mouvements distincts dotés d'illustration originale candidate.
-- Lune : 6/8 mouvements dotés d'illustration originale candidate.
+- Soleil complet + adaptation : 9/9 mouvements distincts dotés d'illustration originale candidate.
+- Lune : 8/8 mouvements dotés d'illustration originale candidate.
 - Pour l'instant, l'application sait privilégier `/media/original/{id}.png`, puis basculer vers une source Yoga API/Wikimedia **de la même posture exacte** si le fichier original manque.
-- Les originaux sont fournis dans `SichoSana_illustrations_originales_salutations_v23.zip` à importer sur le NAS, mais **ils ne sont pas contenus en binaire dans la branche GitHub**.
+- Les originaux sont fournis dans `SichoSana_V2.3_73_illustrations_originales.zip` à importer sur le NAS, mais **ils ne sont pas contenus en binaire dans la branche GitHub**.
 - Garder les crédits tiers tant que les images tierces restent visibles en repli. Ne les retirer qu'après validation de la couverture d'images propriétaires à 100 %.
 
 ## Contrôles qualité
