@@ -1,3 +1,10 @@
+## Mise à jour du 8 novembre 2026 (après cet audit historique)
+
+- **73 fichiers originaux candidats / 73 identifiants actifs** dans le bundle `SichoSana_V2.3_73_illustrations_originales.zip` : 48 Yoga API, 13 essentielles et 12 transitions Soleil/Lune.
+- Les quatre derniers mouvements ont été composés/retouchés à partir des visuels cohérents de la professeure, sans changer sa tenue ; vérifier particulièrement la netteté de ces petites sources et l'orientation de la flexion latérale.
+- Les 60 nouveaux MP3 des salutations sont présents dans le dépôt (183 MP3 au total). Contrôle Safari physique et déploiement NAS encore nécessaires.
+- Les mentions « 38 sur 48 » et « dix manquantes » ci-dessous sont conservées comme **état historique au 7 novembre**, plus comme état courant.
+
 # SichoSana — V2.3, charte illustrations et audit de bibliothèque
 
 ## Identité immuable de la professeure (visuels originaux)
