@@ -20,8 +20,8 @@ const iconPaths={
 };
 function uiIcon(key){return '<svg aria-hidden="true" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+(iconPaths[key]||iconPaths.lotus)+'</svg>';}
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
-let reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
-const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',dailyGoal:'varie',dailyDuration:20,zodiac:'',favorites:[],history:[],createdAt:Date.now(),modifiedAt:Date.now()});
+let reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, salutations={routines:[],extraPoses:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
+const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',dailyGoal:'varie',dailyDuration:20,zodiac:'',favorites:[],history:[],masteredPoseStatus:{},createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Essentielles', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
 function openDB(){
@@ -46,7 +46,37 @@ function renderShell(){
  $('#topbar').innerHTML='<div class="desktop-brand">'+brand()+'</div><div class="top-actions"><span class="connection-pill">'+(navigator.onLine?'● En ligne':'○ Hors ligne')+'</span><button class="icon-btn" type="button" data-action="notifications" aria-label="Notifications">'+uiIcon('bell')+'</button><button class="profile-chip" type="button" data-action="page" data-value="profile"><span class="dot"></span>'+escapeHTML(Accounts.user()?.pseudo||'')+'</button></div>';
 }
 function heading(kicker,title,subtitle){return '<div class="page-heading"><div><div class="eyebrow">'+kicker+'</div><h1>'+title+'</h1>'+(subtitle?'<p class="subtitle">'+subtitle+'</p>':'')+'</div></div>';}
+function isMastered(poseId){
+ return profile()?.masteredPoseStatus?.[poseId]?.mastered===true;
+}
+function prerequisites(r){
+ if(!r?.requiresMastery)return [];
+ return [...new Set(practiceMode()==='complete'?r.fullPrerequisites:r.easyPrerequisites)];
+}
+function remainingToMaster(r){
+ return prerequisites(r).filter(id=>!isMastered(id));
+}
+function saluteCard(r){
+ const required=prerequisites(r),missing=remainingToMaster(r),mastered=required.length-missing.length;
+ const complete=!missing.length;
+ return '<article class="card salutation-card"><div class="salutation-symbol">'+(r.id==='salutation-soleil'?uiIcon('sun'):uiIcon('moon'))+'</div>'+
+ '<div class="eyebrow">Enchaînement guidé · '+escapeHTML(r.sanskrit)+'</div><h3>'+escapeHTML(r.name)+'</h3>'+
+ '<p>'+escapeHTML(r.subtitle)+'</p><div class="progress-track"><span style="width:'+Math.round(100*mastered/required.length)+'%"></span></div>'+
+ '<p class="muted">'+mastered+' / '+required.length+' postures déclarées maîtrisées'+(complete?' · Prêt à pratiquer':' · Encore à apprendre')+'</p>'+
+ (complete?'<button class="primary" data-action="start-yoga" data-value="'+escapeHTML(r.id)+'">Commencer l’enchaînement</button>':
+ '<div class="salutation-prerequisites" aria-label="Postures à apprendre">'+missing.map(id=>{
+ const pose=yoga.poses.find(p=>p.id===id);
+ return '<button class="salutation-prerequisite" data-action="pose" data-value="'+escapeHTML(id)+'">'+escapeHTML(pose?.nom||id)+'</button>';
+ }).join('')+'</div>')+
+ '<p class="salutation-note">Accessible après validation personnelle de chaque posture. Une variante douce peut remplacer le chien tête en haut par le cobra.</p></article>';
+}
+function salutationSection(){
+ return '<section class="salutations-section"><div class="section-heading"><h2>Salutations guidées</h2></div>'+
+ '<p class="muted">Le soleil dynamise, la lune invite à ralentir. Découvre chaque posture individuellement puis confirme quand elle devient confortable.</p>'+
+ '<div class="cards salutations-grid">'+salutations.routines.map(saluteCard).join('')+'</div></section>';
+}
 function routineCard(r){
+ if(r.requiresMastery)return saluteCard(r);
  const fav=profile().favorites.includes(r.id);
  return '<article class="card routine-card"><div class="routine-visual"><span aria-hidden="true">◈</span></div><div class="routine-body"><div class="eyebrow">'+escapeHTML(r.family)+'</div><h3>'+escapeHTML(r.name)+'</h3><p>'+escapeHTML(r.subtitle)+'</p><div class="meta"><span>'+r.duration+' min</span><span>'+escapeHTML(r.level)+'</span><span>'+r.poseIds.length+' postures</span></div><div class="routine-footer"><button class="primary" type="button" data-action="start-yoga" data-value="'+escapeHTML(r.id)+'">Commencer</button><button class="small-btn" type="button" data-action="favorite" data-value="'+escapeHTML(r.id)+'" aria-label="'+(fav?'Retirer des favoris':'Ajouter aux favoris')+'">'+(fav?'♥':'♡')+'</button></div></div></article>';
 }
@@ -163,7 +193,7 @@ function posePicture(id,kind='thumb'){
  return '<img loading="lazy" decoding="async" data-pose-image="'+escapeHTML(id)+'" class="pose-photo '+kind+'" src="'+escapeHTML(media.src)+'" alt="Illustration Yoga API de la posture '+escapeHTML(yoga.poses.find(p=>p.id===id)?.nom||id)+'">';
 }
 function yogaPage(){
- const routines=yoga.routines.filter(r=>routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id)));
+ const routines=yoga.routines.filter(r=>!r.requiresMastery&&(routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id))));
  const poses=yoga.poses.filter(p=>poseFilter==='Tous'||(poseFilter==='Essentielles'&&!p.id.startsWith('yoga-api-'))||(poseFilter==='Catalogue API'&&p.id.startsWith('yoga-api-'))||p.niveau===poseFilter);
  return heading('Pratiquer','Yoga','Une séance à ton rythme et une bibliothèque pour découvrir chaque posture.')+
  '<div class="card yoga-mode-panel"><div><div class="eyebrow">Pratique adaptée</div><h3>Comment souhaites-tu pratiquer ?</h3><p class="muted">Chaque posture peut être préparée et simplifiée avant sa version complète.</p></div><div class="segment yoga-practice-modes sliding-segment" role="group" aria-label="Mode de pratique" style="--count:3;--index:'+['initiation','douce','complete'].indexOf(practiceMode())+'">'+[['initiation','Découvrir pas à pas'],['douce','Version douce'],['complete','Pratique complète']].map(([id,label])=>'<button type="button" data-action="practice-mode" data-value="'+id+'" aria-pressed="'+(practiceMode()===id)+'">'+label+'</button>').join('')+'</div></div>'+
@@ -172,7 +202,7 @@ function yogaPage(){
  '<button type="button" role="tab" aria-selected="'+(yogaTab==='postures')+'" data-action="yoga-tab" data-value="postures">Bibliothèque des postures <small>'+yoga.poses.length+'</small></button></div>'+
  (yogaTab==='seances'?
  '<div class="section-heading"><h2>Les enchaînements</h2></div>'+pills(['Tous','Hatha','Vinyasa','Favoris'],routineFilter,'routine-filter')+
- '<div class="cards">'+(routines.length?routines.map(routineCard).join(''):'<p class="empty">Aucune séance pour ce filtre.</p>')+'</div>'+programsSection():
+ '<div class="cards">'+(routines.length?routines.map(routineCard).join(''):'<p class="empty">Aucune séance pour ce filtre.</p>')+'</div>'+salutationSection()+programsSection():
  '<div class="section-heading"><h2>Découvrir les postures</h2><span class="muted">'+poses.length+' postures</span></div>'+
  '<p class="muted">13 fiches essentielles guidées en trois étapes. Le catalogue Yoga API ajoute 48 fiches documentaires ; leurs descriptions anglaises restent à vérifier avant un usage comme séances guidées. Crédits dans Profil.</p>'+
  pills(['Essentielles','Catalogue API','Tous','Débutant','Intermédiaire'],poseFilter,'pose-filter')+
@@ -228,7 +258,7 @@ function poseModal(id){
  '<section><div class="eyebrow">3 · Posture complète</div><p>'+escapeHTML(p.instructions)+'</p></section>'+
  '<section><h3>Respiration</h3><p>'+escapeHTML(guidance.respiration)+'</p><h3>Alignement</h3><p>'+escapeHTML(guidance.alignement)+'</p></section></div>':
  '<h3>Installation</h3><p>'+escapeHTML(p.instructions)+'</p>')+
- '<h3>À respecter</h3><p class="attention">'+escapeHTML(guidance?.prudence||p.prudence||'Adapte la posture à ton confort.')+'</p></div>';
+ '<h3>À respecter</h3><p class="attention">'+escapeHTML(guidance?.prudence||p.prudence||'Adapte la posture à ton confort.')+'</p>'+ "'<div class=\"mastery-control\"><button type=\"button\" class=\"'+(isMastered(p.id)?'secondary':'primary')+'\" data-action=\"toggle-mastery\" data-value=\"'+escapeHTML(p.id)+'\" aria-pressed=\"'+isMastered(p.id)+'\">'+(isMastered(p.id)?'À retravailler':'Je maîtrise cette posture')+'</button><p class=\"muted\">Auto-évaluation personnelle : ce choix ne constitue pas une validation de sécurité ou d’aptitude médicale.</p></div></div>';";
  renderModal();
 }
 function renderModal(){$('#overlay').innerHTML=modal;}
@@ -236,7 +266,7 @@ function closeModal(){modal='';renderModal();}
 function sessionPage(){
  if(!session)return home();
  const i=stepIndex(session),step=session.steps[i],remaining=session.duration-session.elapsed,progress=Math.min(100,100*session.elapsed/session.duration);
- return '<div class="session"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><div class="session-stage"><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div>'+(step.imageId?'<div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>':'')+'<h2>'+escapeHTML(step.title)+'</h2><p>'+escapeHTML(step.text)+'</p><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Écouter la consigne</button></div></div><div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Étape suivante</button><button class="primary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="muted">Si une posture provoque une douleur, interromps-la. Les consignes vocales ne remplacent pas l’écoute de ton corps.</p></div>';
+ return '<div class="session"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><div class="session-stage"><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div>'+(step.imageId?'<div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>':'')+'<h2>'+escapeHTML(step.title)+'</h2>'+(step.breath?'<div class="breath-indicator">'+(step.breath==='inspiration'?'Inspire':'Expire')+'</div>':'')+'<p>'+escapeHTML(step.text)+'</p><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Écouter la consigne</button></div></div><div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Étape suivante</button><button class="primary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="muted">Si une posture provoque une douleur, interromps-la. Les consignes vocales ne remplacent pas l’écoute de ton corps.</p></div>';
 }
 function stepIndex(s){
  let elapsed=0;const total=s.steps.reduce((x,p)=>x+p.weight,0)||1;
@@ -262,7 +292,18 @@ function startSession(type,id){
  if(type==='yoga'){
    const r=findRoutine(id);if(!r)return;name=r.name;duration=r.duration*60;
    const mode=practiceMode();
-   for(const poseId of r.poseIds){
+   if(r.requiresMastery){
+     const missing=remainingToMaster(r);
+     if(missing.length){return notice('Il reste '+missing.length+' postures à apprendre avant de commencer cette salutation.');}
+     steps=r.steps.map((item,i)=>{
+       const id=mode==='complete'?item.poseId:(item.easyPoseId||item.poseId);
+       const pose=yoga.poses.find(p=>p.id===id);
+       const easy=mode==='complete'?'full':'easy';
+       return {title:(pose?.nom||id)+(item.side?' · '+item.side:''),text:item.cue,
+         weight:item.weight||1,imageId:id,breath:item.breath||'',
+         clip:'salutation_'+r.id+'_'+String(i).padStart(2,'0')+'_'+easy};
+     });
+   }else for(const poseId of r.poseIds){
     const p=yoga.poses.find(x=>x.id===poseId),guidance=poseGuidance.poses?.[poseId];
     if(guidance&&mode!=='complete'){
       steps.push({title:(p?.nom||poseId)+' · se préparer',text:guidance.preparation,weight:.20,clip:'prepare_'+poseId,imageId:poseId,phase:'preparation'});
@@ -374,14 +415,20 @@ function mergedProfiles(local,remote){
   const old=map.get(p.id);if(!old){map.set(p.id,p);continue;}
   const newer=(p.modifiedAt||0)>=(old.modifiedAt||0)?p:old;
   const history=new Map([...(old.history||[]),...(p.history||[])].map(x=>[x.id,x]));
-  map.set(p.id,{...newer,history:[...history.values()].sort((a,b)=>(a.at||0)-(b.at||0)),favorites:[...new Set([...(old.favorites||[]),...(p.favorites||[])])]});
+  const masteredPoseStatus={};
+   for(const obj of [old.masteredPoseStatus||{},p.masteredPoseStatus||{}]){
+     for(const [id,status] of Object.entries(obj)){
+       if(!masteredPoseStatus[id]||(status?.at||0)>(masteredPoseStatus[id]?.at||0))masteredPoseStatus[id]=status;
+     }
+   }
+   map.set(p.id,{...newer,history:[...history.values()].sort((a,b)=>(a.at||0)-(b.at||0)),favorites:[...new Set([...(old.favorites||[]),...(p.favorites||[])])],masteredPoseStatus});
  }
  return [...map.values()];
 }
 function snapshot(){return {schemaVersion:1,profiles:state.profiles,activeProfileId:state.activeProfileId,exportedAt:new Date().toISOString()};}
 function ingest(data,remote=false){
  if(!data||data.schemaVersion!==1||!Array.isArray(data.profiles)||data.profiles.length>100)throw Error('Fichier de sauvegarde non reconnu.');
- const fresh=data.profiles.filter(x=>x&&typeof x.id==='string'&&typeof x.name==='string'&&Array.isArray(x.history)).map(x=>({...x,name:x.name.slice(0,50),theme:x.theme==='horizon'?'horizon':'linen',favorites:Array.isArray(x.favorites)?x.favorites.slice(0,200):[],meditationStyle:['discrete','equilibree','enveloppante'].includes(x.meditationStyle)?x.meditationStyle:'equilibree',history:x.history.slice(-2000)}));
+ const fresh=data.profiles.filter(x=>x&&typeof x.id==='string'&&typeof x.name==='string'&&Array.isArray(x.history)).map(x=>({...x,name:x.name.slice(0,50),theme:x.theme==='horizon'?'horizon':'linen',favorites:Array.isArray(x.favorites)?x.favorites.slice(0,200):[],masteredPoseStatus:Object.fromEntries(Object.entries(x.masteredPoseStatus||{}).filter(([k,v])=>typeof k==='string'&&k.length<=70&&v&&typeof v.mastered==='boolean'&&Number.isFinite(v.at)).slice(0,200).map(([k,v])=>[k,{mastered:v.mastered,at:v.at}])),meditationStyle:['discrete','equilibree','enveloppante'].includes(x.meditationStyle)?x.meditationStyle:'equilibree',history:x.history.slice(-2000)}));
  if(!fresh.length)throw Error('Aucun profil valide.');
  if(remote&&state.profiles.length===1&&state.profiles[0].name==='Mon espace'&&!state.profiles[0].history.length){state.profiles=fresh;state.activeProfileId=fresh[0].id;}
  else{state.profiles=mergedProfiles(state.profiles,fresh);if(!state.profiles.some(p=>p.id===state.activeProfileId))state.activeProfileId=state.profiles[0].id;}
@@ -460,6 +507,7 @@ async function handle(action,value){
  if(action==='start-yoga')return startSession('yoga',value);
  if(action==='start-med')return startSession('meditate',value);
  if(action==='pose')return poseModal(value);
+  if(action==='toggle-mastery'){const p=profile();p.masteredPoseStatus||={};p.masteredPoseStatus[value]={mastered:!isMastered(value),at:Date.now()};touch();render();return poseModal(value);}
  if(action==='close')return closeModal();
  if(action==='pause'){if(session){session.running=!session.running;session.last=Date.now();if(!session.running)stopAudio();else session.spoken=-1;render();if(session.running)announceStep();}return;}
  if(action==='next-step'){if(session){const idx=stepIndex(session);session.elapsed=Math.min(session.duration,stepBoundary(session,idx)+0.01);session.spoken=-1;tick();}return;}
@@ -588,7 +636,17 @@ async function init(){
    try{const q=await fetch('/data/pose-guidance.json');if(q.ok){const j=await q.json();if(j?.schemaVersion===1&&j?.poses)poseGuidance=j;}}catch(e){}
   try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
-  try{const frozen=await fetch('/data/yoga-api-library.json');if(frozen.ok){const items=(await frozen.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...items.filter(p=>!ids.has(p.id)));}}catch(err){} // catalogue local, accessible même sans serveur
+  try{
+      const q=await fetch('/data/salutations.json');
+      if(!q.ok)throw Error('Catalogue des salutations indisponible');
+      const d=await q.json();
+      if(d.schemaVersion!==1||!Array.isArray(d.routines)||d.routines.length!==2)throw Error('Catalogue des salutations invalide');
+      salutations=d;
+      const ids=new Set(yoga.poses.map(p=>p.id));
+      yoga.poses.push(...d.extraPoses.filter(p=>!ids.has(p.id)));
+      yoga.routines.push(...d.routines.filter(r=>!yoga.routines.some(p=>p.id===r.id)));
+    }catch(e){console.warn('Salutations :',e.message);}
+   try{const frozen=await fetch('/data/yoga-api-library.json');if(frozen.ok){const items=(await frozen.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...items.filter(p=>!ids.has(p.id)));}}catch(err){} // catalogue local, accessible même sans serveur
   try{const r=await fetch('/api/v1/poses');if(r.ok){const extra=(await r.json()).poses||[];const ids=new Set(yoga.poses.map(p=>p.id));yoga.poses.push(...extra.filter(p=>!ids.has(p.id)));}}catch(err){} // bibliothèque préchargée disponible hors réseau
   voiceManifest().catch(()=>{});
    await Accounts.resume();
