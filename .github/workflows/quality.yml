@@ -28,6 +28,7 @@ jobs:
           sh -n scripts/upgrade-v2.2-no-git-qnap.sh
           sh -n scripts/upgrade-v2.3-qnap.sh
           sh -n scripts/upgrade-v2.3-no-git-qnap.sh
+          sh -n scripts/install-original-art-qnap.sh
           sh -n scripts/configure-smtp-gmail-qnap.sh
       - name: Check Python syntax
         run: python -m compileall -q server scripts
