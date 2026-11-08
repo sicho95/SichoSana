@@ -145,10 +145,13 @@ function practiceMode(){
 }
 function dailyRoutine(){
  const p=profile(),day=todayKey();
- const saved=yoga.routines.find(r=>r.id===p.dailyChoice?.id);
+ // Les salutations guidées exigent des prérequis déclarés maîtrisés.
+ // Ne jamais les proposer comme « séance du jour » automatique.
+ const normalRoutines=yoga.routines.filter(r=>!r.requiresMastery);
+ const saved=normalRoutines.find(r=>r.id===p.dailyChoice?.id);
  if(p.dailyChoice?.date===day&&saved)return saved;
- const eligible=yoga.routines.filter(r=>practiceMode()==='complete'||r.level!=='Intermédiaire');
- const options=eligible.length?eligible:yoga.routines;
+ const eligible=normalRoutines.filter(r=>practiceMode()==='complete'||r.level!=='Intermédiaire');
+ const options=eligible.length?eligible:normalRoutines;
  const recent=p.history.slice(-3).map(h=>h.ref);
  const hour=new Date().getHours();
  const hash=s=>s.split('').reduce((x,ch)=>(x*31+ch.charCodeAt(0))>>>0,7);
@@ -165,7 +168,7 @@ function dailyRoutine(){
     +(goal==='energie'&&['eveil-doux','vinyasa-fluide'].includes(r.id)?2.3:0)
     +(goal==='equilibre'&&['equilibre','hatha-doux'].includes(r.id)?2.3:0)
  }));
- const chosen=candidates.sort((a,b)=>b.score-a.score)[0]?.r||yoga.routines[0];
+ const chosen=candidates.sort((a,b)=>b.score-a.score)[0]?.r||normalRoutines[0];
  p.dailyChoice={date:day,id:chosen.id};
  save();
  return chosen;
