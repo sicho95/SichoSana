@@ -571,3 +571,8 @@ body{background:var(--linen)}
 .mastery-control .muted{font-size:12px}
 .breath-indicator{display:inline-flex;padding:4px 12px;border-radius:20px;color:var(--sage-dark);font-weight:700;font-size:13px;background:#edf0e6}
 @media(max-width:779px){.salutations-grid{grid-template-columns:1fr}.salutation-card{padding:16px}}
+
+
+/* Paiement externe : seulement si l'URL de l'exploitant est validée côté serveur. */
+a.donate-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:42px;padding:11px 17px;border-radius:13px;color:#fff;background:var(--sage-dark);font-weight:670}
+a.donate-link:hover{text-decoration:underline}
