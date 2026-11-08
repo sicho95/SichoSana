@@ -209,7 +209,7 @@ function yogaPage(){
  '<div class="section-heading"><h2>Les enchaînements</h2></div>'+pills(['Tous','Hatha','Vinyasa','Favoris'],routineFilter,'routine-filter')+
  '<div class="cards">'+(routines.length?routines.map(routineCard).join(''):'<p class="empty">Aucune séance pour ce filtre.</p>')+'</div>'+salutationSection()+programsSection():
  '<div class="section-heading"><h2>Découvrir les postures</h2><span class="muted">'+poses.length+' postures</span></div>'+
- '<p class="muted">13 fiches essentielles guidées en trois étapes. Le catalogue Yoga API ajoute 48 fiches documentaires ; leurs descriptions anglaises restent à vérifier avant un usage comme séances guidées. Crédits dans Profil.</p>'+
+ '<p class="muted">La bibliothèque propose 13 fiches essentielles initiales, 12 postures supplémentaires pour les salutations et 48 fiches Yoga API. Déclare chaque posture maîtrisée depuis sa fiche avant de débloquer les salutations. Les illustrations inexactes sont exclues. Crédits dans Profil.</p>'+
  pills(['Essentielles','Catalogue API','Tous','Débutant','Intermédiaire'],poseFilter,'pose-filter')+
  '<div class="pose-list">'+poses.map(p=>'<button class="pose-item" type="button" data-action="pose" data-value="'+escapeHTML(p.id)+'">'+posePicture(p.id,'thumb')+'<span><strong>'+escapeHTML(p.nom)+'</strong><small>'+escapeHTML(p.sanskrit)+' · '+escapeHTML(p.focus)+'</small></span></button>').join('')+'</div>'+
  '<p class="library-info">La bibliothèque fonctionne sans réseau après une première ouverture. Les postures doivent rester confortables et adaptées à chacun.</p>');
