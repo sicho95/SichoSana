@@ -226,6 +226,22 @@ def too_many_attempts(ip):
         return False
 
 
+def donation_destination():
+    """Lien fourni par l'exploitant, jamais une destination de paiement inventée."""
+    from urllib.parse import urlsplit
+    url=os.environ.get("SICHOSANA_DONATION_URL","").strip()
+    if not url or len(url)>1000:return None
+    try:
+        parsed=urlsplit(url)
+        domain=(parsed.hostname or "").lower()
+        accepted=domain in {"paypal.me","ko-fi.com","www.ko-fi.com","www.buymeacoffee.com","buymeacoffee.com"} or domain=="paypal.com" or domain.endswith(".paypal.com") or domain=="stripe.com" or domain.endswith(".stripe.com")
+        if parsed.scheme!="https" or not accepted or parsed.username or parsed.password:
+            return None
+        return url
+    except ValueError:
+        return None
+
+
 def original_art_status(root):
     """Statut réel des originaux. Aucun crédit tiers ne disparaît si un PNG manque."""
     import re
@@ -359,6 +375,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.json_response(200, astrology.daily(params.get('sign',[''])[0], params.get('period',['daily'])[0]))
             if path == "/api/health":
                 return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.0"})
+            if path == "/api/v1/public-config":
+                return self.json_response(200, {"donationUrl": donation_destination()})
             if path == "/api/v1/media/original-status":
                 return self.json_response(200, original_art_status(STATIC))
             if path == "/api/v1/poses":
