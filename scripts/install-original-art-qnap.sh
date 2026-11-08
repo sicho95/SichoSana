@@ -14,7 +14,7 @@ fi
 }
 cd "$APP"
 BUNDLE="$(cd "$(dirname "$ZIP")" && pwd)/$(basename "$ZIP")"
-echo "[SichoSana ART 1/3] Vérification des 69 PNG et de leurs empreintes SHA-256..."
+echo "[SichoSana ART 1/3] Vérification des 73 PNG et de leurs empreintes SHA-256..."
 docker run --rm -i --network none -v "$APP:/workspace" -v "$BUNDLE:/tmp/originals.zip:ro" \
  -w /workspace python:3.12-slim python - <<'PY'
 import hashlib, json, os, pathlib, tempfile, zipfile
@@ -23,9 +23,9 @@ root.mkdir(parents=True,exist_ok=True)
 with zipfile.ZipFile('/tmp/originals.zip') as archive:
     data=json.loads(archive.read('artwork-manifest.json'))
     files=data['files']
-    if len(files)!=69 or data['catalog48']['present']!=48 or data['essential13']['present']!=13 or data['salutationExtras']['present']!=8:
+    if len(files)!=73 or data['catalog48']['present']!=48 or data['essential13']['present']!=13 or data['salutationExtras']['present']!=12:
         raise SystemExit('Manifeste incomplet ou nombre de fichiers inattendu : aucune copie.')
-    if len(data.get('missing',[]))!=4:
+    if data.get('missing'):
         raise SystemExit('Nombre d’illustrations encore manquantes incohérent.')
     for name,info in files.items():
         rel='media/original/'+name+'.png'
@@ -49,7 +49,7 @@ with zipfile.ZipFile('/tmp/originals.zip') as archive:
             os.replace(tmp,target)
         finally:
             if os.path.exists(tmp):os.unlink(tmp)
-print('ORIGINAL_ART_OK',len(files),'PNG installés ; 4 postures restent à compléter.')
+print('ORIGINAL_ART_OK',len(files),'PNG installés ; 0 illustration manquante.')
 PY
 echo "[SichoSana ART 2/3] Reconstruire uniquement l'application SichoSana..."
 docker compose -f compose.yaml -p sichosana up -d --build --no-deps --force-recreate
