@@ -165,7 +165,7 @@ test('iPhone: onglets yoga et sélecteur glassy au doigt',async({page})=>{
  await expect(tabs).toBeVisible();
  await expect(tabs.locator('button[role="tab"]')).toHaveCount(2);
  await tabs.locator('[data-value="postures"]').click();
- await expect(page.locator('.pose-list .pose-item')).toHaveCount(13);
+ await expect(page.locator('.pose-list .pose-item')).toHaveCount(25);
  await tabs.locator('[data-value="seances"]').click();
  await expect(page.locator('.routine-card')).not.toHaveCount(0);
  const slider=page.locator('.yoga-practice-modes.sliding-segment');
@@ -178,4 +178,29 @@ test('iPhone: onglets yoga et sélecteur glassy au doigt',async({page})=>{
  await expect(page.locator('.yoga-practice-modes [data-value="complete"]')).toHaveAttribute('aria-pressed','true');
  await expect(page.locator('.yoga-practice-modes')).toHaveAttribute('style',/--index:2/);
  await page.screenshot({path:'screenshots/yoga-iphone-glassy.png',fullPage:true});
+});
+
+
+test('salutations: noms corrects, déverrouillage après maîtrise déclarée, variante cobra',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await signIn(page);
+ await page.locator('.bottom-nav [data-value="yoga"]').click();
+ await expect(page.locator('.salutation-card')).toHaveCount(2);
+ const sun=page.locator('.salutation-card').filter({hasText:'Salutation au soleil A'});
+ const moon=page.locator('.salutation-card').filter({hasText:'Salutation à la lune'});
+ await expect(sun).toContainText('0 / 7 postures');
+ await expect(moon).toContainText('0 / 8 postures');
+ const prereqs=['tadasana','urdhva-hastasana','uttanasana','ardha-uttanasana','phalakasana','bhujangasana','adho-mukha'];
+ for(const poseId of prereqs){
+  await page.locator('.salutation-card').filter({hasText:'Salutation au soleil A'}).locator('[data-action="pose"][data-value="'+poseId+'"]').click();
+  await page.locator('.pose-modal [data-action="toggle-mastery"]').click();
+  await page.locator('.pose-modal [data-action="close"]').click();
+ }
+ await expect(sun).toContainText('7 / 7 postures');
+ await sun.getByRole('button',{name:'Commencer l’enchaînement'}).click();
+ await expect(page.locator('.session')).toBeVisible();
+ await expect(page.locator('.session')).toContainText('Salutation au soleil A');
+ await expect(page.locator('.session')).toContainText('Étape 1 sur 12');
+ await page.locator('[data-action="finish"]').click();
+ await expect(moon).toContainText('0 / 8 postures');
 });
