@@ -3,7 +3,8 @@
   "title": "Salutations guidées — SichoSana",
   "sourceNotes": [
     "Surya Namaskar A : tradition Ashtanga/Vinyasa. Ūrdhva Mukha Śvānāsana en version complète ; Bhujangāsana en variante douce. Référence : https://ashtanga.tech/study-guide/yoga-techniques/asana/surya-namaskar-vinyasa-yoga/surya-namaskar-asana-sequences/",
-    "Chandra Namaskar : adaptation pédagogique lente et bilatérale, inspirée de la séquence classique de Kripalu. Référence : https://kripalu.org/living-kripalu/chandra-namaskar-honoring-moon-salute"
+    "Chandra Namaskar : adaptation pédagogique lente et bilatérale, inspirée de la séquence classique de Kripalu. Référence : https://kripalu.org/living-kripalu/chandra-namaskar-honoring-moon-salute",
+    "L'inclinaison latérale debout est aussi appelée Indudalasana (Standing Crescent), distincte de la posture d'équilibre Ardha Chandrasana. Voir : https://www.planetayurveda.com/wp-content/uploads/2023/12/11Complete-yoga-poses-2100-_231208_181220.pdf"
   ],
   "extraPoses": [
     {
@@ -62,12 +63,12 @@
     },
     {
       "id": "ardha-chandra-lateral",
-      "nom": "Demi-lune latérale debout",
-      "sanskrit": "Ardha Chandrāsana (inclinaison latérale)",
+      "nom": "Inclinaison latérale debout",
+      "sanskrit": "Indudalāsana / Pārśva Tāḍāsana",
       "niveau": "Débutant",
       "focus": "Latéral",
-      "instructions": "Debout, bras allongés, incline le buste sur un côté sans tourner les épaules ni forcer dans les lombaires.",
-      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+      "instructions": "Debout, pieds ancrés et bassin stable, allonge les deux bras au-dessus de la tête, puis incline le buste sur le côté sans te pencher en arrière.",
+      "prudence": "Le mouvement est latéral : ne force ni le bas du dos ni la nuque. Évite de cambrer vers l’arrière."
     },
     {
       "id": "utthita-tadasana",
