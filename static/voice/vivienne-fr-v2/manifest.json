@@ -12,7 +12,7 @@
   "catalogSha256": "48d126d87143fab06bf65e9ff5ab3b5c88a34758fd2736c3ed200c30791173c5",
   "yogaCatalogSha256": "9e4ea5b991da23c41c6816c931836c0f91440dd9b9e65dda7dbec6b47a927eb0",
   "guidanceSha256": "ca453d4113bd082174174542421c860de8f833265d850365838fb41c591ca5bb",
-  "salutationsSha256": "f61ca417d47f7edba9b42e1437e24cd323ae4754844a6f2b0a8cf0b813b4bf27",
+  "salutationsSha256": "f99ba3df031fcfd95f6ebadca07602801d80d9004ff2fa62ce8ac0555de0171e",
   "files": {
     "ancrage_discrete_00": {
       "src": "ancrage_discrete_00.mp3",
@@ -459,7 +459,7 @@
       "src": "pose_ardha-chandra-lateral.mp3",
       "sha256": "1a150d9972340448b2a835a693df04c18209f1ba62a10f3358a434ffbc38b7fc",
       "bytes": 103968,
-      "textSha256": "b855be8b43841e43a1b17cac0221b8f91e6ac32c838af125a0878af496414cc0",
+      "textSha256": "a32ec646d3613048c7a893ac2be9d3ba500b102cea00222ab68f4433c81ffd2a",
       "kind": "yoga"
     },
     "pose_ardha-uttanasana": {
@@ -809,28 +809,28 @@
       "src": "salutation_salutation-lune_01_easy.mp3",
       "sha256": "88f7c799592a15642451cc4bf0c40abb0151e11e969b97fd33cbcdf6514a2461",
       "bytes": 43920,
-      "textSha256": "7a97674a937a302c6b73844e8907e6622eacf134b5a06da352b86bb8f38190a9",
+      "textSha256": "bee91f3a4768dcbf57cef97f741fde3b8023470ace9c98d12bb45eea926858de",
       "kind": "yoga"
     },
     "salutation_salutation-lune_01_full": {
       "src": "salutation_salutation-lune_01_full.mp3",
       "sha256": "8670af51bd9fe1d48f1d298f2642e623746bfe35b25c6f033770b4ab86dfd30e",
       "bytes": 43920,
-      "textSha256": "7a97674a937a302c6b73844e8907e6622eacf134b5a06da352b86bb8f38190a9",
+      "textSha256": "bee91f3a4768dcbf57cef97f741fde3b8023470ace9c98d12bb45eea926858de",
       "kind": "yoga"
     },
     "salutation_salutation-lune_02_easy": {
       "src": "salutation_salutation-lune_02_easy.mp3",
       "sha256": "e1971d30bdb74a81354e110a585436e83c08335f9b235c673dbf69ebf8229282",
       "bytes": 40176,
-      "textSha256": "66ea262194b9e106d956b930ded571c635b7e33d8d8bdc1c2fbbc4046bb8fbdd",
+      "textSha256": "77e404e0dc3ed11e194f96bf7d863408fdee437cbdbc1dae9e83354467029824",
       "kind": "yoga"
     },
     "salutation_salutation-lune_02_full": {
       "src": "salutation_salutation-lune_02_full.mp3",
       "sha256": "c0e73fda745dd73fca1aa6fbbde1b2b96d44f8da116d62f0b6d5f0a961a3be1d",
       "bytes": 40032,
-      "textSha256": "66ea262194b9e106d956b930ded571c635b7e33d8d8bdc1c2fbbc4046bb8fbdd",
+      "textSha256": "77e404e0dc3ed11e194f96bf7d863408fdee437cbdbc1dae9e83354467029824",
       "kind": "yoga"
     },
     "salutation_salutation-lune_03_easy": {
@@ -1005,28 +1005,28 @@
       "src": "salutation_salutation-lune_15_easy.mp3",
       "sha256": "a2395eb6be408f8a5658d5f159627dfe84c3f2d97c97927bcdbfd572f7d72d3e",
       "bytes": 46800,
-      "textSha256": "819f9b774350eac58963d43ab2d3a4392a1f86fd2e5a693ffe5e3103e30fb3d4",
+      "textSha256": "84c041f4f1430b64fb6fc340862842314d88081179dea33506ac46c053551691",
       "kind": "yoga"
     },
     "salutation_salutation-lune_15_full": {
       "src": "salutation_salutation-lune_15_full.mp3",
       "sha256": "b675229203784bf65232645d7c83b1be0258a2ca6b8234592e9dff15aef55034",
       "bytes": 46656,
-      "textSha256": "819f9b774350eac58963d43ab2d3a4392a1f86fd2e5a693ffe5e3103e30fb3d4",
+      "textSha256": "84c041f4f1430b64fb6fc340862842314d88081179dea33506ac46c053551691",
       "kind": "yoga"
     },
     "salutation_salutation-lune_16_easy": {
       "src": "salutation_salutation-lune_16_easy.mp3",
       "sha256": "2d511f177187a030fabe5fd2ac0119013f7b2617ad20cc942b8f0eb09e68f6e6",
       "bytes": 46944,
-      "textSha256": "8fc8489a39a634980691ca6c32236ed0515da8944acabe3171e4ffcc042c5ae6",
+      "textSha256": "aac8bf69cb4696247fc49bf559cd5d7458a91ce8ae246f847fd41aaefe46a8d1",
       "kind": "yoga"
     },
     "salutation_salutation-lune_16_full": {
       "src": "salutation_salutation-lune_16_full.mp3",
       "sha256": "d167b9e1dfed50e05eb58a4f998b85843eb348af6c80f677acc1dcfbe905f801",
       "bytes": 46368,
-      "textSha256": "8fc8489a39a634980691ca6c32236ed0515da8944acabe3171e4ffcc042c5ae6",
+      "textSha256": "aac8bf69cb4696247fc49bf559cd5d7458a91ce8ae246f847fd41aaefe46a8d1",
       "kind": "yoga"
     },
     "salutation_salutation-lune_17_easy": {
