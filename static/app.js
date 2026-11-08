@@ -20,7 +20,7 @@ const iconPaths={
 };
 function uiIcon(key){return '<svg aria-hidden="true" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+(iconPaths[key]||iconPaths.lotus)+'</svg>';}
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
-let reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, salutations={routines:[],extraPoses:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
+let reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, originalArt={files:[]}, salutations={routines:[],extraPoses:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',dailyGoal:'varie',dailyDuration:20,zodiac:'',favorites:[],history:[],masteredPoseStatus:{},createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Essentielles', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
@@ -188,9 +188,14 @@ function yogaApiImage(id){
  return {src:'/media/yoga-api/'+ref+'.png',source:pose.imageSource};
 }
 function posePicture(id,kind='thumb'){
- const media=yogaApiImage(id);
- if(!media)return '<span class="pose-missing" aria-label="Illustration exacte non disponible">Illustration à compléter</span>';
- return '<img loading="lazy" decoding="async" data-pose-image="'+escapeHTML(id)+'" class="pose-photo '+kind+'" src="'+escapeHTML(media.src)+'" alt="Illustration Yoga API de la posture '+escapeHTML(yoga.poses.find(p=>p.id===id)?.nom||id)+'">';
+ const media=yogaApiImage(id),photo=poseMedia.photos?.find(x=>x.id===id);
+ const fallback=media?.src||photo?.src||'';
+ const original=originalArt.files?.includes(id);
+ if(!original&&!fallback)return '<span class="pose-missing" aria-label="Illustration exacte non disponible">Illustration exacte à compléter</span>';
+ const src=original?'/media/original/'+encodeURIComponent(id)+'.png':fallback;
+ return '<img loading="lazy" decoding="async" data-pose-image="'+escapeHTML(id)+'"'+
+   (original&&fallback?' data-fallback="'+escapeHTML(fallback)+'"':'')+
+   ' class="pose-photo '+kind+'" src="'+escapeHTML(src)+'" alt="Posture '+escapeHTML(yoga.poses.find(p=>p.id===id)?.nom||id)+'">';
 }
 function yogaPage(){
  const routines=yoga.routines.filter(r=>!r.requiresMastery&&(routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id))));
@@ -597,6 +602,9 @@ document.addEventListener('change',async(e)=>{
 document.addEventListener('error',e=>{
  const target=e.target;
  if(target instanceof HTMLImageElement && target.hasAttribute('data-pose-image')){
+  if(target.dataset.fallback&&!target.dataset.fallbackUsed){
+   target.dataset.fallbackUsed='1';target.src=target.dataset.fallback;return;
+  }
   const span=document.createElement('span');
   span.className='pose-missing';span.textContent='Illustration indisponible';
   target.replaceWith(span);
@@ -635,7 +643,8 @@ async function init(){
   const data=await Promise.all([fetch('/data/yoga.json').then(r=>{if(!r.ok)throw Error('Yoga indisponible');return r.json();}),fetch('/data/meditations.json').then(r=>{if(!r.ok)throw Error('Méditations indisponibles');return r.json();}),fetch('/data/programs.json').then(r=>{if(!r.ok)throw Error('Programmes indisponibles');return r.json();})]);
   yoga=data[0];meditations=data[1];programs=data[2];
    try{const q=await fetch('/data/pose-guidance.json');if(q.ok){const j=await q.json();if(j?.schemaVersion===1&&j?.poses)poseGuidance=j;}}catch(e){}
-  try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
+  try{const q=await fetch('/data/original-art.json');if(q.ok){const d=await q.json();if(Array.isArray(d.files))originalArt=d;}}catch(e){}
+   try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
   try{
       const q=await fetch('/data/salutations.json');
