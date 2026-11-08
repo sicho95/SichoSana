@@ -68,7 +68,7 @@ function saluteCard(r){
  const pose=yoga.poses.find(p=>p.id===id);
  return '<button class="salutation-prerequisite" data-action="pose" data-value="'+escapeHTML(id)+'">'+escapeHTML(pose?.nom||id)+'</button>';
  }).join('')+'</div>')+
- '<p class="salutation-note">Accessible après validation personnelle de chaque posture. Une variante douce peut remplacer le chien tête en haut par le cobra.</p></article>';
+ '<p class="salutation-note">Accessible après auto-évaluation des postures. '+(r.id==='salutation-soleil'?'La variante douce remplace le chien tête en haut par le cobra.':'La séquence se pratique lentement, des deux côtés.')+'</p></article>';
 }
 function salutationSection(){
  return '<section class="salutations-section"><div class="section-heading"><h2>Salutations guidées</h2></div>'+
