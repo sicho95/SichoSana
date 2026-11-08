@@ -14,37 +14,52 @@ docker compose version >/dev/null 2>&1 || { echo "ERREUR : Docker Compose indisp
 docker inspect sichosana-app >/dev/null 2>&1 || { echo "ERREUR : conteneur sichosana-app absent. Arrêt sans changement." >&2; exit 1; }
 [ -f .env ] || { echo "ERREUR : .env local absent. Arrêt sans changement." >&2; exit 1; }
 [ -f compose.yaml ] || { echo "ERREUR : compose.yaml absent. Arrêt sans changement." >&2; exit 1; }
-# Une V2.3 dite « complète » exige les 73 originaux, dans une archive
-# locale ou déjà présents sur le NAS. Éviter un déploiement avec placeholders.
-if [ -z "${SICHOSANA_ARTWORK_ZIP:-}" ]; then
-  DEFAULT_ARTWORK="$APP/../SichoSana_V2.3_73_illustrations_originales.zip"
-  [ ! -f "$DEFAULT_ARTWORK" ] || SICHOSANA_ARTWORK_ZIP="$DEFAULT_ARTWORK"
-fi
-if [ -n "${SICHOSANA_ARTWORK_ZIP:-}" ]; then
-  [ -f "$SICHOSANA_ARTWORK_ZIP" ] || {
-    echo "ERREUR : archive de 73 illustrations introuvable : $SICHOSANA_ARTWORK_ZIP" >&2
-    exit 1
-  }
-else
-  echo "[SichoSana] Pas de ZIP fourni, vérification des 73 PNG déjà installés..."
-  docker run --rm -i --network none -v "$APP:/workspace:ro" -w /workspace python:3.12-slim python - <<'PY'
-from pathlib import Path
-import json
-root=Path('static/media/original')
-config=Path('static/data/original-art.json')
-if not config.is_file():
-    raise SystemExit('DÉPLOIEMENT BLOQUÉ : fournir le ZIP des 73 originaux sur le NAS.')
-names=json.loads(config.read_text(encoding='utf-8')).get('files',[])
-valid=len(names)==73 and all(
-    (root/(n+'.png')).is_file() and
-    (root/(n+'.png')).stat().st_size>1000
-    for n in names if isinstance(n,str)
-)
-if not valid:
-    raise SystemExit('DÉPLOIEMENT BLOQUÉ : 73 PNG absents ou incomplets. Fournir SICHOSANA_ARTWORK_ZIP.')
-print('ART_DEJA_INSTALLE_OK',len(names))
+# Publier d'abord les 73 PNG sur la branche GitHub dans static/media/original/.
+# Ce contrôle est STRICTEMENT ANTÉRIEUR à toute sauvegarde ou copie de sources NAS.
+# Aucune archive locale à déposer, aucun Git à installer sur QNAP.
+echo "[SichoSana précontrôle] Vérifier les 73 images intégrées dans le même GitHub que le code..."
+docker run --rm -i --network bridge -e SICHOSANA_ARCHIVE="$ARCHIVE" \
+  python:3.12-slim python - <<'PY'
+import io,json,os,pathlib,struct,tarfile,urllib.request,zlib
+req=urllib.request.Request(os.environ['SICHOSANA_ARCHIVE'],
+                           headers={'User-Agent':'SichoSana-V23-GitHub-media-preflight'})
+with urllib.request.urlopen(req,timeout=90) as r:
+    data=r.read(150_000_001)
+if len(data)>150_000_000:raise SystemExit('Archive GitHub trop volumineuse')
+with tarfile.open(fileobj=io.BytesIO(data),mode='r:gz') as tf:
+    members={}
+    for member in tf:
+        if not member.isfile():continue
+        path=pathlib.PurePosixPath(member.name)
+        if len(path.parts)<2:continue
+        rel=str(pathlib.PurePosixPath(*path.parts[1:]))
+        members[rel]=member
+    cfg='static/data/original-art.json'
+    if cfg not in members:raise SystemExit('Manifeste original-art.json absent')
+    names=json.load(tf.extractfile(members[cfg])).get('files',[])
+    if len(names)!=73 or len(set(names))!=73:
+        raise SystemExit('Manifeste 73 fichiers non conforme')
+    checksums=set()
+    for name in names:
+        if not isinstance(name,str) or not name.replace('-','').isalnum():
+            raise SystemExit('Nom PNG invalide')
+        rel='static/media/original/'+name+'.png'
+        if rel not in members:raise SystemExit('PNG absent de GitHub : '+rel)
+        body=tf.extractfile(members[rel]).read(9_000_001)
+        if not 1000<len(body)<=9_000_000 or body[:8]!=b'\x89PNG\r\n\x1a\n':
+            raise SystemExit('PNG non conforme : '+rel)
+        if body[12:16]!=b'IHDR':
+            raise SystemExit('PNG IHDR absent : '+rel)
+        w,h=struct.unpack('>II',body[16:24])
+        if not(384<=w<=8192 and 384<=h<=8192):
+            raise SystemExit('Résolution incorrecte : '+rel)
+        # Éliminer les doublons évidents sans accepter 73 copies du même visuel.
+        import hashlib
+        digest=hashlib.sha256(body).hexdigest()
+        if digest in checksums:raise SystemExit('PNG dupliqué : '+rel)
+        checksums.add(digest)
+print('GITHUB_IMAGES_73_PRECONTROLE_OK ; aucune modification effectuée')
 PY
-fi
 
 echo "[SichoSana 1/7] Sauvegarde transactionnelle SQLite, comptes compris..."
 docker exec -i sichosana-app python - <<'PY'
@@ -175,10 +190,7 @@ if missing_salutes:
       +'Le moteur Edge TTS doit produire tous les clips avant mise en production.')
 print("PACK_VIVIENNE_OK",len(manifest['files']),'MP3 et 60 consignes de salutations vérifiées')
 PY
-if [ -n "${SICHOSANA_ARTWORK_ZIP:-}" ]; then
-  echo "[SichoSana 5b/7] Importer les 73 PNG contrôlés SHA-256 avant l'unique reconstruction..."
-  SICHOSANA_ART_NO_REBUILD=1 sh scripts/install-original-art-qnap.sh "$SICHOSANA_ARTWORK_ZIP"
-fi
+echo "[SichoSana 5b/7] 73 PNG récupérés automatiquement dans les sources GitHub ; aucun ZIP NAS requis."
 docker compose -f compose.yaml -p sichosana config --quiet
 
 echo "[SichoSana 6/7] Conserver l'image antérieure et recréer SichoSana uniquement..."
