@@ -39,12 +39,22 @@ jobs:
           import json
           p=json.load(open("static/data/yoga.json"))
           m=json.load(open("static/data/meditations.json"))
+          salutations=json.load(open("static/data/salutations.json"))
+          assert len(salutations["routines"])==2
+          valid={p["id"] for p in json.load(open("static/data/yoga.json"))["poses"]}
+          valid.update(p["id"] for p in salutations["extraPoses"])
+          valid.update(p["id"] for p in json.load(open("static/data/yoga-api-library.json"))["poses"])
+          for salute in salutations["routines"]:
+              assert len(salute["steps"])>=10
+              assert set(salute["fullPrerequisites"]+salute["easyPrerequisites"]) <= valid
+              assert all(step["poseId"] in valid and step.get("easyPoseId",step["poseId"]) in valid for step in salute["steps"])
           pose={x["id"] for x in p["poses"]}
           assert all(set(r["poseIds"]) <= pose for r in p["routines"])
           for s in m["sessions"]:
             assert all(s["scripts"][k] for k in ("discrete","equilibree","enveloppante"))
           pg=json.load(open("static/data/programs.json"))
           routine_ids={r["id"] for r in p["routines"]}
+          routine_ids.update(r["id"] for r in json.load(open("static/data/salutations.json"))["routines"])
           med_ids={s["id"] for s in m["sessions"]}
           for program in pg["programs"]:
             assert len(program["steps"])>=5
