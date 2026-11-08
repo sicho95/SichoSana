@@ -37,3 +37,18 @@ class OriginalArtStatusTests(unittest.TestCase):
 
 if __name__=="__main__":
     unittest.main()
+
+
+class DonationDestinationTests(unittest.TestCase):
+    def test_no_invented_destination(self):
+        from unittest.mock import patch
+        import os
+        from server.app import donation_destination
+        with patch.dict(os.environ,{"SICHOSANA_DONATION_URL":""}):
+            self.assertIsNone(donation_destination())
+        with patch.dict(os.environ,{"SICHOSANA_DONATION_URL":"https://paypal.me/EXAMPLE"}):
+            self.assertEqual(donation_destination(),"https://paypal.me/EXAMPLE")
+        with patch.dict(os.environ,{"SICHOSANA_DONATION_URL":"javascript:alert(1)"}):
+            self.assertIsNone(donation_destination())
+        with patch.dict(os.environ,{"SICHOSANA_DONATION_URL":"https://phishing.test/"}):
+            self.assertIsNone(donation_destination())
