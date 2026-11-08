@@ -226,6 +226,22 @@ def too_many_attempts(ip):
         return False
 
 
+def original_art_status(root):
+    """Statut réel des originaux. Aucun crédit tiers ne disparaît si un PNG manque."""
+    try:
+        manifest=json.loads((root / "data" / "original-art.json").read_text(encoding="utf-8"))
+        files=manifest["files"]
+        if not isinstance(files, list) or len(files)!=73 or len(set(files))!=73:
+            return {"ready":False,"installed":0,"expected":73}
+        path=root / "media" / "original"
+        good=sum(1 for name in files if isinstance(name,str) and
+                 re.fullmatch(r"[a-z0-9-]+",name) and
+                 (path/(name+".png")).is_file() and (path/(name+".png")).stat().st_size>1000)
+        return {"ready":good==73,"installed":good,"expected":73}
+    except (OSError,ValueError,KeyError,TypeError):
+        return {"ready":False,"installed":0,"expected":73}
+
+
 class Handler(SimpleHTTPRequestHandler):
     server_version = "SichoSana/2.3"
 
@@ -342,6 +358,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self.json_response(200, astrology.daily(params.get('sign',[''])[0], params.get('period',['daily'])[0]))
             if path == "/api/health":
                 return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.0"})
+            if path == "/api/v1/media/original-status":
+                return self.json_response(200, original_art_status(STATIC))
             if path == "/api/v1/poses":
                 return self.json_response(200, pose_library())
             if path == "/api/v1/snapshot":
