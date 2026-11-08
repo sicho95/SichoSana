@@ -62,5 +62,7 @@ jobs:
             assert all((s["ref"] in routine_ids if s["type"]=="yoga" else s["ref"] in med_ids) for s in program["steps"])
           print(len(p["poses"]),"poses /",len(p["routines"]),"routines /",len(m["sessions"]),"meditations /",len(pg["programs"]),"programmes")
           PY
+      - name: Verify 73 original PNGs, salutations and 183 audio clips
+        run: python scripts/verify-v23-art-and-salutations.py --root .
       - name: Validate Compose
         run: docker compose -f compose.yaml config -q
