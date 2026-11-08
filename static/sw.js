@@ -2,7 +2,7 @@
    Une réponse HTTP 206 ne peut pas être stockée dans CacheStorage.
    Hors ligne, servir un fragment 206 depuis le fichier complet (200) en cache.
    Ne jamais mettre en cache l'API ni les données de compte. */
-const VERSION='sichosana-static-v9';
+const VERSION='sichosana-static-v10';
 const ESSENTIAL=['/','/index.html','/styles.css','/app.js','/auth.js','/icon.svg',
   '/manifest.webmanifest','/data/yoga.json','/data/yoga-api-library.json',
   '/data/pose-guidance.json','/data/salutations.json','/data/meditations.json','/data/programs.json',
@@ -46,6 +46,30 @@ async function cachedAudioFragment(request){
  headers.set('Cache-Control','no-store');
  return new Response(bytes.slice(from,to+1),{status:206,headers});
 }
+const audioCaching=new Map();
+async function cacheWholeAudio(url){
+ if(audioCaching.has(url))return audioCaching.get(url);
+ const promise=(async()=>{
+  try{
+   const cache=await caches.open(VERSION);
+   const cached=await cache.match(url);
+   if(cached?.status===200)return;
+   // Fetch direct depuis le worker, sans en-tête Range :
+   // le navigateur peut faire des requêtes 206, mais le cache hors-ligne a
+   // besoin d'un fichier complet 200.
+   const response=await fetch(new Request(url,{method:'GET',cache:'no-store'}));
+   const len=Number(response.headers.get('content-length')||0);
+   if(response.status!==200||!response.ok||len>8_000_000)return;
+   await cache.put(url,response);
+  }catch(_){
+   // La lecture réseau partielle doit rester fonctionnelle.
+  }finally{
+   audioCaching.delete(url);
+  }
+ })();
+ audioCaching.set(url,promise);
+ return promise;
+}
 async function audioResponse(request){
  if(request.headers.has('Range')){
   try{
@@ -73,6 +97,9 @@ self.addEventListener('fetch',event=>{
  if(url.origin!==self.location.origin)return;
  if(url.pathname.startsWith('/api/'))return;
  if(url.pathname.startsWith('/voice/')&&url.pathname.endsWith('.mp3')){
+  // Safari demande souvent des segments HTTP Range. Mettre en cache la
+  // version complète en parallèle permet une vraie lecture hors ligne.
+  if(request.headers.has('Range'))event.waitUntil(cacheWholeAudio(request.url));
   event.respondWith(audioResponse(request));
   return;
  }
