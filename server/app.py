@@ -259,7 +259,7 @@ def original_art_status(root):
                 return False
             with picture.open("rb") as stream:
                 head = stream.read(26)
-            if len(head) != 26 or head[:16] != b"\\x89PNG\\r\\n\\x1a\\n\\x00\\x00\\x00\\x0dIHDR":
+            if len(head) != 26 or head[:16] != b"\x89PNG\r\n\x1a\n\x00\x00\x00\x0dIHDR":
                 return False
             width = int.from_bytes(head[16:20], "big")
             height = int.from_bytes(head[20:24], "big")
