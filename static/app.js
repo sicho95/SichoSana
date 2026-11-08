@@ -258,7 +258,8 @@ function poseModal(id){
  '<section><div class="eyebrow">3 · Posture complète</div><p>'+escapeHTML(p.instructions)+'</p></section>'+
  '<section><h3>Respiration</h3><p>'+escapeHTML(guidance.respiration)+'</p><h3>Alignement</h3><p>'+escapeHTML(guidance.alignement)+'</p></section></div>':
  '<h3>Installation</h3><p>'+escapeHTML(p.instructions)+'</p>')+
- '<h3>À respecter</h3><p class="attention">'+escapeHTML(guidance?.prudence||p.prudence||'Adapte la posture à ton confort.')+'</p>'+ "'<div class=\"mastery-control\"><button type=\"button\" class=\"'+(isMastered(p.id)?'secondary':'primary')+'\" data-action=\"toggle-mastery\" data-value=\"'+escapeHTML(p.id)+'\" aria-pressed=\"'+isMastered(p.id)+'\">'+(isMastered(p.id)?'À retravailler':'Je maîtrise cette posture')+'</button><p class=\"muted\">Auto-évaluation personnelle : ce choix ne constitue pas une validation de sécurité ou d’aptitude médicale.</p></div></div>';";
+  '<h3>À respecter</h3><p class="attention">'+escapeHTML(guidance?.prudence||p.prudence||'Adapte la posture à ton confort.')+'</p>'+
+  '<div class="mastery-control"><button type="button" class="'+(isMastered(p.id)?'secondary':'primary')+'" data-action="toggle-mastery" data-value="'+escapeHTML(p.id)+'" aria-pressed="'+isMastered(p.id)+'">'+(isMastered(p.id)?'À retravailler':'Je maîtrise cette posture')+'</button><p class="muted">Auto-évaluation personnelle, pas une validation médicale.</p></div></div>';
  renderModal();
 }
 function renderModal(){$('#overlay').innerHTML=modal;}
