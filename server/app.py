@@ -228,6 +228,7 @@ def too_many_attempts(ip):
 
 def original_art_status(root):
     """Statut réel des originaux. Aucun crédit tiers ne disparaît si un PNG manque."""
+    import re
     try:
         manifest=json.loads((root / "data" / "original-art.json").read_text(encoding="utf-8"))
         files=manifest["files"]
