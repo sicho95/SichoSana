@@ -14,9 +14,36 @@ docker compose version >/dev/null 2>&1 || { echo "ERREUR : Docker Compose indisp
 docker inspect sichosana-app >/dev/null 2>&1 || { echo "ERREUR : conteneur sichosana-app absent. Arrêt sans changement." >&2; exit 1; }
 [ -f .env ] || { echo "ERREUR : .env local absent. Arrêt sans changement." >&2; exit 1; }
 [ -f compose.yaml ] || { echo "ERREUR : compose.yaml absent. Arrêt sans changement." >&2; exit 1; }
-if [ -n "${SICHOSANA_ARTWORK_ZIP:-}" ] && [ ! -f "$SICHOSANA_ARTWORK_ZIP" ]; then
-  echo "ERREUR : archive de 73 illustrations introuvable : $SICHOSANA_ARTWORK_ZIP" >&2
-  exit 1
+# Une V2.3 dite « complète » exige les 73 originaux, dans une archive
+# locale ou déjà présents sur le NAS. Éviter un déploiement avec placeholders.
+if [ -z "${SICHOSANA_ARTWORK_ZIP:-}" ]; then
+  DEFAULT_ARTWORK="$APP/../SichoSana_V2.3_73_illustrations_originales.zip"
+  [ ! -f "$DEFAULT_ARTWORK" ] || SICHOSANA_ARTWORK_ZIP="$DEFAULT_ARTWORK"
+fi
+if [ -n "${SICHOSANA_ARTWORK_ZIP:-}" ]; then
+  [ -f "$SICHOSANA_ARTWORK_ZIP" ] || {
+    echo "ERREUR : archive de 73 illustrations introuvable : $SICHOSANA_ARTWORK_ZIP" >&2
+    exit 1
+  }
+else
+  echo "[SichoSana] Pas de ZIP fourni, vérification des 73 PNG déjà installés..."
+  docker run --rm -i --network none -v "$APP:/workspace:ro" -w /workspace python:3.12-slim python - <<'PY'
+from pathlib import Path
+import json
+root=Path('static/media/original')
+config=Path('static/data/original-art.json')
+if not config.is_file():
+    raise SystemExit('DÉPLOIEMENT BLOQUÉ : fournir le ZIP des 73 originaux sur le NAS.')
+names=json.loads(config.read_text(encoding='utf-8')).get('files',[])
+valid=len(names)==73 and all(
+    (root/(n+'.png')).is_file() and
+    (root/(n+'.png')).stat().st_size>1000
+    for n in names if isinstance(n,str)
+)
+if not valid:
+    raise SystemExit('DÉPLOIEMENT BLOQUÉ : 73 PNG absents ou incomplets. Fournir SICHOSANA_ARTWORK_ZIP.')
+print('ART_DEJA_INSTALLE_OK',len(names))
+PY
 fi
 
 echo "[SichoSana 1/7] Sauvegarde transactionnelle SQLite, comptes compris..."
@@ -176,6 +203,16 @@ case "$RESPONSE" in
   *) echo "ATTENTION : API V2.3 non confirmée. Consulter docker logs --tail 80 sichosana-app" >&2; exit 1;;
 esac
 docker inspect sichosana-app --format 'RÉSEAU={{.HostConfig.NetworkMode}} | STATUT={{.State.Status}}'
+echo "[SichoSana] Vérification de la bibliothèque originale complète et des MP3 HTTP Range..."
+ART_STATUS="$(curl -fsS --max-time 10 http://192.168.1.69:18887/api/v1/media/original-status)"
+printf '%s\\n' "$ART_STATUS"
+case "$ART_STATUS" in
+  *'"ready": true'*'"installed": 73'*) ;;
+  *) echo "ERREUR : les 73 PNG ne sont pas servis. Vérifier les volumes et la reconstruction." >&2; exit 1;;
+esac
+AUDIO_HTTP="$(curl -sS --max-time 12 -o /dev/null -w '%{http_code}' -H 'Range: bytes=0-63' http://192.168.1.69:18887/voice/vivienne-fr-v2/pose_balasana.mp3)"
+[ "$AUDIO_HTTP" = "206" ] || { echo "ERREUR : MP3 Range devrait répondre 206, reçu $AUDIO_HTTP" >&2; exit 1; }
+echo "MP3_RANGE_OK HTTP 206"
 echo "[SichoSana] TERMINÉ : comptes conservés, autres conteneurs, DNS et tunnel inchangés."
 echo "[SichoSana] Ouvrir : https://yoga.sicho.cc.cd"
 echo "[SichoSana] SMTP SichoBooks : sh scripts/configure-smtp-from-sichobooks-qnap.sh"
