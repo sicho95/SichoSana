@@ -205,3 +205,59 @@ test('salutations: noms corrects, déverrouillage après maîtrise déclarée, v
  await page.locator('[data-action="finish"]').click();
  await expect(moon).toContainText('1 / 8 postures'); // Montagne maîtrisée vaut aussi pour la Lune.
 });
+
+
+test('salutations: maîtrise par profil synchronisée et révocable entre deux appareils',async({browser})=>{
+ const c1=await browser.newContext({viewport:{width:1280,height:900}});
+ const c2=await browser.newContext({viewport:{width:1280,height:900}});
+ const name='Recette salutations '+Date.now();
+ try{
+  const a=await c1.newPage(),b=await c2.newPage();
+  await signIn(a);await signIn(b);
+  await a.locator('.sidebar [data-value="profile"]').click();
+  a.once('dialog',d=>d.accept(name));
+  await a.locator('[data-action="add-profile"]').click();
+  await expect(a.locator('.profile-options')).toContainText(name);
+  await a.locator('.sidebar [data-value="yoga"]').click();
+  await a.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .locator('[data-action="pose"][data-value="tadasana"]').click();
+  await a.locator('.pose-modal [data-action="toggle-mastery"]').click();
+  await a.locator('.pose-modal [data-action="close"]').click();
+  await expect.poll(async()=>{
+   return a.evaluate(async name=>{
+    const {api}=await import('/auth.js');
+    const s=await api('account/snapshot');
+    return s.data?.profiles?.find(p=>p.name===name)?.masteredPoseStatus?.tadasana?.mastered;
+   },name);
+  },{timeout:16000}).toBe(true);
+  await b.reload();
+  await b.locator('.sidebar [data-value="profile"]').click();
+  await expect(b.locator('.profile-options')).toContainText(name);
+  await b.locator('.profile-option').filter({hasText:name}).click();
+  await b.locator('.sidebar [data-value="yoga"]').click();
+  await expect(b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})).toContainText('1 / 7 postures');
+  await expect(b.locator('.salutation-card').filter({hasText:'Salutation à la lune'})).toContainText('1 / 8 postures');
+  await b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .locator('[data-action="pose"][data-value="urdhva-hastasana"]').click();
+  await expect(b.locator('.pose-modal [data-action="toggle-mastery"]')).toContainText('Je maîtrise');
+  await b.locator('.pose-modal [data-action="close"]').click();
+  // Une posture non maîtrisée ne débloque jamais une salutation.
+  await expect(b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .getByRole('button',{name:'Commencer l’enchaînement'})).toHaveCount(0);
+  await b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .locator('[data-action="pose"][data-value="tadasana"]').click();
+  await b.locator('.pose-modal [data-action="toggle-mastery"]').click();
+  await b.locator('.pose-modal [data-action="close"]').click();
+  await expect.poll(async()=>{
+   return b.evaluate(async name=>{
+    const {api}=await import('/auth.js');
+    const s=await api('account/snapshot');
+    return s.data?.profiles?.find(p=>p.name===name)?.masteredPoseStatus?.tadasana?.mastered;
+   },name);
+  },{timeout:16000}).toBe(false);
+  await a.reload();
+  await a.locator('.sidebar [data-value="yoga"]').click();
+  await expect(a.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})).toContainText('0 / 7 postures');
+  await expect(a.locator('.salutation-card').filter({hasText:'Salutation à la lune'})).toContainText('0 / 8 postures');
+ }finally{await c1.close();await c2.close();}
+});
