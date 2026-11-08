@@ -202,5 +202,5 @@ test('salutations: noms corrects, déverrouillage après maîtrise déclarée, v
  await expect(page.locator('.session')).toContainText('Salutation au soleil A');
  await expect(page.locator('.session')).toContainText('Étape 1 sur 12');
  await page.locator('[data-action="finish"]').click();
- await expect(moon).toContainText('0 / 8 postures');
+ await expect(moon).toContainText('1 / 8 postures'); // Montagne maîtrisée vaut aussi pour la Lune.
 });
