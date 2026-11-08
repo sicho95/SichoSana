@@ -133,7 +133,16 @@ assert len(manifest['files'])>=111, 'Fichiers vocaux manquants'
 missing=[x['src'] for x in manifest['files'].values() if not (pack/x['src']).is_file()]
 if missing:
     raise SystemExit('MP3 manquants : '+str(missing[:6]))
-print("PACK_VIVIENNE_OK",len(manifest['files']),'MP3')
+salutations=json.loads(Path('static/data/salutations.json').read_text())
+required=['salutation_'+r['id']+'_'+str(i).zfill(2)+'_'+mode
+    for r in salutations['routines'] for i,_ in enumerate(r['steps'])
+    for mode in ('full','easy')]
+missing_salutes=[k for k in required if k not in manifest['files'] or not (pack/manifest['files'][k]['src']).is_file()]
+if missing_salutes:
+    raise SystemExit('DÉPLOIEMENT V2.3 BLOQUÉ : '
+      +str(len(missing_salutes))+' MP3 des salutations absents. '
+      +'Le moteur Edge TTS doit produire tous les clips avant mise en production.')
+print("PACK_VIVIENNE_OK",len(manifest['files']),'MP3 et 60 consignes de salutations vérifiées')
 PY
 docker compose -f compose.yaml -p sichosana config --quiet
 
