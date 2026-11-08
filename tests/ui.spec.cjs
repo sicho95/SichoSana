@@ -23,7 +23,8 @@ test('iPhone: inscription non affichée après connexion, yoga et progression',a
  expect(navHeight).toBeLessThan(110);
  await expect(page.locator('.sidebar')).toBeHidden();
  const expectedRoutine=await page.locator('.hero h2').innerText();
- await page.locator('[data-action="start-yoga"]').first().click();
+ await expect(page.locator('.hero [data-action="start-yoga"]')).not.toHaveAttribute('data-value',/salutation-/);
+ await page.locator('.hero [data-action="start-yoga"]').click();
  await expect(page.locator('#countdown')).toBeVisible();
  await expect(page.locator('.audio-replay')).toBeVisible();
  await page.locator('.audio-replay').click();
