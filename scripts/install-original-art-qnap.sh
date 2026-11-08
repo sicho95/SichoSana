@@ -6,7 +6,7 @@ set -eu
 APP="/share/CE_CACHEDEV1_DATA/SichoSana/app"
 ZIP="${1:-}"
 if [ -z "$ZIP" ] || [ ! -f "$ZIP" ]; then
- echo "Usage : sh scripts/install-original-art-qnap.sh /chemin/vers/SichoSana_illustrations_originales_salutations_v23.zip" >&2
+ echo "Usage : sh scripts/install-original-art-qnap.sh /chemin/vers/SichoSana_V2.3_73_illustrations_originales.zip" >&2
  exit 2
 fi
 [ -d "$APP" ] && [ -f "$APP/compose.yaml" ] && [ -f "$APP/.env" ] || {
@@ -51,6 +51,10 @@ with zipfile.ZipFile('/tmp/originals.zip') as archive:
             if os.path.exists(tmp):os.unlink(tmp)
 print('ORIGINAL_ART_OK',len(files),'PNG installés ; 0 illustration manquante.')
 PY
+if [ "${SICHOSANA_ART_NO_REBUILD:-0}" = "1" ]; then
+ echo "[SichoSana ART] 73 PNG contrôlés et installés ; la publication reconstruira une seule fois SichoSana."
+ exit 0
+fi
 echo "[SichoSana ART 2/3] Reconstruire uniquement l'application SichoSana..."
 docker compose -f compose.yaml -p sichosana up -d --build --no-deps --force-recreate
 echo "[SichoSana ART 3/3] Contrôle API..."
