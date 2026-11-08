@@ -86,6 +86,49 @@
           "label": "Préparer la nuit"
         }
       ]
+    },
+    {
+      "id": "soleil-lune-progression",
+      "name": "Apprendre les salutations",
+      "subtitle": "Apprends les postures une à une puis enchaîne Soleil et Lune lorsque tu les maîtrises réellement.",
+      "level": "Progressif",
+      "steps": [
+        {
+          "type": "yoga",
+          "ref": "eveil-doux",
+          "label": "Préparer son corps et sa respiration"
+        },
+        {
+          "type": "yoga",
+          "ref": "hatha-doux",
+          "label": "Apprendre les appuis en douceur"
+        },
+        {
+          "type": "yoga",
+          "ref": "vinyasa-fluide",
+          "label": "Découvrir les transitions du soleil"
+        },
+        {
+          "type": "meditate",
+          "ref": "respirer",
+          "label": "Calmer et rythmer le souffle"
+        },
+        {
+          "type": "yoga",
+          "ref": "equilibre",
+          "label": "Stabiliser les postures debout"
+        },
+        {
+          "type": "yoga",
+          "ref": "salutation-soleil",
+          "label": "Salutation au soleil (après maîtrise)"
+        },
+        {
+          "type": "yoga",
+          "ref": "salutation-lune",
+          "label": "Salutation à la lune (après maîtrise)"
+        }
+      ]
     }
   ]
 }
