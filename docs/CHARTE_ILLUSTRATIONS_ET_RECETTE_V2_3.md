@@ -43,3 +43,20 @@ Le catalogue figé de `static/data/yoga-api-library.json` comporte exactement **
 - Interface : sélecteurs glissants iOS Yoga, intensité de méditation et périodes astrologiques, action « Mes séances / Bibliothèque » réparée, dominantes lin/beige et cartes mobiles resserrées.
 - Tests automatisés : scénario Range audio 206 + cache, et comportement des sélecteurs au glissement et au clic.
 - Cette branche est **candidate seulement** : aucune affirmation de déploiement sur le QNAP ni de confirmation sonore sur véritable iPhone avant recette.
+
+
+## Audit renforcé — 8 novembre 2026
+
+Contrôles sur les **fichiers textuels réellement présents dans GitHub** :
+- 13 fiches essentielles, 48 fiches Yoga API et 12 mouvements additionnels : 73 identifiants uniques, cohérents avec les 73 clés du manifeste.
+- Soleil A : 12 étapes, 8 prérequis complets / 7 prérequis doux. L'étape 7 utilise chien tête en haut complet et cobra doux ; l'étape 6 utilise Chaturanga complet et planche en variation douce.
+- Lune : 18 étapes, 8 prérequis. Chaque posture référencée existe dans la bibliothèque.
+- Voix : manifeste fr-FR-VivienneMultilingualNeural, 183 entrées dont 60 consignes Soleil/Lune, références complètes dans le manifeste.
+- Test navigateur ajouté : maîtrise d'une posture, transmission entre deux appareils, révocation et séparation par profil.
+- Correctif d'affichage : les originaux ne sont désormais sélectionnés que si l'API confirme réellement les 73 fichiers.
+
+**Différence fondamentale :** 73 clés présentes dans GitHub ne signifient PAS 73 PNG vérifiés. Les binaires originaux ne sont pas stockés dans le dépôt ; leur présence sur NAS ou dans l'archive privée doit être contrôlée avant déploiement.
+
+Le nouvel audit `scripts/verify-v23-art-and-salutations.py` contrôle le contenu effectif du ZIP ou des PNG installés, les correspondances exactes, les empreintes SHA-256 du ZIP, les CRC PNG, les dimensions, les duplications et l'exhaustivité des fichiers audio. Toute erreur doit bloquer l'installation. Le résultat ne garantit toujours pas l'alignement anatomique : revue visuelle obligatoire des postures complexes, en priorité chien tête en haut / cobra, Chaturanga, demi-flexion, flexion latérale et étoile.
+
+Ne jamais déployer directement l'ancien script d'upgrade sans précontrôle complet. Utiliser le script autonome de déploiement vérifié sans Git, avec sauvegarde SQLite et rollback sources, fourni séparément dans le dossier de livraison.
