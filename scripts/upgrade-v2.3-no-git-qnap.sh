@@ -14,6 +14,10 @@ docker compose version >/dev/null 2>&1 || { echo "ERREUR : Docker Compose indisp
 docker inspect sichosana-app >/dev/null 2>&1 || { echo "ERREUR : conteneur sichosana-app absent. Arrêt sans changement." >&2; exit 1; }
 [ -f .env ] || { echo "ERREUR : .env local absent. Arrêt sans changement." >&2; exit 1; }
 [ -f compose.yaml ] || { echo "ERREUR : compose.yaml absent. Arrêt sans changement." >&2; exit 1; }
+if [ -n "${SICHOSANA_ARTWORK_ZIP:-}" ] && [ ! -f "$SICHOSANA_ARTWORK_ZIP" ]; then
+  echo "ERREUR : archive de 73 illustrations introuvable : $SICHOSANA_ARTWORK_ZIP" >&2
+  exit 1
+fi
 
 echo "[SichoSana 1/7] Sauvegarde transactionnelle SQLite, comptes compris..."
 docker exec -i sichosana-app python - <<'PY'
@@ -54,7 +58,7 @@ mandatory={'compose.yaml','Dockerfile','server/app.py','static/app.js',
            'static/data/pose-guidance.json','static/voice/vivienne-fr-v2/manifest.json'}
 with tempfile.TemporaryDirectory(prefix='sichosana-download-') as d:
     archive=Path(d)/'source.tar.gz'
-    req=Request(url,headers={'User-Agent':'SichoSana-QNAP-Upgrade/2.2'})
+    req=Request(url,headers={'User-Agent':'SichoSana-QNAP-Upgrade/2.3'})
     try:
         with urlopen(req,timeout=35) as incoming, archive.open('wb') as out:
             if incoming.status!=200:
@@ -121,7 +125,7 @@ else
 fi
 chmod 600 .env
 
-echo "[SichoSana 5/7] Vérifier les 111 MP3 et le compose avant redémarrage..."
+echo "[SichoSana 5/7] Vérifier les 183 MP3 et le compose avant redémarrage..."
 docker run --rm -i --network bridge -v "$APP:/workspace:ro" -w /workspace \
   python:3.12-slim python - <<'PY'
 import json
@@ -129,7 +133,7 @@ from pathlib import Path
 pack=Path('static/voice/vivienne-fr-v2')
 manifest=json.loads((pack/'manifest.json').read_text())
 assert manifest['voiceId']=='fr-FR-VivienneMultilingualNeural', 'Mauvaise identité vocale'
-assert len(manifest['files'])>=111, 'Fichiers vocaux manquants'
+assert len(manifest['files'])>=183, 'Fichiers vocaux manquants'
 missing=[x['src'] for x in manifest['files'].values() if not (pack/x['src']).is_file()]
 if missing:
     raise SystemExit('MP3 manquants : '+str(missing[:6]))
@@ -144,6 +148,10 @@ if missing_salutes:
       +'Le moteur Edge TTS doit produire tous les clips avant mise en production.')
 print("PACK_VIVIENNE_OK",len(manifest['files']),'MP3 et 60 consignes de salutations vérifiées')
 PY
+if [ -n "${SICHOSANA_ARTWORK_ZIP:-}" ]; then
+  echo "[SichoSana 5b/7] Importer les 73 PNG contrôlés SHA-256 avant l'unique reconstruction..."
+  SICHOSANA_ART_NO_REBUILD=1 sh scripts/install-original-art-qnap.sh "$SICHOSANA_ARTWORK_ZIP"
+fi
 docker compose -f compose.yaml -p sichosana config --quiet
 
 echo "[SichoSana 6/7] Conserver l'image antérieure et recréer SichoSana uniquement..."
