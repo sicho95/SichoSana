@@ -550,3 +550,24 @@ body{background:var(--linen)}
  .bottom-nav{background:rgba(253,250,244,.93);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
 }
 @media(prefers-reduced-motion:reduce){.sliding-segment::before{transition:none!important}}
+
+
+/* Salutations guidées — Lin/Sauge, verrouillage non punitif. */
+.salutations-section{margin-top:20px}
+.salutations-section>.muted{margin:0 0 14px;max-width:720px}
+.salutations-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.salutation-card{display:flex;flex-direction:column;gap:7px;background:linear-gradient(140deg,#fffcf6 20%,#f2ebdf 100%);padding:18px}
+.salutation-card h3{font-size:clamp(22px,2.5vw,29px);line-height:1.14;margin:3px 0 2px}
+.salutation-card p{font-size:13px;margin:4px 0;line-height:1.48}
+.salutation-card .progress-track{height:5px;margin:7px 0 0}
+.salutation-symbol{width:35px;height:35px;border-radius:12px;background:rgba(220,232,218,.6);color:var(--sage-dark);display:grid;place-items:center}
+.salutation-symbol svg{width:22px;height:22px}
+.salutation-prerequisites{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.salutation-prerequisite{border:1px solid var(--line);border-radius:11px;padding:7px 10px;background:var(--surface);color:var(--ink);font-size:12px;text-align:left}
+.salutation-prerequisite:hover{border-color:var(--sage-dark)}
+.salutation-card .primary{align-self:flex-start;margin:6px 0}
+.salutation-note{color:var(--muted);font-size:11px!important}
+.mastery-control{border-top:1px solid var(--line);margin-top:12px;padding-top:15px}
+.mastery-control .muted{font-size:12px}
+.breath-indicator{display:inline-flex;padding:4px 12px;border-radius:20px;color:var(--sage-dark);font-weight:700;font-size:13px;background:#edf0e6}
+@media(max-width:779px){.salutations-grid{grid-template-columns:1fr}.salutation-card{padding:16px}}
