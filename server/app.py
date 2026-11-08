@@ -251,9 +251,20 @@ def original_art_status(root):
         if not isinstance(files, list) or len(files)!=73 or len(set(files))!=73:
             return {"ready":False,"installed":0,"expected":73}
         path=root / "media" / "original"
-        good=sum(1 for name in files if isinstance(name,str) and
-                 re.fullmatch(r"[a-z0-9-]+",name) and
-                 (path/(name+".png")).is_file() and (path/(name+".png")).stat().st_size>1000)
+        def looks_like_png(name):
+            if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9-]+", name):
+                return False
+            picture = path / (name + ".png")
+            if not picture.is_file() or picture.stat().st_size <= 1000:
+                return False
+            with picture.open("rb") as stream:
+                head = stream.read(26)
+            if len(head) != 26 or head[:16] != b"\\x89PNG\\r\\n\\x1a\\n\\x00\\x00\\x00\\x0dIHDR":
+                return False
+            width = int.from_bytes(head[16:20], "big")
+            height = int.from_bytes(head[20:24], "big")
+            return 384 <= width <= 8192 and 384 <= height <= 8192
+        good = sum(1 for name in files if looks_like_png(name))
         return {"ready":good==73,"installed":good,"expected":73}
     except (OSError,ValueError,KeyError,TypeError):
         return {"ready":False,"installed":0,"expected":73}
