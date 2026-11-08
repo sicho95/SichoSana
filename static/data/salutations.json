@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "title": "Salutations guidées — SichoSana",
+  "sourceNotes": [
+    "Surya Namaskar A : tradition Ashtanga/Vinyasa. Ūrdhva Mukha Śvānāsana en version complète ; Bhujangāsana en variante douce. Référence : https://ashtanga.tech/study-guide/yoga-techniques/asana/surya-namaskar-vinyasa-yoga/surya-namaskar-asana-sequences/",
+    "Chandra Namaskar : adaptation pédagogique lente et bilatérale, inspirée de la séquence classique de Kripalu. Référence : https://kripalu.org/living-kripalu/chandra-namaskar-honoring-moon-salute"
+  ],
+  "extraPoses": [
+    {
+      "id": "urdhva-hastasana",
+      "nom": "Bras levés",
+      "sanskrit": "Ūrdhva Hastāsana",
+      "niveau": "Débutant",
+      "focus": "Allongement",
+      "instructions": "Depuis la montagne, inspire et lève les deux bras vers le ciel, nuque longue, côtes souples.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "uttanasana",
+      "nom": "Flexion avant debout",
+      "sanskrit": "Uttānāsana",
+      "niveau": "Débutant",
+      "focus": "Souplesse",
+      "instructions": "Expire, fléchis légèrement les genoux et incline-toi à partir des hanches ; laisse la nuque se détendre.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "ardha-uttanasana",
+      "nom": "Demi-flexion debout",
+      "sanskrit": "Ardha Uttānāsana",
+      "niveau": "Débutant",
+      "focus": "Allongement",
+      "instructions": "Inspire, mains sur les tibias ou cuisses, dos aussi long et neutre que possible, regard vers le sol.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "phalakasana",
+      "nom": "Planche",
+      "sanskrit": "Phalakāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Gainage",
+      "instructions": "Épaules au-dessus des mains, jambes allongées, abdomen tonique, nuque dans le prolongement de la colonne.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "chaturanga",
+      "nom": "Planche basse",
+      "sanskrit": "Chaturaṅga Daṇḍāsana",
+      "niveau": "Avancé",
+      "focus": "Force",
+      "instructions": "En expirant, descends depuis la planche en gardant les coudes près du buste, sans laisser le bassin s'affaisser.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "urdhva-mukha",
+      "nom": "Chien tête en haut",
+      "sanskrit": "Ūrdhva Mukha Śvānāsana",
+      "niveau": "Avancé",
+      "focus": "Ouverture",
+      "instructions": "Bras allongés, mains sous les épaules, dessus des pieds au sol ; soulève clairement le bassin et les cuisses, ouvre doucement la poitrine.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "ardha-chandra-lateral",
+      "nom": "Demi-lune latérale debout",
+      "sanskrit": "Ardha Chandrāsana (inclinaison latérale)",
+      "niveau": "Débutant",
+      "focus": "Latéral",
+      "instructions": "Debout, bras allongés, incline le buste sur un côté sans tourner les épaules ni forcer dans les lombaires.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "utthita-tadasana",
+      "nom": "Étoile à cinq branches",
+      "sanskrit": "Utthita Tāḍāsana",
+      "niveau": "Débutant",
+      "focus": "Ouverture",
+      "instructions": "Écarte les pieds et tends les bras de chaque côté à hauteur des épaules, allonge la colonne.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "utkata-konasana",
+      "nom": "Déesse",
+      "sanskrit": "Utkaṭa Koṇāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Hanches",
+      "instructions": "Pieds écartés et ouverts, fléchis les genoux dans l'axe des orteils, bras relevés en cactus sans creuser le dos.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "trikonasana",
+      "nom": "Triangle",
+      "sanskrit": "Trikoṇāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Latéral",
+      "instructions": "Depuis une posture large, incline le buste au-dessus de la jambe avant, garde la poitrine ouverte et l'autre bras vers le haut.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "parsvottanasana",
+      "nom": "Pyramide",
+      "sanskrit": "Pārśvottānāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Arrière des jambes",
+      "instructions": "Décale les pieds avant-arrière, hanches orientées de face, inclinaison douce vers la jambe avant avec dos long.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    },
+    {
+      "id": "skandasana",
+      "nom": "Fente latérale",
+      "sanskrit": "Skandāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Hanches",
+      "instructions": "Écarte les jambes puis fléchis doucement un genou, l'autre jambe restant allongée ; pose les mains au sol si besoin.",
+      "prudence": "Adapte l'amplitude à tes capacités et arrête en cas de douleur. Les variantes d'appui au sol doivent rester confortables."
+    }
+  ],
+  "routines": [
+    {
+      "id": "salutation-soleil",
+      "name": "Salutation au soleil A",
+      "sanskrit": "Sūrya Namaskār A",
+      "family": "Vinyasa",
+      "duration": 12,
+      "level": "Progressif",
+      "subtitle": "Douze mouvements avec le souffle : chien tête en haut en pratique complète, cobra en version douce.",
+      "requiresMastery": true,
+      "fullPrerequisites": [
+        "tadasana",
+        "urdhva-hastasana",
+        "uttanasana",
+        "ardha-uttanasana",
+        "phalakasana",
+        "chaturanga",
+        "urdhva-mukha",
+        "adho-mukha"
+      ],
+      "easyPrerequisites": [
+        "tadasana",
+        "urdhva-hastasana",
+        "uttanasana",
+        "ardha-uttanasana",
+        "phalakasana",
+        "bhujangasana",
+        "adho-mukha"
+      ],
+      "steps": [
+        {
+          "poseId": "tadasana",
+          "breath": "expiration",
+          "cue": "Debout dans la montagne, mains réunies devant le cœur. Prépare une respiration calme."
+        },
+        {
+          "poseId": "urdhva-hastasana",
+          "breath": "inspiration",
+          "cue": "Inspire, étire tes bras vers le ciel et grandis-toi sans cambrer."
+        },
+        {
+          "poseId": "uttanasana",
+          "breath": "expiration",
+          "cue": "Expire, plie légèrement les genoux et descends en flexion avant."
+        },
+        {
+          "poseId": "ardha-uttanasana",
+          "breath": "inspiration",
+          "cue": "Inspire, redresse le dos à mi-hauteur, mains sur les jambes si nécessaire."
+        },
+        {
+          "poseId": "phalakasana",
+          "breath": "expiration",
+          "cue": "Recule les pieds un à un en planche, maintiens les épaules stables."
+        },
+        {
+          "poseId": "chaturanga",
+          "breath": "expiration",
+          "cue": "Descends en planche basse, coudes près du corps. Pour la version douce, pose les genoux avant de descendre.",
+          "easyPoseId": "phalakasana"
+        },
+        {
+          "poseId": "urdhva-mukha",
+          "breath": "inspiration",
+          "cue": "Inspire, passe au chien tête en haut, cuisses et bassin décollés ; en version douce, choisis le cobra en conservant le bassin au sol.",
+          "easyPoseId": "bhujangasana"
+        },
+        {
+          "poseId": "adho-mukha",
+          "breath": "expiration",
+          "cue": "Expire, soulève le bassin vers le chien tête en bas. Prends trois à cinq respirations lentes.",
+          "weight": 2
+        },
+        {
+          "poseId": "ardha-uttanasana",
+          "breath": "inspiration",
+          "cue": "Avance à petits pas vers les mains et redresse le dos à mi-hauteur."
+        },
+        {
+          "poseId": "uttanasana",
+          "breath": "expiration",
+          "cue": "Expire, reviens à la flexion avant, genoux souples."
+        },
+        {
+          "poseId": "urdhva-hastasana",
+          "breath": "inspiration",
+          "cue": "Inspire, déroule-toi tranquillement et lève les bras vers le ciel."
+        },
+        {
+          "poseId": "tadasana",
+          "breath": "expiration",
+          "cue": "Expire, redescends les mains et retrouve la posture de la montagne."
+        }
+      ]
+    },
+    {
+      "id": "salutation-lune",
+      "name": "Salutation à la lune",
+      "sanskrit": "Chandra Namaskār",
+      "family": "Hatha",
+      "duration": 18,
+      "level": "Progressif",
+      "subtitle": "Dix-huit mouvements symétriques, lents et apaisants, avec l'étirement des deux côtés.",
+      "requiresMastery": true,
+      "fullPrerequisites": [
+        "tadasana",
+        "ardha-chandra-lateral",
+        "utkata-konasana",
+        "utthita-tadasana",
+        "trikonasana",
+        "parsvottanasana",
+        "anjaneyasana",
+        "skandasana"
+      ],
+      "easyPrerequisites": [
+        "tadasana",
+        "ardha-chandra-lateral",
+        "utkata-konasana",
+        "utthita-tadasana",
+        "trikonasana",
+        "parsvottanasana",
+        "anjaneyasana",
+        "skandasana"
+      ],
+      "steps": [
+        {
+          "poseId": "tadasana",
+          "breath": "expiration",
+          "cue": "Reviens au centre, pieds stables, paumes réunies. Respire doucement."
+        },
+        {
+          "poseId": "ardha-chandra-lateral",
+          "breath": "expiration",
+          "cue": "Incline-toi à droite, sans te pencher vers l'avant.",
+          "side": "droite"
+        },
+        {
+          "poseId": "ardha-chandra-lateral",
+          "breath": "expiration",
+          "cue": "Reviens au centre et incline-toi à gauche.",
+          "side": "gauche"
+        },
+        {
+          "poseId": "utkata-konasana",
+          "breath": "expiration",
+          "cue": "Écarte les pieds, descends doucement en posture de la déesse."
+        },
+        {
+          "poseId": "utthita-tadasana",
+          "breath": "inspiration",
+          "cue": "Tends les jambes, ouvre les bras pour dessiner une étoile à cinq branches."
+        },
+        {
+          "poseId": "trikonasana",
+          "breath": "expiration",
+          "cue": "Tourne le pied droit et entre en triangle à droite, sans tirer sur le cou.",
+          "side": "droite"
+        },
+        {
+          "poseId": "parsvottanasana",
+          "breath": "expiration",
+          "cue": "Tourne le bassin vers la jambe droite et incline-toi dans la pyramide.",
+          "side": "droite"
+        },
+        {
+          "poseId": "anjaneyasana",
+          "breath": "inspiration",
+          "cue": "Plie le genou droit en fente basse, pied arrière reculé ; mains sur la cuisse ou le sol.",
+          "side": "droite"
+        },
+        {
+          "poseId": "skandasana",
+          "breath": "expiration",
+          "cue": "Reviens face à l'avant et fléchis le genou droit en fente latérale, sans forcer.",
+          "side": "droite"
+        },
+        {
+          "poseId": "skandasana",
+          "breath": "inspiration",
+          "cue": "Transfère tranquillement le poids vers la gauche pour la fente latérale de l'autre côté.",
+          "side": "gauche"
+        },
+        {
+          "poseId": "anjaneyasana",
+          "breath": "inspiration",
+          "cue": "Pivote vers le pied gauche et retrouve la fente basse.",
+          "side": "gauche"
+        },
+        {
+          "poseId": "parsvottanasana",
+          "breath": "expiration",
+          "cue": "Étire les jambes dans la pyramide du côté gauche.",
+          "side": "gauche"
+        },
+        {
+          "poseId": "trikonasana",
+          "breath": "inspiration",
+          "cue": "Déploie le buste dans le triangle à gauche.",
+          "side": "gauche"
+        },
+        {
+          "poseId": "utthita-tadasana",
+          "breath": "inspiration",
+          "cue": "Reviens à l'étoile, les bras ouverts et la respiration régulière."
+        },
+        {
+          "poseId": "utkata-konasana",
+          "breath": "expiration",
+          "cue": "Fléchis à nouveau les genoux dans la posture de la déesse."
+        },
+        {
+          "poseId": "ardha-chandra-lateral",
+          "breath": "expiration",
+          "cue": "Rapproche les pieds, puis incline-toi doucement à gauche.",
+          "side": "gauche"
+        },
+        {
+          "poseId": "ardha-chandra-lateral",
+          "breath": "expiration",
+          "cue": "Reviens au centre, puis incline-toi doucement à droite.",
+          "side": "droite"
+        },
+        {
+          "poseId": "tadasana",
+          "breath": "expiration",
+          "cue": "Reviens dans la montagne, paumes jointes au cœur. Termine dans le calme."
+        }
+      ]
+    }
+  ]
+}
