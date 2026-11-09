@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "original-illustrations-candidate",
-  "status": "candidate-complete-73-in-optional-NAS-image-archive",
+  "status": "logical-73-images-58-unique-assets-publishing-pending",
   "files": [
     "adho-mukha",
     "anjaneyasana",
@@ -78,5 +78,23 @@
     "yoga-api-48"
   ],
   "missing": [],
-  "note": "73 PNG originaux inclus dans l'archive locale SichoSana_V2.3_73_illustrations_originales.zip. Les 4 mouvements de transition reconstruits restent à valider sur iPad/iPhone. L'application se replie sur des images tierces de même posture si l'archive n'est pas installée."
+  "note": "73 fiches, 58 PNG uniques; 15 références identiques partagent un fichier sans copie physique. Un alias est autorisé uniquement pour une posture réellement identique; le cas yoga-api-43/urdhva-mukha reste DISTINCT du cobra bhujangasana. Les binaires sont à publier sur GitHub.",
+  "aliases": {
+    "yoga-api-4": "setu-bandha",
+    "yoga-api-5": "baddha-konasana",
+    "yoga-api-7": "marjaryasana",
+    "yoga-api-10": "balasana",
+    "yoga-api-11": "savasana",
+    "yoga-api-15": "adho-mukha",
+    "yoga-api-23": "anjaneyasana",
+    "yoga-api-26": "phalakasana",
+    "yoga-api-28": "parsvottanasana",
+    "yoga-api-30": "paschimottanasana",
+    "yoga-api-38": "uttanasana",
+    "yoga-api-41": "vrksasana",
+    "yoga-api-42": "trikonasana",
+    "yoga-api-43": "urdhva-mukha",
+    "yoga-api-45": "virabhadrasana2"
+  },
+  "expectedPhysicalFiles": 58
 }
