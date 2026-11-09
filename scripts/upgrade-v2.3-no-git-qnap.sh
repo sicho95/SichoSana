@@ -14,13 +14,13 @@ docker compose version >/dev/null 2>&1 || { echo "ERREUR : Docker Compose indisp
 docker inspect sichosana-app >/dev/null 2>&1 || { echo "ERREUR : conteneur sichosana-app absent. Arrêt sans changement." >&2; exit 1; }
 [ -f .env ] || { echo "ERREUR : .env local absent. Arrêt sans changement." >&2; exit 1; }
 [ -f compose.yaml ] || { echo "ERREUR : compose.yaml absent. Arrêt sans changement." >&2; exit 1; }
-# Publier d'abord les 73 PNG sur la branche GitHub dans static/media/original/.
+# Publier 58 PNG canoniques sur la branche GitHub dans static/media/original/. 
 # Ce contrôle est STRICTEMENT ANTÉRIEUR à toute sauvegarde ou copie de sources NAS.
 # Aucune archive locale à déposer, aucun Git à installer sur QNAP.
-echo "[SichoSana précontrôle] Vérifier les 73 images intégrées dans le même GitHub que le code..."
+echo "[SichoSana précontrôle] Vérifier les 58 images uniques et 15 alias dans GitHub..."
 docker run --rm -i --network bridge -e SICHOSANA_ARCHIVE="$ARCHIVE" \
   python:3.12-slim python - <<'PY'
-import io,json,os,pathlib,struct,tarfile,urllib.request,zlib
+import io,json,os,pathlib,struct,tarfile,urllib.request,zlib,hashlib,re
 req=urllib.request.Request(os.environ['SICHOSANA_ARCHIVE'],
                            headers={'User-Agent':'SichoSana-V23-GitHub-media-preflight'})
 with urllib.request.urlopen(req,timeout=90) as r:
@@ -36,29 +36,60 @@ with tarfile.open(fileobj=io.BytesIO(data),mode='r:gz') as tf:
         members[rel]=member
     cfg='static/data/original-art.json'
     if cfg not in members:raise SystemExit('Manifeste original-art.json absent')
-    names=json.load(tf.extractfile(members[cfg])).get('files',[])
-    if len(names)!=73 or len(set(names))!=73:
-        raise SystemExit('Manifeste 73 fichiers non conforme')
-    checksums=set()
-    for name in names:
-        if not isinstance(name,str) or not name.replace('-','').isalnum():
-            raise SystemExit('Nom PNG invalide')
+    config=json.load(tf.extractfile(members[cfg]))
+    names=config.get('files',[])
+    aliases=config.get('aliases',{})
+    if len(names)!=73 or len(set(names))!=73 or not isinstance(aliases,dict) or len(aliases)!=15:
+        raise SystemExit('Manifeste 73 fiches / 15 alias non conforme')
+    if any(not isinstance(n,str) or not re.fullmatch(r'[a-z0-9-]+',n) for n in names):
+        raise SystemExit('Identifiant d’illustration suspect')
+    if any(k not in names or v not in names or k==v or v in aliases for k,v in aliases.items()):
+        raise SystemExit('Correspondances images / postures invalides')
+    physical=set(names)-set(aliases)
+    if len(physical)!=58 or config.get('expectedPhysicalFiles')!=58:
+        raise SystemExit('58 dessins canoniques attendus')
+    physical_hashes=set()
+    for name in sorted(physical):
         rel='static/media/original/'+name+'.png'
-        if rel not in members:raise SystemExit('PNG absent de GitHub : '+rel)
+        if rel not in members:
+            raise SystemExit('PNG canonique absent de GitHub : '+rel)
         body=tf.extractfile(members[rel]).read(9_000_001)
         if not 1000<len(body)<=9_000_000 or body[:8]!=b'\x89PNG\r\n\x1a\n':
             raise SystemExit('PNG non conforme : '+rel)
-        if body[12:16]!=b'IHDR':
-            raise SystemExit('PNG IHDR absent : '+rel)
-        w,h=struct.unpack('>II',body[16:24])
-        if not(384<=w<=8192 and 384<=h<=8192):
-            raise SystemExit('Résolution incorrecte : '+rel)
-        # Éliminer les doublons évidents sans accepter 73 copies du même visuel.
-        import hashlib
+        pos=8
+        has_ihdr=has_idat=finished=False
+        while pos+12<=len(body):
+            size=int.from_bytes(body[pos:pos+4],'big')
+            kind=body[pos+4:pos+8]
+            end=pos+12+size
+            if end>len(body):
+                raise SystemExit('PNG tronqué : '+rel)
+            payload=body[pos+8:pos+8+size]
+            stored=int.from_bytes(body[end-4:end],'big')
+            if zlib.crc32(kind+payload)&0xffffffff !=stored:
+                raise SystemExit('CRC PNG invalide : '+rel)
+            if kind==b'IHDR':
+                if len(payload)!=13:
+                    raise SystemExit('IHDR invalide : '+rel)
+                w,h=struct.unpack('>II',payload[:8])
+                if not(384<=w<=8192 and 384<=h<=8192):
+                    raise SystemExit('Résolution incorrecte : '+rel)
+                has_ihdr=True
+            if kind==b'IDAT':has_idat=True
+            pos=end
+            if kind==b'IEND':
+                finished=True
+                break
+        if not (has_ihdr and has_idat and finished and pos==len(body)):
+            raise SystemExit('Fichier PNG incomplet : '+rel)
         digest=hashlib.sha256(body).hexdigest()
-        if digest in checksums:raise SystemExit('PNG dupliqué : '+rel)
-        checksums.add(digest)
-print('GITHUB_IMAGES_73_PRECONTROLE_OK ; aucune modification effectuée')
+        if digest in physical_hashes:
+            raise SystemExit('Deux dessins canoniques identiques : '+rel)
+        physical_hashes.add(digest)
+    extras=[name for name in aliases if 'static/media/original/'+name+'.png' in members]
+    if extras:
+        raise SystemExit('Les PNG alias sont des copies inutiles : '+', '.join(sorted(extras)))
+print('GITHUB_IMAGES_OK 73 fiches / 58 PNG canoniques / 15 alias ; aucune modification effectuée')
 PY
 
 echo "[SichoSana 1/7] Sauvegarde transactionnelle SQLite, comptes compris..."
@@ -190,7 +221,7 @@ if missing_salutes:
       +'Le moteur Edge TTS doit produire tous les clips avant mise en production.')
 print("PACK_VIVIENNE_OK",len(manifest['files']),'MP3 et 60 consignes de salutations vérifiées')
 PY
-echo "[SichoSana 5b/7] 73 PNG récupérés automatiquement dans les sources GitHub ; aucun ZIP NAS requis."
+echo "[SichoSana 5b/7] 58 PNG canoniques pour 73 postures récupérés automatiquement depuis GitHub."
 docker compose -f compose.yaml -p sichosana config --quiet
 
 echo "[SichoSana 6/7] Conserver l'image antérieure et recréer SichoSana uniquement..."
@@ -219,8 +250,8 @@ echo "[SichoSana] Vérification de la bibliothèque originale complète et des M
 ART_STATUS="$(curl -fsS --max-time 10 http://192.168.1.69:18887/api/v1/media/original-status)"
 printf '%s\\n' "$ART_STATUS"
 case "$ART_STATUS" in
-  *'"ready": true'*'"installed": 73'*) ;;
-  *) echo "ERREUR : les 73 PNG ne sont pas servis. Vérifier les volumes et la reconstruction." >&2; exit 1;;
+  *'"ready": true'*'"installed": 58'*) ;;
+  *) echo "ERREUR : les 58 PNG canoniques ne sont pas servis. Vérifier les volumes et la reconstruction." >&2; exit 1;;
 esac
 AUDIO_HTTP="$(curl -sS --max-time 12 -o /dev/null -w '%{http_code}' -H 'Range: bytes=0-63' http://192.168.1.69:18887/voice/vivienne-fr-v2/pose_balasana.mp3)"
 [ "$AUDIO_HTTP" = "206" ] || { echo "ERREUR : MP3 Range devrait répondre 206, reçu $AUDIO_HTTP" >&2; exit 1; }
