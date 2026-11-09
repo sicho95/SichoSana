@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publier 73 PNG originaux dans GitHub sans Git local.
+"""Publier 58 PNG canoniques pour 73 fiches yoga dans GitHub sans Git local.
 
 Usage :
   GITHUB_TOKEN=... python3 scripts/publish-v23-original-art-github.py \
@@ -28,7 +28,7 @@ REPO = "sicho95/SichoSana"
 BRANCH = "dev/sichosana-20261105"
 API = "https://api.github.com/repos/" + REPO
 TOKEN = os.environ.get("GITHUB_TOKEN", "").strip()
-USER_AGENT = "SichoSana-v23-73-original-images-publisher"
+USER_AGENT = "SichoSana-v23-58-unique-images-publisher"
 MAX_PNG = 9_000_000
 
 
@@ -118,15 +118,24 @@ def main(archive_name):
         fail("Manifeste GitHub: 73 identifiants uniques attendus")
     if any(not isinstance(x, str) or not re.fullmatch(r"[a-z0-9-]+", x) for x in ids):
         fail("Identifiants de fichiers suspects")
+    aliases = manifest.get("aliases", {})
+    if not isinstance(aliases, dict) or len(aliases) != 15:
+        fail("Le manifeste GitHub doit déclarer exactement 15 alias")
+    if any(key not in ids or target not in ids or key == target or target in aliases
+           for key, target in aliases.items()):
+        fail("Correspondance d'alias invalide ou cyclique")
+    canonical = sorted(set(ids) - set(aliases))
+    if len(canonical) != 58 or manifest.get("expectedPhysicalFiles") != 58:
+        fail("58 illustrations canoniques attendues")
     pictures = {}
-    sha256_seen = set()
+    sha_by_name = {}
     with zipfile.ZipFile(archive_path) as z:
         if z.testzip() is not None:
             fail("Archive ZIP corrompue")
         artwork_manifest = json.loads(z.read("artwork-manifest.json"))
         files = artwork_manifest.get("files", {})
         if not isinstance(files, dict) or set(files) != set(ids):
-            fail("Les 73 noms du ZIP ne correspondent pas aux 73 noms de GitHub")
+            fail("Les 73 noms du ZIP ne correspondent pas aux fiches GitHub")
         if any(artwork_manifest.get(k, {}).get("present") != count for k, count in
                (("catalog48", 48), ("essential13", 13), ("salutationExtras", 12))):
             fail("Compte des groupes d'illustrations incorrect")
@@ -143,16 +152,20 @@ def main(archive_name):
             digest = hashlib.sha256(blob).hexdigest()
             if digest != entry.get("sha256"):
                 fail(name + ": empreinte SHA-256 du ZIP incorrecte")
-            if digest in sha256_seen:
-                fail(name + ": PNG identique à un autre PNG")
-            sha256_seen.add(digest)
-            pictures[name] = blob
-    print("VERIFICATION_LOCALE_OK: 73 PNG distincts, CRC, dimensions, SHA-256 et noms.")
+            sha_by_name[name] = digest
+            if name in canonical:
+                pictures[name] = blob
+    for name, target in aliases.items():
+        if sha_by_name[name] != sha_by_name[target]:
+            fail(name + ": correspondance différente de la posture partagée " + target)
+    if len({sha_by_name[name] for name in canonical}) != 58:
+        fail("Plusieurs des 58 dessins canoniques sont identiques")
+    print("VERIFICATION_LOCALE_OK: 73 fiches, 58 dessins distincts et 15 alias exacts.")
 
     head = request("GET", "/git/ref/heads/" + branch_ref)["object"]["sha"]
     base_tree = request("GET", "/git/commits/" + head)["tree"]["sha"]
     tree_elements = []
-    for i, name in enumerate(sorted(ids), 1):
+    for i, name in enumerate(canonical, 1):
         blob = pictures[name]
         uploaded = request("POST", "/git/blobs", {
             "content": base64.b64encode(blob).decode("ascii"),
@@ -166,9 +179,9 @@ def main(archive_name):
             "type": "blob",
             "sha": uploaded["sha"],
         })
-        print(f"IMAGE_{i:02d}/73_UPLOAD_OK {name}.png")
+        print(f"IMAGE_{i:02d}/58_UPLOAD_OK {name}.png")
 
-    # Un seul commit : aucune livraison partielle de 1 à 72 illustrations.
+    # Un seul commit : aucune livraison partielle des 58 illustrations.
     current = request("GET", "/git/ref/heads/" + branch_ref)["object"]["sha"]
     if current != head:
         fail("Branche modifiée pendant l'envoi, aucun commit publié; recommencer")
@@ -177,7 +190,7 @@ def main(archive_name):
         "tree": tree_elements,
     })["sha"]
     commit = request("POST", "/git/commits", {
-        "message": "assets(v2.3): publish and verify 73 original yoga posture PNGs",
+        "message": "assets(v2.3): publish 58 canonical yoga PNGs with 15 aliases for 73 poses",
         "tree": tree,
         "parents": [head],
     })["sha"]
@@ -196,7 +209,7 @@ def main(archive_name):
     final_ref = request("GET", "/git/ref/heads/" + branch_ref)["object"]["sha"]
     if final_ref != commit:
         fail("La branche a changé juste après la publication")
-    print("GITHUB_73_IMAGES_OK", commit)
+    print("GITHUB_58_IMAGES_73_POSES_OK", commit)
     print(f"https://github.com/{REPO}/tree/{BRANCH}/static/media/original")
     print("Note : contrôle visuel des postures toujours requis.")
 
