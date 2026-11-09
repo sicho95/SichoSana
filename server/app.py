@@ -243,17 +243,30 @@ def donation_destination():
 
 
 def original_art_status(root):
-    """Statut réel des originaux. Aucun crédit tiers ne disparaît si un PNG manque."""
+    """73 références de postures, 58 fichiers PNG canoniques.
+    Les crédits tiers restent visibles tant que la bibliothèque est incomplète.
+    """
     import re
     try:
-        manifest=json.loads((root / "data" / "original-art.json").read_text(encoding="utf-8"))
-        files=manifest["files"]
-        if not isinstance(files, list) or len(files)!=73 or len(set(files))!=73:
-            return {"ready":False,"installed":0,"expected":73}
-        path=root / "media" / "original"
+        manifest = json.loads((root / "data" / "original-art.json").read_text(encoding="utf-8"))
+        files = manifest["files"]
+        aliases = manifest.get("aliases", {})
+        if (not isinstance(files, list) or len(files) != 73 or
+                len(set(files)) != 73 or not isinstance(aliases, dict) or
+                manifest.get("expectedPhysicalFiles") != 58 or len(aliases) != 15 or
+                any(not isinstance(n, str) or
+                    re.fullmatch(r"[a-z0-9-]+", n) is None for n in files) or
+                any(src not in files or target not in files or src == target or
+                    target in aliases for src, target in aliases.items())):
+            return {"ready": False, "installed": 0, "expected": 58,
+                    "references": 73, "shared": 15}
+        physical = sorted(set(files) - set(aliases))
+        if len(physical) != 58:
+            return {"ready": False, "installed": 0, "expected": 58,
+                    "references": 73, "shared": 15}
+        path = root / "media" / "original"
+
         def looks_like_png(name):
-            if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9-]+", name):
-                return False
             picture = path / (name + ".png")
             if not picture.is_file() or picture.stat().st_size <= 1000:
                 return False
@@ -264,10 +277,14 @@ def original_art_status(root):
             width = int.from_bytes(head[16:20], "big")
             height = int.from_bytes(head[20:24], "big")
             return 384 <= width <= 8192 and 384 <= height <= 8192
-        good = sum(1 for name in files if looks_like_png(name))
-        return {"ready":good==73,"installed":good,"expected":73}
-    except (OSError,ValueError,KeyError,TypeError):
-        return {"ready":False,"installed":0,"expected":73}
+
+        good = sum(1 for name in physical if looks_like_png(name))
+        return {"ready": good == len(physical), "installed": good,
+                "expected": len(physical), "references": len(files),
+                "shared": len(aliases)}
+    except (OSError, ValueError, KeyError, TypeError):
+        return {"ready": False, "installed": 0, "expected": 58,
+                "references": 73, "shared": 15}
 
 
 class Handler(SimpleHTTPRequestHandler):
