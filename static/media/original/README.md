@@ -1,22 +1,24 @@
-# Illustrations originales SichoSana v2.3
+# Illustrations originales SichoSana v2.3 — 58 assets, 73 fiches
 
-Ce dossier doit contenir **73 fichiers PNG distincts** portant exactement les noms
-énumérés dans `static/data/original-art.json` :
+Le répertoire contient **58 fichiers PNG canoniques**, correspondant à **73 fiches** :
+13 postures essentielles, 48 postures Yoga API et 12 postures/transitions pour les salutations.
 
-- 13 postures essentielles ;
-- 48 postures Yoga API ;
-- 12 postures/transitions complémentaires pour les salutations.
+Le manifeste `static/data/original-art.json` définit `files` (73 IDs),
+`aliases` (15 correspondances vers un PNG existant) et `expectedPhysicalFiles` (58).
 
-Les fichiers binaires **ne sont pas encore publiés ici**. L'archive des originaux
-mentionnée dans les notes de livraison n'est pas accessible en octets dans
-l'environnement de publication actuel. Il est interdit de déclarer la v2.3
-complète uniquement parce que les 73 noms apparaissent dans le manifeste.
+Chaque fiche utilise `/media/original/<id-canonique>.png` ; les alias ne
+nécessitent **aucune copie de fichier physique**. Cobra (`bhujangasana`) et
+chien tête en haut (`urdhva-mukha`) restent distincts, tout comme planche
+(`phalakasana`) et planche basse (`chaturanga`).
 
-Lors de la publication, conserver impérativement ces chemins :
+Les 58 PNG **ne sont pas encore publiés**. Tant que la publication n'est pas
+complète, le déploiement QNAP bloque et la CI doit échouer.
 
-`static/media/original/<id-de-posture>.png`
+Publier les illustrations depuis le ZIP initial validé :
+`scripts/publish-v23-original-art-github.py /chemin/vers/73_images.zip`.
+Ce script vérifie les 73 fichiers du ZIP, les 15 identités binaires, puis
+n'envoie que les 58 originaux et produit un unique commit.
 
-Une fois les 73 originaux réellement présents dans cette branche, le précontrôle
-`scripts/verify-v23-art-and-salutations.py --root .` doit réussir et le
-déploiement QNAP doit extraire toutes les illustrations depuis **la même archive
-GitHub que le code**. La revue visuelle anatomique reste indispensable.
+**Contrôle humain nécessaire** : l'illustration actuelle du chien tête en haut
+semble garder les cuisses au sol ; vérifier/corriger ce visuel avant
+validation anatomique et déploiement de production.
