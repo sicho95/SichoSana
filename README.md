@@ -1,4 +1,4 @@
-> **V2.3 complète en code, visuels à importer séparément** — 183 MP3 Vivienne vérifiables dans le dépôt (dont 60 consignes Soleil/Lune). Le paquet `SichoSana_V2.3_73_illustrations_originales.zip` contient 73 PNG individuels correspondant aux 48 postures Yoga API, 13 essentielles et 12 transitions. Le NAS reste inchangé avant exécution des scripts QNAP. Contrôles réels sur iPhone et validation anatomique restent nécessaires.
+> **v2.3 candidate, code en développement, illustrations non encore publiées** — les 73 fiches (13 locales + 48 Yoga API + 12 transitions) partagent 58 PNG canoniques via 15 alias, contrôlés dans `static/data/original-art.json`. Les 183 MP3 déclarés au manifeste incluent 60 consignes Soleil/Lune. Le NAS reste inchangé avant vérifications et déploiement ; tests sur iPhone et revue anatomique requis.
 
 # SichoSana
 
