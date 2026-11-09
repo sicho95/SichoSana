@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit bloquant SichoSana V2.3 : 73 illustrations et 30 étapes guidées.
+"""Audit bloquant SichoSana V2.3 : 73 fiches / 58 PNG uniques et 30 étapes guidées.
 Sans dépendance externe. Ne modifie jamais les fichiers ni la base.
 Les vérifications techniques ne constituent pas une certification anatomique.
 """
@@ -70,6 +70,15 @@ def audit(root, artwork=None, metadata_only=False):
     listed = art.get("files")
     check(isinstance(listed, list) and len(listed) == 73 and set(listed) == expected
           and len(set(listed)) == 73, "original-art.json: 73 correspondances exactes non garanties")
+    aliases = art.get("aliases", {})
+    check(isinstance(aliases, dict) and len(aliases) == 15,
+          "15 références partagées attendues")
+    check(all(a in expected and b in expected and a != b and b not in aliases
+              for a, b in aliases.items()),
+          "Alias d'illustration invalide, cyclique ou dirigé vers un autre alias")
+    physical = expected - set(aliases)
+    check(len(physical) == 58 and art.get("expectedPhysicalFiles") == 58,
+          "58 PNG physiques canoniques attendus")
     all_poses = {p["id"] for p in yoga["poses"] + api["poses"] + salut["extraPoses"]}
     routines = {r["id"]: r for r in salut["routines"]}
     check(set(routines) == {"salutation-soleil", "salutation-lune"},
@@ -116,46 +125,54 @@ def audit(root, artwork=None, metadata_only=False):
     check(not missing_audio, f"MP3 absents/incomplets : {missing_audio[:8]}")
     print("GUIDAGE_OK 12 étapes Soleil + 18 étapes Lune, prérequis 8/7/8, 60 clips, 183 MP3.")
     if metadata_only:
-        print("METADATA_OK 73 identifiants documentés ; PNG binaires NON vérifiés (--metadata-only).")
+        print("METADATA_OK 73 fiches / 58 références PNG canoniques ; binaires NON vérifiés.")
         return
     zip_path = pathlib.Path(artwork) if artwork else None
-    sha_to_name = {}
+    physical_hashes = {}
     if zip_path:
         check(zip_path.is_file(), "Archive d'illustrations introuvable")
-        archive = zipfile.ZipFile(zip_path)
-        with archive:
+        with zipfile.ZipFile(zip_path) as archive:
             check(archive.testzip() is None, "Archive ZIP corrompue")
             zip_manifest = json.loads(archive.read("artwork-manifest.json"))
             files = zip_manifest.get("files", {})
             check(isinstance(files, dict) and set(files) == expected,
                   "ZIP : identifiants manquants ou étrangers")
+            archive_hashes = {}
             for name in sorted(expected):
-                path = f"media/original/{name}.png"
-                check(files[name].get("path") == "/" + path,
+                rel = f"media/original/{name}.png"
+                check(files[name].get("path") == "/" + rel,
                       f"ZIP : mauvaise correspondance {name}")
-                blob = archive.read(path)
-                check(hashlib.sha256(blob).hexdigest() == files[name].get("sha256"),
+                blob = archive.read(rel)
+                digest = hashlib.sha256(blob).hexdigest()
+                check(digest == files[name].get("sha256"),
                       f"ZIP : SHA-256 incorrect pour {name}")
                 verify_png(blob, name)
-                digest = hashlib.sha256(blob).hexdigest()
-                check(digest not in sha_to_name,
-                      f"Illustration dupliquée : {name} = {sha_to_name.get(digest)}")
-                sha_to_name[digest] = name
+                archive_hashes[name] = digest
+            for alias, target in aliases.items():
+                check(archive_hashes[alias] == archive_hashes[target],
+                      f"Alias différent de sa posture canonique : {alias} / {target}")
+            for name in physical:
+                digest = archive_hashes[name]
+                check(digest not in physical_hashes,
+                      f"Deux illustrations physiques identiques : {name}")
+                physical_hashes[digest] = name
     else:
         folder = root / "static" / "media" / "original"
-        check(folder.is_dir(), "Aucun ZIP ni bibliothèque originale locale")
-        for name in sorted(expected):
+        check(folder.is_dir(), "Bibliothèque PNG GitHub absente")
+        for name in sorted(physical):
             p = folder / (name + ".png")
             check(p.is_file(), f"Illustration manquante : {name}")
             blob = p.read_bytes()
             verify_png(blob, name)
             digest = hashlib.sha256(blob).hexdigest()
-            check(digest not in sha_to_name,
-                  f"Illustration dupliquée : {name} = {sha_to_name.get(digest)}")
-            sha_to_name[digest] = name
-    print("ORIGINAL_ART_OK 73 PNG distincts, exacts, structure/CRC et dimensions vérifiés.")
-    print("L'anatomie, la cohérence du personnage et les variantes droite/gauche")
-    print("nécessitent toujours une revue visuelle ; aucun audit automatique ne les certifie.")
+            check(digest not in physical_hashes,
+                  f"Deux illustrations physiques identiques : {name}")
+            physical_hashes[digest] = name
+        unexpected = {p.stem for p in folder.glob("*.png")} - physical
+        check(not unexpected, f"PNG superflus / alias dupliqués : {sorted(unexpected)[:10]}")
+    check(len(physical_hashes) == 58, "58 illustrations uniques attendues")
+    print("ORIGINAL_ART_OK 73 fiches, 58 PNG canoniques distincts, 15 alias partagés, CRC/format contrôlés.")
+    print("L'anatomie et les variantes gauche/droite exigent toujours une revue visuelle.")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
