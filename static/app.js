@@ -195,7 +195,8 @@ function posePicture(id,kind='thumb'){
  const fallback=media?.src||photo?.src||'';
  const original=originalBundleReady&&originalArt.files?.includes(id);
  if(!original&&!fallback)return '<span class="pose-missing" aria-label="Illustration exacte non disponible">Illustration exacte à compléter</span>';
- const src=original?'/media/original/'+encodeURIComponent(id)+'.png':fallback;
+ const assetId=originalArt.aliases?.[id]||id;
+ const src=original?'/media/original/'+encodeURIComponent(assetId)+'.png':fallback;
  return '<img loading="lazy" decoding="async" data-pose-image="'+escapeHTML(id)+'"'+
    (original&&fallback?' data-fallback="'+escapeHTML(fallback)+'"':'')+
    ' class="pose-photo '+kind+'" src="'+escapeHTML(src)+'" alt="Posture '+escapeHTML(yoga.poses.find(p=>p.id===id)?.nom||id)+'">';
@@ -661,7 +662,8 @@ async function init(){
     const q=await fetch('/data/original-art.json');
     if(q.ok){const d=await q.json();if(Array.isArray(d.files))originalArt=d;}
     const status=await fetch('/api/v1/media/original-status',{cache:'no-store'}).then(r=>r.ok?r.json():null);
-    originalBundleReady=Boolean(status?.ready&&status?.installed===73&&originalArt.files?.length===73);
+    const expectedPhysical=originalArt.expectedPhysicalFiles||originalArt.files.length;
+     originalBundleReady=Boolean(status?.ready&&status?.installed===expectedPhysical&&status?.expected===expectedPhysical&&originalArt.files?.length===73);
   }catch(e){originalBundleReady=false;}
    try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
