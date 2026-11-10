@@ -1,0 +1,42 @@
+name: sichosana
+services:
+  sichosana:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sichosana:local
+    container_name: sichosana-app
+    restart: unless-stopped
+    init: true
+    # Convention NAS-DAMIEN : bridge Docker historique, IP NAS + port dédié.
+    network_mode: bridge
+    environment:
+      SICHOSANA_WEB_ROOT: /app/static
+      SICHOSANA_DATA_DIR: /data
+      SICHOSANA_PORT: "8080"
+      SICHOSANA_PUBLIC_URL: "${SICHOSANA_PUBLIC_URL:-https://yoga.sicho.cc.cd}"
+      SICHOSANA_ASTRO_ENABLED: "${SICHOSANA_ASTRO_ENABLED:-1}"
+      SICHOSANA_DONATION_URL: "${SICHOSANA_DONATION_URL:-}"
+      SICHOSANA_SMTP_HOST: "${SICHOSANA_SMTP_HOST:-}"
+      SICHOSANA_SMTP_PORT: "${SICHOSANA_SMTP_PORT:-465}"
+      SICHOSANA_SMTP_SECURITY: "${SICHOSANA_SMTP_SECURITY:-ssl}"
+      SICHOSANA_SMTP_FROM: "${SICHOSANA_SMTP_FROM:-}"
+      SICHOSANA_SMTP_USER: "${SICHOSANA_SMTP_USER:-}"
+      SICHOSANA_SMTP_PASSWORD: "${SICHOSANA_SMTP_PASSWORD:-}"
+    ports:
+      - "${SICHOSANA_BIND:-127.0.0.1}:${SICHOSANA_PORT:-18887}:8080"
+    volumes:
+      - ./runtime:/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m
+    healthcheck:
+      test: ["CMD","python","-c","from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8080/api/health',timeout=3).status==200"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

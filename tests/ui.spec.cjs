@@ -1,0 +1,263 @@
+const {test,expect}=require('@playwright/test');
+const url='http://127.0.0.1:8080/';
+const ADMIN={pseudo:'Sicho',password:'TestAdminPassword2026!'};
+
+async function signIn(page,pseudo=ADMIN.pseudo,password=ADMIN.password){
+ await page.goto(url);
+ await expect(page.getByRole('heading',{name:'Prendre un moment pour moi'})).toBeVisible();
+ await page.locator('input[name="pseudo"]').fill(pseudo);
+ await page.locator('input[name="password"]').fill(password);
+ await page.getByRole('button',{name:'Me connecter'}).click();
+ await expect(page.getByRole('heading',{name:'Un moment pour soi'})).toBeVisible({timeout:15000});
+ await page.locator('.welcome-modal').waitFor({state:'visible',timeout:2500}).catch(()=>{});
+ if(await page.locator('.welcome-modal').isVisible())await page.locator('.welcome-modal [data-action="close"]').first().click();
+}
+
+test('iPhone: inscription non affichée après connexion, yoga et progression',async({page,context})=>{
+ await page.setViewportSize({width:390,height:844});
+ await signIn(page);
+ await expect(page.locator('.bottom-nav')).toBeVisible();
+ await expect(page.locator('.bottom-nav .nav-link')).toHaveCount(5);
+ await expect(page.locator('.bottom-nav [data-value="admin"]')).toHaveCount(0);
+ const navHeight=await page.locator('.bottom-nav').evaluate(n=>n.getBoundingClientRect().height);
+ expect(navHeight).toBeLessThan(110);
+ await expect(page.locator('.sidebar')).toBeHidden();
+ const expectedRoutine=await page.locator('.hero h2').innerText();
+ await expect(page.locator('.hero [data-action="start-yoga"]')).not.toHaveAttribute('data-value',/salutation-/);
+ await page.locator('.hero [data-action="start-yoga"]').click();
+ await expect(page.locator('#countdown')).toBeVisible();
+ await expect(page.locator('.audio-replay')).toBeVisible();
+ await page.locator('.audio-replay').click();
+ await expect(page.locator('#audio-label')).toContainText('Voix guidée active',{timeout:15000});
+ await page.locator('[data-action="pause"]').click();
+ await expect(page.locator('[data-action="pause"]')).toContainText('Reprendre');
+ await page.locator('[data-action="pause"]').click();
+ await page.locator('[data-action="finish"]').click();
+ await page.locator('.bottom-nav [data-value="profile"]').click();
+ await expect(page.locator('.history-list')).toContainText(expectedRoutine);
+ await expect(page.getByRole('heading',{name:'Synchronisation NAS'})).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Ouvrir l’administration'})).toBeVisible();
+ await page.getByRole('button',{name:'Ouvrir l’administration'}).click();
+ await expect(page.getByRole('heading',{name:'Administration'})).toBeVisible();
+ await expect(page.locator('.admin-user')).toHaveCount(1);
+ await page.screenshot({path:'screenshots/iphone.png',fullPage:true});
+ await page.evaluate(()=>navigator.serviceWorker.ready);
+ await context.setOffline(true);
+ await page.reload();
+ await expect(page.locator('.bottom-nav')).toBeVisible({timeout:15000});
+});
+
+test('iPad: composition adaptée et 3 niveaux de méditation',async({page})=>{
+ await page.setViewportSize({width:834,height:1112});
+ await signIn(page);
+ await expect(page.locator('.bottom-nav')).toBeVisible();
+ await expect(page.locator('.sidebar')).toBeHidden();
+ await expect(page.locator('.home-desktop-layout')).toBeVisible();
+ await page.locator('.bottom-nav [data-value="meditate"]').click();
+ await expect(page.getByRole('heading',{name:'Méditation'})).toBeVisible();
+ await expect(page.locator('.meditation-levels button')).toHaveCount(3);
+ await page.screenshot({path:'screenshots/ipad.png',fullPage:true});
+});
+
+test('ordinateur: admin, multi-profils et thème',async({page})=>{
+ await page.setViewportSize({width:1440,height:900});
+ await signIn(page);
+ await expect(page.locator('.sidebar')).toBeVisible();
+ await expect(page.locator('.bottom-nav')).toBeHidden();
+ await page.locator('.sidebar [data-value="profile"]').click();
+ page.on('dialog',d=>d.accept('Compte de test'));
+ await page.locator('[data-action="add-profile"]').click();
+ await expect(page.locator('.profile-option.active')).toContainText('Compte de test');
+ await page.locator('[data-action="theme"][data-value="horizon"]').click();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','horizon');
+ await page.locator('.sidebar [data-value="admin"]').click();
+ await expect(page.getByRole('heading',{name:'Administration'})).toBeVisible();
+ await expect(page.locator('.admin-user')).toHaveCount(1);
+ await page.screenshot({path:'screenshots/desktop.png',fullPage:true});
+});
+
+test('inscription puis approbation admin et connexion insensible à la casse',async({browser})=>{
+ const c1=await browser.newContext(),c2=await browser.newContext();
+ try{
+  const applicant=await c1.newPage(),admin=await c2.newPage();
+  await applicant.goto(url);
+  await applicant.getByRole('button',{name:'M’inscrire'}).click();
+  await applicant.locator('input[name="pseudo"]').fill('ZénitudeTest');
+  await applicant.locator('input[name="email"]').fill('zenitude@example.test');
+  await applicant.locator('input[name="password"]').fill('UnMotDePasseLong2026!');
+  await applicant.getByRole('button',{name:'Demander mon inscription'}).click();
+  await expect(applicant.getByText('Ta demande a bien été reçue')).toBeVisible();
+  await signIn(admin);
+  await admin.locator('.sidebar [data-value="admin"]').click();
+  await expect(admin.locator('.admin-user')).toHaveCount(2);
+  await admin.locator('.admin-user').filter({hasText:'ZénitudeTest'}).getByRole('button',{name:'Valider'}).click();
+  await expect(admin.locator('.admin-user').filter({hasText:'ZénitudeTest'})).toContainText('active');
+  await applicant.getByRole('button',{name:'Revenir à la connexion'}).click();
+  await applicant.locator('input[name="pseudo"]').fill('zÉNITUDEtest');
+  await applicant.locator('input[name="password"]').fill('UnMotDePasseLong2026!');
+  await applicant.getByRole('button',{name:'Me connecter'}).click();
+  await expect(applicant.getByRole('heading',{name:'Un moment pour soi'})).toBeVisible();
+  await expect(applicant.locator('.welcome-modal')).toBeVisible();
+ }finally{await c1.close();await c2.close();}
+});
+
+test('synchronisation de tous les profils sans réglage NAS',async({browser})=>{
+ const c1=await browser.newContext({viewport:{width:1280,height:900}}),
+       c2=await browser.newContext({viewport:{width:1280,height:900}});
+ try{
+  const a=await c1.newPage(),b=await c2.newPage();
+  await signIn(a);await signIn(b);
+  await a.locator('.sidebar [data-value="profile"]').click();
+  a.on('dialog',d=>d.accept('Profil synchronisé'));
+  await a.locator('[data-action="add-profile"]').click();
+  await expect(a.locator('.profile-options')).toContainText('Profil synchronisé');
+  await expect.poll(async()=>{
+   const r=await a.evaluate(async()=>{
+    const m=await import('/auth.js');
+    const z=await m.api('account/snapshot');return z.data?.profiles?.length||0;
+   });return r;
+  },{timeout:16000}).toBeGreaterThanOrEqual(2);
+  await b.reload();
+  await b.locator('.sidebar [data-value="profile"]').click();
+  await expect(b.locator('.profile-options')).toContainText('Profil synchronisé',{timeout:16000});
+  await expect(b.locator('#sync-code')).toHaveCount(0);
+ }finally{await c1.close();await c2.close();}
+});
+
+
+test('audio Safari: réponses partielles 206 conservées avec le service worker et offline',async({page})=>{
+ await page.goto(url);
+ await page.evaluate(async()=>{await navigator.serviceWorker.ready;});
+ await page.reload();
+ await expect.poll(()=>page.evaluate(()=>!!navigator.serviceWorker.controller),{timeout:12000}).toBe(true);
+ const file='/voice/vivienne-fr-v2/pose_balasana.mp3';
+ const result=await page.evaluate(async file=>{
+  const full=await fetch(file,{cache:'no-store'});
+  if(!full.ok)throw new Error('MP3 manquant : '+full.status);
+  const bytes=await full.arrayBuffer();
+  // Installation du fichier entier dans le cache hors ligne par l'utilisateur.
+  const cache=await caches.open('sichosana-vivienne-test');
+  await cache.put(file,new Response(bytes,{status:200,headers:{'Content-Type':'audio/mpeg'}}));
+  const part=await fetch(file,{headers:{Range:'bytes=0-63'}});
+  const data=await part.arrayBuffer();
+  const suffix=await fetch(file,{headers:{Range:'bytes=-32'}});
+  const data2=await suffix.arrayBuffer();
+  return {code:part.status,length:data.byteLength,
+    contentRange:part.headers.get('Content-Range'),
+    accepts:part.headers.get('Accept-Ranges'),
+    suffixCode:suffix.status,suffixLength:data2.byteLength,
+    supported:document.createElement('audio').canPlayType('audio/mpeg')};
+ },file);
+ expect(result.code).toBe(206);
+ expect(result.length).toBe(64);
+ expect(result.contentRange).toMatch(/^bytes 0-63\/\d+$/);
+ expect(result.accepts).toBe('bytes');
+ expect(result.suffixCode).toBe(206);
+ expect(result.suffixLength).toBe(32);
+ expect(result.supported).not.toBe('');
+});
+
+
+test('iPhone: onglets yoga et sélecteur glassy au doigt',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await signIn(page);
+ await page.locator('.bottom-nav [data-value="yoga"]').click();
+ const tabs=page.locator('.yoga-tabs.sliding-segment');
+ await expect(tabs).toBeVisible();
+ await expect(tabs.locator('button[role="tab"]')).toHaveCount(2);
+ await tabs.locator('[data-value="postures"]').click();
+ await expect(page.locator('.pose-list .pose-item')).toHaveCount(25);
+ await tabs.locator('[data-value="seances"]').click();
+ await expect(page.locator('.routine-card')).not.toHaveCount(0);
+ const slider=page.locator('.yoga-practice-modes.sliding-segment');
+ await expect(slider).toBeVisible();
+ const box=await slider.boundingBox();
+ await page.mouse.move(box.x+box.width/6,box.y+box.height/2);
+ await page.mouse.down();
+ await page.mouse.move(box.x+box.width*5/6,box.y+box.height/2,{steps:7});
+ await page.mouse.up();
+ await expect(page.locator('.yoga-practice-modes [data-value="complete"]')).toHaveAttribute('aria-pressed','true');
+ await expect(page.locator('.yoga-practice-modes')).toHaveAttribute('style',/--index:2/);
+ await page.screenshot({path:'screenshots/yoga-iphone-glassy.png',fullPage:true});
+});
+
+
+test('salutations: noms corrects, déverrouillage après maîtrise déclarée, variante cobra',async({page})=>{
+ await page.setViewportSize({width:390,height:844});
+ await signIn(page);
+ await page.locator('.bottom-nav [data-value="yoga"]').click();
+ await expect(page.locator('.salutation-card')).toHaveCount(2);
+ const sun=page.locator('.salutation-card').filter({hasText:'Salutation au soleil A'});
+ const moon=page.locator('.salutation-card').filter({hasText:'Salutation à la lune'});
+ await expect(sun).toContainText('0 / 7 postures');
+ await expect(moon).toContainText('0 / 8 postures');
+ const prereqs=['tadasana','urdhva-hastasana','uttanasana','ardha-uttanasana','phalakasana','bhujangasana','adho-mukha'];
+ for(const poseId of prereqs){
+  await page.locator('.salutation-card').filter({hasText:'Salutation au soleil A'}).locator('[data-action="pose"][data-value="'+poseId+'"]').click();
+  await page.locator('.pose-modal [data-action="toggle-mastery"]').click();
+  await page.locator('.pose-modal [data-action="close"]').click();
+ }
+ await expect(sun).toContainText('7 / 7 postures');
+ await sun.getByRole('button',{name:'Commencer l’enchaînement'}).click();
+ await expect(page.locator('.session')).toBeVisible();
+ await expect(page.locator('.session')).toContainText('Salutation au soleil A');
+ await expect(page.locator('.session')).toContainText('Étape 1 sur 12');
+ await page.locator('[data-action="finish"]').click();
+ await expect(moon).toContainText('1 / 8 postures'); // Montagne maîtrisée vaut aussi pour la Lune.
+});
+
+
+test('salutations: maîtrise par profil synchronisée et révocable entre deux appareils',async({browser})=>{
+ const c1=await browser.newContext({viewport:{width:1280,height:900}});
+ const c2=await browser.newContext({viewport:{width:1280,height:900}});
+ const name='Recette salutations '+Date.now();
+ try{
+  const a=await c1.newPage(),b=await c2.newPage();
+  await signIn(a);await signIn(b);
+  await a.locator('.sidebar [data-value="profile"]').click();
+  a.once('dialog',d=>d.accept(name));
+  await a.locator('[data-action="add-profile"]').click();
+  await expect(a.locator('.profile-options')).toContainText(name);
+  await a.locator('.sidebar [data-value="yoga"]').click();
+  await a.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .locator('[data-action="pose"][data-value="tadasana"]').click();
+  await a.locator('.pose-modal [data-action="toggle-mastery"]').click();
+  await a.locator('.pose-modal [data-action="close"]').click();
+  await expect.poll(async()=>{
+   return a.evaluate(async name=>{
+    const {api}=await import('/auth.js');
+    const s=await api('account/snapshot');
+    return s.data?.profiles?.find(p=>p.name===name)?.masteredPoseStatus?.tadasana?.mastered;
+   },name);
+  },{timeout:16000}).toBe(true);
+  await b.reload();
+  await b.locator('.sidebar [data-value="profile"]').click();
+  await expect(b.locator('.profile-options')).toContainText(name);
+  await b.locator('.profile-option').filter({hasText:name}).click();
+  await b.locator('.sidebar [data-value="yoga"]').click();
+  await expect(b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})).toContainText('1 / 7 postures');
+  await expect(b.locator('.salutation-card').filter({hasText:'Salutation à la lune'})).toContainText('1 / 8 postures');
+  await b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .locator('[data-action="pose"][data-value="urdhva-hastasana"]').click();
+  await expect(b.locator('.pose-modal [data-action="toggle-mastery"]')).toContainText('Je maîtrise');
+  await b.locator('.pose-modal [data-action="close"]').click();
+  // Une posture non maîtrisée ne débloque jamais une salutation.
+  await expect(b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .getByRole('button',{name:'Commencer l’enchaînement'})).toHaveCount(0);
+  await b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
+    .locator('[data-action="pose"][data-value="tadasana"]').click();
+  await b.locator('.pose-modal [data-action="toggle-mastery"]').click();
+  await b.locator('.pose-modal [data-action="close"]').click();
+  await expect.poll(async()=>{
+   return b.evaluate(async name=>{
+    const {api}=await import('/auth.js');
+    const s=await api('account/snapshot');
+    return s.data?.profiles?.find(p=>p.name===name)?.masteredPoseStatus?.tadasana?.mastered;
+   },name);
+  },{timeout:16000}).toBe(false);
+  await a.reload();
+  await a.locator('.sidebar [data-value="yoga"]').click();
+  await expect(a.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})).toContainText('0 / 7 postures');
+  await expect(a.locator('.salutation-card').filter({hasText:'Salutation à la lune'})).toContainText('0 / 8 postures');
+ }finally{await c1.close();await c2.close();}
+});

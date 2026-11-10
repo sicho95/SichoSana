@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "SichoSana — Yoga, méditation & équilibre",
+  "short_name": "SichoSana",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f4ec",
+  "theme_color": "#758f7c",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

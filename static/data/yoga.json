@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "referenceSource": "https://github.com/alexcumplido/yoga-api",
+  "imported": null,
+  "poses": [
+    {
+      "id": "tadasana",
+      "nom": "Montagne",
+      "sanskrit": "Tāḍāsana",
+      "niveau": "Débutant",
+      "focus": "Alignement",
+      "instructions": "Debout, pieds ancrés, allonge la colonne sans bloquer les genoux.",
+      "prudence": "Respire calmement et garde les épaules souples."
+    },
+    {
+      "id": "balasana",
+      "nom": "Posture de l’enfant",
+      "sanskrit": "Balāsana",
+      "niveau": "Débutant",
+      "focus": "Repos",
+      "instructions": "À genoux, recule les hanches vers les talons et repose le front sur un support si besoin.",
+      "prudence": "Écarte les genoux ou place un coussin si la position comprime les articulations."
+    },
+    {
+      "id": "marjaryasana",
+      "nom": "Chat-vache",
+      "sanskrit": "Mārjaryāsana / Bitilāsana",
+      "niveau": "Débutant",
+      "focus": "Mobilité",
+      "instructions": "À quatre pattes, alterne lentement dos arrondi puis extension douce au rythme du souffle.",
+      "prudence": "Réduis l’amplitude si le dos est sensible."
+    },
+    {
+      "id": "adho-mukha",
+      "nom": "Chien tête en bas",
+      "sanskrit": "Adho Mukha Śvānāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Énergie",
+      "instructions": "Depuis quatre pattes, lève les hanches et allonge la colonne; les genoux peuvent rester pliés.",
+      "prudence": "Ne recherche pas à poser les talons à tout prix."
+    },
+    {
+      "id": "virabhadrasana2",
+      "nom": "Guerrier II",
+      "sanskrit": "Vīrabhadrāsana II",
+      "niveau": "Intermédiaire",
+      "focus": "Stabilité",
+      "instructions": "En fente large, bras ouverts, fléchis le genou avant dans l’axe du pied.",
+      "prudence": "Réduis l’amplitude pour rester confortable dans le genou."
+    },
+    {
+      "id": "bhujangasana",
+      "nom": "Cobra doux",
+      "sanskrit": "Bhujangāsana",
+      "niveau": "Débutant",
+      "focus": "Ouverture",
+      "instructions": "Sur le ventre, mains près de la poitrine, relève légèrement le buste sans forcer dans les lombaires.",
+      "prudence": "Évite les amplitudes douloureuses ou une cambrure excessive."
+    },
+    {
+      "id": "baddha-konasana",
+      "nom": "Papillon",
+      "sanskrit": "Baddha Koṇāsana",
+      "niveau": "Débutant",
+      "focus": "Hanches",
+      "instructions": "Assis, rapproche doucement les plantes des pieds; assieds-toi sur un coussin si nécessaire.",
+      "prudence": "Ne pousse jamais les genoux vers le sol."
+    },
+    {
+      "id": "vrksasana",
+      "nom": "Arbre",
+      "sanskrit": "Vṛkṣāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Équilibre",
+      "instructions": "En appui sur une jambe, pose le pied libre sur le mollet ou la cuisse, jamais sur le genou.",
+      "prudence": "Reste près d’un mur pour te stabiliser."
+    },
+    {
+      "id": "anjaneyasana",
+      "nom": "Fente basse",
+      "sanskrit": "Añjaneyāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Souplesse",
+      "instructions": "Un pied devant, genou arrière posé sur un support, redresse doucement le buste.",
+      "prudence": "Place une couverture sous le genou arrière si besoin."
+    },
+    {
+      "id": "paschimottanasana",
+      "nom": "Pince assise douce",
+      "sanskrit": "Paścimottānāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Détente",
+      "instructions": "Assis, allonge le dos et incline le bassin légèrement vers l’avant, genoux fléchis au besoin.",
+      "prudence": "N’arrondis pas le dos sous contrainte, arrête si la douleur apparaît."
+    },
+    {
+      "id": "supta-matsyendrasana",
+      "nom": "Torsion allongée",
+      "sanskrit": "Supta Matsyendrāsana",
+      "niveau": "Débutant",
+      "focus": "Relâchement",
+      "instructions": "Sur le dos, bascule doucement les jambes pliées sur un côté sans contrainte.",
+      "prudence": "Diminue l’amplitude pour protéger le dos."
+    },
+    {
+      "id": "setu-bandha",
+      "nom": "Demi-pont",
+      "sanskrit": "Setu Bandha Sarvāṅgāsana",
+      "niveau": "Intermédiaire",
+      "focus": "Ouverture",
+      "instructions": "Allongé sur le dos, plie les genoux et soulève lentement le bassin sans creuser la nuque.",
+      "prudence": "Évite si la posture déclenche une douleur."
+    },
+    {
+      "id": "savasana",
+      "nom": "Relaxation allongée",
+      "sanskrit": "Śavāsana",
+      "niveau": "Débutant",
+      "focus": "Repos",
+      "instructions": "Allongé confortablement, relâche les mains et les épaules, utilise un coussin si besoin.",
+      "prudence": "Adapte la position pour ne ressentir aucune compression."
+    }
+  ],
+  "routines": [
+    {
+      "id": "hatha-doux",
+      "name": "Hatha doux",
+      "family": "Hatha",
+      "duration": 20,
+      "level": "Tous niveaux",
+      "subtitle": "S'ancrer, s'assouplir et relâcher les tensions.",
+      "poseIds": [
+        "tadasana",
+        "marjaryasana",
+        "balasana",
+        "baddha-konasana",
+        "supta-matsyendrasana",
+        "savasana"
+      ]
+    },
+    {
+      "id": "vinyasa-fluide",
+      "name": "Vinyasa serein",
+      "family": "Vinyasa",
+      "duration": 30,
+      "level": "Intermédiaire",
+      "subtitle": "Une pratique fluide, guidée par le souffle.",
+      "poseIds": [
+        "tadasana",
+        "adho-mukha",
+        "anjaneyasana",
+        "virabhadrasana2",
+        "bhujangasana",
+        "balasana",
+        "savasana"
+      ]
+    },
+    {
+      "id": "eveil-doux",
+      "name": "Éveil du matin",
+      "family": "Hatha",
+      "duration": 12,
+      "level": "Débutant",
+      "subtitle": "Réveiller le corps sans précipitation.",
+      "poseIds": [
+        "tadasana",
+        "marjaryasana",
+        "anjaneyasana",
+        "balasana",
+        "savasana"
+      ]
+    },
+    {
+      "id": "soir-calme",
+      "name": "Déconnexion du soir",
+      "family": "Hatha",
+      "duration": 15,
+      "level": "Débutant",
+      "subtitle": "Retrouver le calme avant la nuit.",
+      "poseIds": [
+        "baddha-konasana",
+        "paschimottanasana",
+        "supta-matsyendrasana",
+        "savasana"
+      ]
+    },
+    {
+      "id": "equilibre",
+      "name": "Équilibre et présence",
+      "family": "Hatha",
+      "duration": 18,
+      "level": "Intermédiaire",
+      "subtitle": "Cultiver l'attention et la stabilité.",
+      "poseIds": [
+        "tadasana",
+        "vrksasana",
+        "virabhadrasana2",
+        "balasana",
+        "savasana"
+      ]
+    },
+    {
+      "id": "detente",
+      "name": "Mobilité douce",
+      "family": "Hatha",
+      "duration": 16,
+      "level": "Tous niveaux",
+      "subtitle": "Bouger lentement et respecter ses sensations.",
+      "poseIds": [
+        "marjaryasana",
+        "baddha-konasana",
+        "supta-matsyendrasana",
+        "savasana"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "programs": [
+    {
+      "id": "equilibre-7",
+      "name": "7 étapes pour l’équilibre",
+      "subtitle": "Une alternance de yoga et de méditation pour installer un rythme doux.",
+      "level": "Progressif",
+      "steps": [
+        {
+          "type": "yoga",
+          "ref": "eveil-doux",
+          "label": "Éveiller le corps"
+        },
+        {
+          "type": "meditate",
+          "ref": "respirer",
+          "label": "Revenir au souffle"
+        },
+        {
+          "type": "yoga",
+          "ref": "hatha-doux",
+          "label": "S’ancrer"
+        },
+        {
+          "type": "meditate",
+          "ref": "ancrage",
+          "label": "Retrouver sa présence"
+        },
+        {
+          "type": "yoga",
+          "ref": "detente",
+          "label": "Mobilité douce"
+        },
+        {
+          "type": "meditate",
+          "ref": "gratitude",
+          "label": "Cultiver l’attention"
+        },
+        {
+          "type": "yoga",
+          "ref": "soir-calme",
+          "label": "Terminer en douceur"
+        }
+      ]
+    },
+    {
+      "id": "douceur-7",
+      "name": "7 étapes de déconnexion",
+      "subtitle": "Privilégier la détente et la récupération, sans objectif de performance.",
+      "level": "Doux",
+      "steps": [
+        {
+          "type": "meditate",
+          "ref": "respirer",
+          "label": "Ouvrir une parenthèse"
+        },
+        {
+          "type": "yoga",
+          "ref": "soir-calme",
+          "label": "Alléger la journée"
+        },
+        {
+          "type": "meditate",
+          "ref": "detente",
+          "label": "Relâcher les tensions"
+        },
+        {
+          "type": "yoga",
+          "ref": "eveil-doux",
+          "label": "Retrouver du mouvement"
+        },
+        {
+          "type": "meditate",
+          "ref": "ancrage",
+          "label": "S’ancrer"
+        },
+        {
+          "type": "yoga",
+          "ref": "detente",
+          "label": "Bouger à son rythme"
+        },
+        {
+          "type": "meditate",
+          "ref": "sommeil",
+          "label": "Préparer la nuit"
+        }
+      ]
+    },
+    {
+      "id": "soleil-lune-progression",
+      "name": "Apprendre les salutations",
+      "subtitle": "Apprends les postures une à une puis enchaîne Soleil et Lune lorsque tu les maîtrises réellement.",
+      "level": "Progressif",
+      "steps": [
+        {
+          "type": "yoga",
+          "ref": "eveil-doux",
+          "label": "Préparer son corps et sa respiration"
+        },
+        {
+          "type": "yoga",
+          "ref": "hatha-doux",
+          "label": "Apprendre les appuis en douceur"
+        },
+        {
+          "type": "yoga",
+          "ref": "vinyasa-fluide",
+          "label": "Découvrir les transitions du soleil"
+        },
+        {
+          "type": "meditate",
+          "ref": "respirer",
+          "label": "Calmer et rythmer le souffle"
+        },
+        {
+          "type": "yoga",
+          "ref": "equilibre",
+          "label": "Stabiliser les postures debout"
+        },
+        {
+          "type": "yoga",
+          "ref": "salutation-soleil",
+          "label": "Salutation au soleil (après maîtrise)"
+        },
+        {
+          "type": "yoga",
+          "ref": "salutation-lune",
+          "label": "Salutation à la lune (après maîtrise)"
+        }
+      ]
+    }
+  ]
+}

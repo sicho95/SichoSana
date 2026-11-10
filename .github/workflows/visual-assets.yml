@@ -1,0 +1,83 @@
+name: SichoSana — photographies locales de recette
+on:
+  workflow_dispatch:
+  push:
+    branches: [dev/sichosana-20261105]
+    paths: [".github/workflows/visual-assets.yml"]
+permissions:
+  contents: write
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install "Pillow>=10,<13"
+      - name: Télécharger et adapter les photos haute définition sans SVG
+        run: |
+          set -euo pipefail
+          mkdir -p static/media
+          curl -fL --retry 3 --connect-timeout 15 --max-time 100 \
+            "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?fit=crop&w=1800&q=87" \
+            -o /tmp/yoga-source.jpg
+          curl -fL --retry 3 --connect-timeout 15 --max-time 100 \
+            "https://images.unsplash.com/photo-1506126613408-eca07ce68773?fit=crop&w=1600&q=87" \
+            -o /tmp/meditation-source.jpg
+          curl -fL --retry 3 --connect-timeout 15 --max-time 100 \
+            "https://images.unsplash.com/photo-1518495973542-4542c06a5843?fit=crop&w=1800&q=87" \
+            -o /tmp/nature-source.jpg
+          python - <<'PY'
+          from PIL import Image,ImageOps
+          from pathlib import Path
+          jobs=[
+            ('/tmp/yoga-source.jpg','static/media/yoga-hero.png',(1400,1100)),
+            ('/tmp/meditation-source.jpg','static/media/meditation.png',(1100,780)),
+            ('/tmp/nature-source.jpg','static/media/nature.png',(1500,1100))
+          ]
+          for source,out,size in jobs:
+              with Image.open(source) as im:
+                  im=ImageOps.exif_transpose(im).convert('RGB')
+                  im.thumbnail(size,Image.Resampling.LANCZOS)
+                  im.save(out,format='PNG',optimize=True,compress_level=9)
+              print(out,Path(out).stat().st_size)
+          PY
+      - name: Photographies réelles des postures avec crédits individuels
+        run: |
+          set -euo pipefail
+          mkdir -p static/media/poses
+          python - <<'PY'
+          from urllib.request import Request,urlopen
+          from PIL import Image,ImageOps
+          from pathlib import Path
+          from io import BytesIO
+          names={
+           'tadasana':'mountain','balasana':'childs-pose',
+           'adho-mukha':'downward-dog','virabhadrasana2':'warrior-2',
+           'bhujangasana':'cobra','vrksasana':'tree','setu-bandha':'bridge'
+          }
+          for ident,slug in names.items():
+              url='https://raw.githubusercontent.com/jreinjr/yoga-pose-photos/main/'+slug+'.jpg'
+              req=Request(url,headers={'User-Agent':'SichoSana/2.0'})
+              with urlopen(req,timeout=25) as response: data=response.read(2_000_000)
+              with Image.open(BytesIO(data)) as image:
+                  image=ImageOps.exif_transpose(image).convert('RGB')
+                  image.save('static/media/poses/'+ident+'.png',format='PNG',optimize=True,compress_level=9)
+              print('Posture photo',ident,len(data))
+          PY
+      - name: Homogénéiser le cadre et la colorimétrie des postures
+        run: python scripts/normalize-pose-media.py
+      - name: Commit assets sur branche de préparation
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add static/media/*.png static/media/poses/*.png
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: photos PNG haute définition pour interfaces SichoSana"
+            git fetch origin "$GITHUB_REF_NAME"
+            git rebase "origin/$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
