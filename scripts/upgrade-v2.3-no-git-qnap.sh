@@ -5,7 +5,7 @@ set -eu
 umask 077
 MODE=${1:---check}
 case "$MODE" in --check|--apply) ;; *) echo 'Usage: sh installer.sh --check|--apply' >&2; exit 2;; esac
-REF=${SICHOSANA_REF:-b14a6515c1d5df6d0b8ca5526e0723fde5decbbc}
+REF=${SICHOSANA_REF:-4c59b0c9b66c40cbd3355a630560ba928a1ace2f}
 APP=${SICHOSANA_APP_DIR:-/share/CE_CACHEDEV1_DATA/SichoSana/app}
 BASE=$(dirname "$APP")
 STAMP=$(date -u '+%Y%m%dT%H%M%SZ')-$$
