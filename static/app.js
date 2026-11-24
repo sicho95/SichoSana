@@ -198,7 +198,8 @@ function posePicture(id,kind='thumb'){
  const assetId=originalArt.aliases?.[id]||id;
  const src=original?'/media/original/'+encodeURIComponent(assetId)+'.png':fallback;
  return '<img loading="lazy" decoding="async" data-pose-image="'+escapeHTML(id)+'"'+
-   (original&&fallback?' data-fallback="'+escapeHTML(fallback)+'"':'')+
+   // Le visuel original validé ne doit jamais être remplacé par un ancien dessin tiers.
+
    ' class="pose-photo '+kind+'" src="'+escapeHTML(src)+'" alt="Posture '+escapeHTML(yoga.poses.find(p=>p.id===id)?.nom||id)+'">';
 }
 function yogaPage(){
@@ -664,7 +665,11 @@ async function init(){
     const status=await fetch('/api/v1/media/original-status',{cache:'no-store'}).then(r=>r.ok?r.json():null);
     const expectedPhysical=originalArt.expectedPhysicalFiles||originalArt.files.length;
      originalBundleReady=Boolean(status?.ready&&status?.installed===expectedPhysical&&status?.expected===expectedPhysical&&originalArt.files?.length===73);
-  }catch(e){originalBundleReady=false;}
+  }catch(e){
+    // Le manifeste livré est versionné et mis en cache avec la PWA.
+    // Hors ligne, conserver les originaux déjà mis en cache, sans réintroduire les anciens dessins.
+    originalBundleReady=originalArt.status==='published-58-canonical-assets-73-references'&&originalArt.files?.length===73&&originalArt.expectedPhysicalFiles===58;
+  }
    try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}
   try{
