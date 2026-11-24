@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "kind": "original-illustrations-candidate",
-  "status": "logical-73-images-58-unique-assets-publishing-pending",
+  "status": "published-58-canonical-assets-73-references",
   "files": [
     "adho-mukha",
     "anjaneyasana",
@@ -78,7 +78,7 @@
     "yoga-api-48"
   ],
   "missing": [],
-  "note": "73 fiches, 58 PNG uniques; 15 références identiques partagent un fichier sans copie physique. Un alias est autorisé uniquement pour une posture réellement identique; le cas yoga-api-43/urdhva-mukha reste DISTINCT du cobra bhujangasana. Les binaires sont à publier sur GitHub.",
+  "note": "73 fiches, 58 PNG originaux publiés, 15 alias sans copie. Les SHA Git des 58 fichiers correspondent à l'archive source. Cobra et chien tête en haut ont deux illustrations différentes. La recette sur appareils réels reste à effectuer.",
   "aliases": {
     "yoga-api-4": "setu-bandha",
     "yoga-api-5": "baddha-konasana",
