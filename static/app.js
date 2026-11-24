@@ -447,15 +447,15 @@ function ingest(data,remote=false){
  if(!data||data.schemaVersion!==1||!Array.isArray(data.profiles)||data.profiles.length>100)throw Error('Fichier de sauvegarde non reconnu.');
  const fresh=data.profiles.filter(x=>x&&typeof x.id==='string'&&typeof x.name==='string'&&Array.isArray(x.history)).map(x=>({...x,name:x.name.slice(0,50),theme:x.theme==='horizon'?'horizon':'linen',favorites:Array.isArray(x.favorites)?x.favorites.slice(0,200):[],masteredPoseStatus:Object.fromEntries(Object.entries(x.masteredPoseStatus||{}).filter(([k,v])=>typeof k==='string'&&k.length<=70&&v&&typeof v.mastered==='boolean'&&Number.isFinite(v.at)).slice(0,200).map(([k,v])=>[k,{mastered:v.mastered,at:v.at}])),meditationStyle:['discrete','equilibree','enveloppante'].includes(x.meditationStyle)?x.meditationStyle:'equilibree',history:x.history.slice(-2000)}));
  if(!fresh.length)throw Error('Aucun profil valide.');
- if(remote&&state.profiles.length===1&&state.profiles[0].name==='Mon espace'&&!state.profiles[0].history.length){state.profiles=fresh;state.activeProfileId=fresh[0].id;}
+ if(remote&&state.profiles.length===1&&state.profiles[0].name==='Mon espace'&&!state.profiles[0].history.length&&!Object.keys(state.profiles[0].masteredPoseStatus||{}).length&&!state.profiles[0].favorites?.length&&!fresh.some(p=>p.id===state.profiles[0].id)){state.profiles=fresh;state.activeProfileId=fresh[0].id;}
  else{state.profiles=mergedProfiles(state.profiles,fresh);if(!state.profiles.some(p=>p.id===state.activeProfileId))state.activeProfileId=state.profiles[0].id;}
- save();render();
+ save(!remote);render();
 }
 /* Synchronisation native : aucun jumelage, code NAS ou bouton manuel. */
 function scheduleAutoSync(){
  if(!Accounts.loggedIn()||Accounts.mustChangePassword())return;
  clearTimeout(syncTimer);
- syncTimer=setTimeout(()=>autoSync(false),1200);
+ syncTimer=setTimeout(()=>{if(syncBusy)scheduleAutoSync();else autoSync(false);},1200);
 }
 async function pullSync(){
  const remote=await Accounts.api('account/snapshot');
@@ -531,7 +531,7 @@ async function handle(action,value){
  if(action==='finish')return finishSession(false);
  if(action==='cancel-session')return abortSession();
  if(action==='add-profile'){const name=prompt('Nom du nouveau profil :');if(name&&name.trim()){const p=defaultProfile();p.name=name.trim().slice(0,50);state.profiles.push(p);state.activeProfileId=p.id;save();render();}return;}
- if(action==='select-profile'){state.activeProfileId=value;save();render();return;}
+ if(action==='select-profile'){state.activeProfileId=value;save(false);render();return;}
  if(action==='save-name'){profile().name=($('#profile-name')?.value||'Mon espace').trim().slice(0,50)||'Mon espace';touch();render();return;}
  if(action==='export')return exportData();
  if(action==='import')return $('#import-json')?.click();
