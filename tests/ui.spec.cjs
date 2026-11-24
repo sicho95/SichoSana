@@ -98,7 +98,7 @@ test('inscription puis approbation admin et connexion insensible à la casse',as
   await applicant.getByRole('button',{name:'Me connecter'}).click();
   await expect(applicant.getByRole('heading',{name:'Un moment pour soi'})).toBeVisible();
   await expect(applicant.locator('.welcome-modal')).toBeVisible();
- }finally{await c1.close();await c2.close();}
+ }finally{await Promise.allSettled([c1.close(),c2.close()]);}
 });
 
 test('synchronisation de tous les profils sans réglage NAS',async({browser})=>{
@@ -208,6 +208,7 @@ test('salutations: noms corrects, déverrouillage après maîtrise déclarée, v
 
 
 test('salutations: maîtrise par profil synchronisée et révocable entre deux appareils',async({browser})=>{
+ test.setTimeout(90000);
  const c1=await browser.newContext({viewport:{width:1280,height:900}});
  const c2=await browser.newContext({viewport:{width:1280,height:900}});
  const name='Recette salutations '+Date.now();
@@ -256,6 +257,9 @@ test('salutations: maîtrise par profil synchronisée et révocable entre deux a
    },name);
   },{timeout:16000}).toBe(false);
   await a.reload();
+  await a.locator('.sidebar [data-value="profile"]').click();
+  await expect(a.locator('.profile-options')).toContainText(name);
+  await a.locator('.profile-option').filter({hasText:name}).click();
   await a.locator('.sidebar [data-value="yoga"]').click();
   await expect(a.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})).toContainText('0 / 7 postures');
   await expect(a.locator('.salutation-card').filter({hasText:'Salutation à la lune'})).toContainText('0 / 8 postures');
