@@ -121,7 +121,7 @@ test('synchronisation de tous les profils sans réglage NAS',async({browser})=>{
   await b.locator('.sidebar [data-value="profile"]').click();
   await expect(b.locator('.profile-options')).toContainText('Profil synchronisé',{timeout:16000});
   await expect(b.locator('#sync-code')).toHaveCount(0);
- }finally{await c1.close();await c2.close();}
+ }finally{await Promise.allSettled([c1.close(),c2.close()]);}
 });
 
 
@@ -245,8 +245,11 @@ test('salutations: maîtrise par profil synchronisée et révocable entre deux a
   // Une posture non maîtrisée ne débloque jamais une salutation.
   await expect(b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
     .getByRole('button',{name:'Commencer l’enchaînement'})).toHaveCount(0);
-  await b.locator('.salutation-card').filter({hasText:'Salutation au soleil A'})
-    .locator('[data-action="pose"][data-value="tadasana"]').click();
+  // Une posture maîtrisée ne figure plus parmi les prérequis manquants.
+  // Révoquer sa maîtrise depuis la bibliothèque, comme un véritable utilisateur.
+  await b.locator('[data-action="yoga-tab"][data-value="postures"]').click();
+  await b.locator('.pose-list [data-action="pose"][data-value="tadasana"]').click({timeout:10000});
+  await expect(b.locator('.pose-modal [data-action="toggle-mastery"]')).toHaveText('À retravailler');
   await b.locator('.pose-modal [data-action="toggle-mastery"]').click();
   await b.locator('.pose-modal [data-action="close"]').click();
   await expect.poll(async()=>{
