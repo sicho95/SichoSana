@@ -1,0 +1,115 @@
+"""Contrôles de non-régression de la recette SichoSana V2.1."""
+import io
+import json
+import os
+from pathlib import Path
+import unittest
+from unittest.mock import patch
+
+ROOT=Path(__file__).resolve().parents[1]
+
+class ReleaseValidation(unittest.TestCase):
+    def test_lotus_and_five_mobile_items(self):
+        app=(ROOT/'static/app.js').read_text(encoding='utf-8')
+        auth=(ROOT/'static/auth.js').read_text(encoding='utf-8')
+        css=(ROOT/'static/styles.css').read_text(encoding='utf-8')
+        self.assertIn('nav.map(navButton)',app)
+        self.assertIn('class="lotus-mark"',app)
+        self.assertIn('src="/icon.svg"',auth)
+        self.assertIn('.bottom-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))',css)
+        self.assertIn('body:has(.auth-layout) .topbar',css)
+        self.assertIn('admin-entry',app)
+
+    def test_voice_manifest_references_real_mp3(self):
+        folder=ROOT/'static/voice/vivienne-fr-v2'
+        manifest=json.loads((folder/'manifest.json').read_text(encoding='utf-8'))
+        self.assertEqual(manifest['voiceId'],'fr-FR-VivienneMultilingualNeural')
+        self.assertGreaterEqual(len(manifest['files']),80)
+        for key,entry in manifest['files'].items():
+            file=folder/entry['src']
+            self.assertTrue(file.is_file(),f'{key}: absent')
+            self.assertGreater(file.stat().st_size,1500,key)
+            with file.open('rb') as inp:
+                first=inp.read(4)
+            self.assertTrue(first.startswith(b'ID3') or first.startswith(b'\xff'),f'{key}: pas un MP3')
+
+    def test_pose_credits_and_files(self):
+        manifest=json.loads((ROOT/'static/data/pose-media.json').read_text(encoding='utf-8'))
+        for row in manifest['photos']:
+            self.assertTrue((ROOT/'static'/row['src'].lstrip('/')).is_file(),row['id'])
+            self.assertTrue(row['source'].startswith('https://commons.wikimedia.org/'))
+            self.assertTrue(row['licenseUrl'].startswith('https://creativecommons.org/'))
+
+    def test_astrology_periods_and_attribution(self):
+        from server import astrology
+        self.assertEqual(astrology.PERIODS,{'daily','weekly','monthly'})
+        response={'items':[{'text':'Un jour serein. Cultive le calme. Prends un instant.'}],
+                  'attribution':{'localizedHref':'https://sigastra.com/fr/horoscope-du-jour'}}
+        class R:
+            status=200
+            def __enter__(self):return self
+            def __exit__(self,*args):return False
+            def read(self,size):return json.dumps(response).encode('utf-8')
+        with patch.dict(os.environ,{'SICHOSANA_ASTRO_ENABLED':'1'}):
+            with patch.object(astrology,'urlopen',return_value=R()) as fetch:
+                astrology.CACHE.clear()
+                data=astrology.daily('Lion','weekly')
+        self.assertTrue(data['available'])
+        self.assertEqual(data['period'],'weekly')
+        self.assertEqual(data['source'],'Sigastra')
+        self.assertIn('/weekly?',fetch.call_args.args[0].full_url)
+
+
+class YogaCurriculumValidation(unittest.TestCase):
+    def test_thirteen_guided_poses_and_safe_image_mapping(self):
+        guide=json.loads((ROOT/'static/data/pose-guidance.json').read_text(encoding='utf-8'))
+        original=json.loads((ROOT/'static/data/yoga.json').read_text(encoding='utf-8'))
+        api=json.loads((ROOT/'static/data/yoga-api-library.json').read_text(encoding='utf-8'))
+        ids={p['id'] for p in original['poses']}
+        api_ids={p['id'] for p in api['poses']}
+        self.assertEqual(set(guide['poses']),ids)
+        self.assertEqual(len(api['poses']),48)
+        for ident,entry in guide['poses'].items():
+            for required in ('preparation','facile','respiration','alignement','prudence'):
+                self.assertGreater(len(entry[required]),25,f'{ident}.{required}')
+            if entry['apiPose']:
+                self.assertIn(entry['apiPose'],api_ids)
+        self.assertIsNone(guide['poses']['bhujangasana']['apiPose'])
+        self.assertIsNone(guide['poses']['adho-mukha']['apiPose'])
+
+    def test_daily_and_practice_modes_visible(self):
+        app=(ROOT/'static/app.js').read_text(encoding='utf-8')
+        self.assertIn('function dailyRoutine()',app)
+        self.assertIn("['initiation','Découvrir pas à pas']",app)
+        self.assertIn("'prepare_'+poseId",app)
+        self.assertIn("'easy_'+poseId",app)
+        self.assertIn("p.dailyChoice={date:day,id:chosen.id}",app)
+
+class MediaHttpRange(unittest.TestCase):
+    def test_ios_audio_range_206(self):
+        import threading
+        from http.server import ThreadingHTTPServer
+        from urllib.request import Request, urlopen
+        from server import app
+        path=ROOT/'static/voice/vivienne-fr-v2/pose_balasana.mp3'
+        self.assertTrue(path.is_file())
+        with ThreadingHTTPServer(('127.0.0.1',0),app.Handler) as server:
+            worker=threading.Thread(target=server.serve_forever,daemon=True)
+            worker.start()
+            try:
+                url=f'http://127.0.0.1:{server.server_port}/voice/vivienne-fr-v2/pose_balasana.mp3'
+                with urlopen(Request(url,headers={'Range':'bytes=0-63'}),timeout=6) as response:
+                    self.assertEqual(response.status,206)
+                    self.assertEqual(response.headers['Accept-Ranges'],'bytes')
+                    self.assertTrue(response.headers['Content-Range'].startswith('bytes 0-63/'))
+                    self.assertEqual(response.headers['Content-Type'],'audio/mpeg')
+                    self.assertEqual(response.read(),path.read_bytes()[:64])
+                with urlopen(Request(url,method='HEAD'),timeout=6) as response:
+                    self.assertEqual(response.status,200)
+                    self.assertEqual(response.headers['Accept-Ranges'],'bytes')
+            finally:
+                server.shutdown()
+                worker.join(timeout=5)
+
+if __name__=='__main__':
+    unittest.main()

@@ -1,0 +1,83 @@
+{
+  "kind": "curated-pose-photographs",
+  "note": "Toutes les images conservent leur licence Creative Commons originale; crédit et lien affichés dans la fiche",
+  "photos": [
+    {
+      "id": "tadasana",
+      "file": "tadasana.png",
+      "by": "Mr. Yoga",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mr-yoga-mountain-pose-1.jpg",
+      "src": "/media/poses/tadasana.png",
+      "modifiedFromSource": true,
+      "credit": "Photo : Mr. Yoga — CC BY-SA 4.0 (convertie en PNG par SichoSana)",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+      "id": "balasana",
+      "file": "balasana.png",
+      "by": "Iveto",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Balasana.JPG",
+      "src": "/media/poses/balasana.png",
+      "modifiedFromSource": true,
+      "credit": "Photo : Iveto — CC BY-SA 4.0 (convertie en PNG par SichoSana)",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+      "id": "adho-mukha",
+      "file": "adho-mukha.png",
+      "by": "Iveto",
+      "license": "CC BY 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Downward-Facing-Dog.JPG",
+      "src": "/media/poses/adho-mukha.png",
+      "modifiedFromSource": true,
+      "credit": "Photo : Iveto — CC BY 3.0 (convertie en PNG par SichoSana)",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+    },
+    {
+      "id": "virabhadrasana2",
+      "file": "virabhadrasana2.png",
+      "by": "lululemon athletica",
+      "license": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Virabhadrasana_II_-_Warrior_II_Pose.jpg",
+      "src": "/media/poses/virabhadrasana2.png",
+      "modifiedFromSource": true,
+      "credit": "Photo : lululemon athletica — CC BY 2.0 (convertie en PNG par SichoSana)",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+      "id": "bhujangasana",
+      "file": "bhujangasana.png",
+      "by": "Iveto",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Bhujangasana1.JPG",
+      "src": "/media/poses/bhujangasana.png",
+      "modifiedFromSource": true,
+      "credit": "Photo : Iveto — CC BY-SA 4.0 (convertie en PNG par SichoSana)",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+      "id": "vrksasana",
+      "file": "vrksasana.png",
+      "by": "Camilasuga",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Postura_da_%C3%81rvore_Yoga.jpg",
+      "src": "/media/poses/vrksasana.png",
+      "modifiedFromSource": true,
+      "credit": "Photo : Camilasuga — CC BY-SA 4.0 (convertie en PNG par SichoSana)",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+      "id": "setu-bandha",
+      "file": "setu-bandha.png",
+      "by": "Biswarup Ganguly",
+      "license": "CC BY 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Setubandhasana_oblique_view.JPG",
+      "src": "/media/poses/setu-bandha.png",
+      "modifiedFromSource": true,
+      "credit": "Photo : Biswarup Ganguly — CC BY 3.0 (convertie en PNG par SichoSana)",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/"
+    }
+  ]
+}

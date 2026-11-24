@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "locale": "fr-FR",
+  "speakerIdentity": "fr-FR-VivienneMultilingualNeural",
+  "sessions": [
+    {
+      "id": "respirer",
+      "name": "Revenir au souffle",
+      "minutes": 5,
+      "category": "Respiration",
+      "description": "Observer et apaiser son rythme.",
+      "scripts": {
+        "discrete": [
+          {
+            "text": "Bienvenue dans ce moment qui t'appartient. Installe-toi dans une position confortable.",
+            "pause": 130
+          },
+          {
+            "text": "Ressens l'espace autour de toi. Quand tu seras prêt, ouvre lentement les yeux.",
+            "pause": 5
+          }
+        ],
+        "equilibree": [
+          {
+            "text": "Bienvenue dans ce moment qui t'appartient. Installe-toi dans une position confortable.",
+            "pause": 57
+          },
+          {
+            "text": "Observe l'air qui entre, sans chercher à le contrôler.",
+            "pause": 57
+          },
+          {
+            "text": "Si ton esprit s'éloigne, ramène-le avec douceur vers le souffle.",
+            "pause": 57
+          },
+          {
+            "text": "Ressens l'espace autour de toi. Quand tu seras prêt, ouvre lentement les yeux.",
+            "pause": 5
+          }
+        ],
+        "enveloppante": [
+          {
+            "text": "Bienvenue dans ce moment qui t'appartient. Installe-toi dans une position confortable.",
+            "pause": 36
+          },
+          {
+            "text": "Prends le temps de sentir tes appuis. Laisse les épaules s'adoucir.",
+            "pause": 36
+          },
+          {
+            "text": "Observe l'air qui entre, sans chercher à le contrôler.",
+            "pause": 36
+          },
+          {
+            "text": "À chaque expiration, tu peux laisser partir une petite tension.",
+            "pause": 36
+          },
+          {
+            "text": "Si ton esprit s'éloigne, ramène-le avec douceur vers le souffle.",
+            "pause": 36
+          },
+          {
+            "text": "Ressens l'espace autour de toi. Quand tu seras prêt, ouvre lentement les yeux.",
+            "pause": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "ancrage",
+      "name": "Retrouver son ancrage",
+      "minutes": 8,
+      "category": "Présence",
+      "description": "Revenir au corps et à l'instant.",
+      "scripts": {
+        "discrete": [
+          {
+            "text": "Installe-toi confortablement, les pieds ou le corps bien soutenus.",
+            "pause": 220
+          },
+          {
+            "text": "Remercie-toi pour cette pause. Reprends doucement contact avec la pièce.",
+            "pause": 5
+          }
+        ],
+        "equilibree": [
+          {
+            "text": "Installe-toi confortablement, les pieds ou le corps bien soutenus.",
+            "pause": 102
+          },
+          {
+            "text": "Imagine qu'à chaque expiration, tu peux déposer une part du poids de ta journée.",
+            "pause": 102
+          },
+          {
+            "text": "Reviens à la sensation simple d'être ici, dans cet instant.",
+            "pause": 102
+          },
+          {
+            "text": "Remercie-toi pour cette pause. Reprends doucement contact avec la pièce.",
+            "pause": 5
+          }
+        ],
+        "enveloppante": [
+          {
+            "text": "Installe-toi confortablement, les pieds ou le corps bien soutenus.",
+            "pause": 66
+          },
+          {
+            "text": "Prends conscience des points de contact avec le sol.",
+            "pause": 66
+          },
+          {
+            "text": "Imagine qu'à chaque expiration, tu peux déposer une part du poids de ta journée.",
+            "pause": 66
+          },
+          {
+            "text": "Remarque les sons autour de toi, sans avoir besoin de les nommer.",
+            "pause": 66
+          },
+          {
+            "text": "Reviens à la sensation simple d'être ici, dans cet instant.",
+            "pause": 66
+          },
+          {
+            "text": "Remercie-toi pour cette pause. Reprends doucement contact avec la pièce.",
+            "pause": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "detente",
+      "name": "Relâcher les tensions",
+      "minutes": 10,
+      "category": "Détente",
+      "description": "Une détente progressive du corps.",
+      "scripts": {
+        "discrete": [
+          {
+            "text": "Accorde-toi la permission de ne rien accomplir pendant quelques instants.",
+            "pause": 280
+          },
+          {
+            "text": "Savoure le calme présent, même s'il est discret. Reviens tranquillement.",
+            "pause": 5
+          }
+        ],
+        "equilibree": [
+          {
+            "text": "Accorde-toi la permission de ne rien accomplir pendant quelques instants.",
+            "pause": 132
+          },
+          {
+            "text": "Laisse les épaules descendre, puis les bras se déposer.",
+            "pause": 132
+          },
+          {
+            "text": "Détends les jambes jusqu'aux pieds, sans forcer aucune sensation.",
+            "pause": 132
+          },
+          {
+            "text": "Savoure le calme présent, même s'il est discret. Reviens tranquillement.",
+            "pause": 5
+          }
+        ],
+        "enveloppante": [
+          {
+            "text": "Accorde-toi la permission de ne rien accomplir pendant quelques instants.",
+            "pause": 86
+          },
+          {
+            "text": "Relâche le front, les paupières et la mâchoire.",
+            "pause": 86
+          },
+          {
+            "text": "Laisse les épaules descendre, puis les bras se déposer.",
+            "pause": 86
+          },
+          {
+            "text": "Observe le ventre qui bouge naturellement avec la respiration.",
+            "pause": 86
+          },
+          {
+            "text": "Détends les jambes jusqu'aux pieds, sans forcer aucune sensation.",
+            "pause": 86
+          },
+          {
+            "text": "Savoure le calme présent, même s'il est discret. Reviens tranquillement.",
+            "pause": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "sommeil",
+      "name": "Vers une nuit paisible",
+      "minutes": 12,
+      "category": "Sommeil",
+      "description": "Un rituel doux pour ralentir.",
+      "scripts": {
+        "discrete": [
+          {
+            "text": "La journée peut maintenant se terminer. Trouve une position qui te convient.",
+            "pause": 340
+          },
+          {
+            "text": "Je te laisse avec ce silence, dans lequel tu peux te reposer.",
+            "pause": 5
+          }
+        ],
+        "equilibree": [
+          {
+            "text": "La journée peut maintenant se terminer. Trouve une position qui te convient.",
+            "pause": 162
+          },
+          {
+            "text": "Laisse le souffle devenir plus tranquille, à son propre rythme.",
+            "pause": 162
+          },
+          {
+            "text": "Tu n'as rien à résoudre maintenant. Offre-toi simplement ce repos.",
+            "pause": 162
+          },
+          {
+            "text": "Je te laisse avec ce silence, dans lequel tu peux te reposer.",
+            "pause": 5
+          }
+        ],
+        "enveloppante": [
+          {
+            "text": "La journée peut maintenant se terminer. Trouve une position qui te convient.",
+            "pause": 106
+          },
+          {
+            "text": "Sens le soutien de ton lit ou de ton fauteuil.",
+            "pause": 106
+          },
+          {
+            "text": "Laisse le souffle devenir plus tranquille, à son propre rythme.",
+            "pause": 106
+          },
+          {
+            "text": "Les pensées peuvent passer, comme des nuages qui traversent un ciel calme.",
+            "pause": 106
+          },
+          {
+            "text": "Tu n'as rien à résoudre maintenant. Offre-toi simplement ce repos.",
+            "pause": 106
+          },
+          {
+            "text": "Je te laisse avec ce silence, dans lequel tu peux te reposer.",
+            "pause": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "gratitude",
+      "name": "Les petites choses",
+      "minutes": 7,
+      "category": "Équilibre",
+      "description": "Accueillir quelques instants agréables.",
+      "scripts": {
+        "discrete": [
+          {
+            "text": "Prends une respiration et installe-toi dans cette parenthèse.",
+            "pause": 190
+          },
+          {
+            "text": "Conserve avec toi cette sensation de douceur pour la suite de ta journée.",
+            "pause": 5
+          }
+        ],
+        "equilibree": [
+          {
+            "text": "Prends une respiration et installe-toi dans cette parenthèse.",
+            "pause": 87
+          },
+          {
+            "text": "Observe ce qu'elle fait naître en toi, sans chercher une émotion particulière.",
+            "pause": 87
+          },
+          {
+            "text": "Accueille aussi les moments difficiles sans les juger.",
+            "pause": 87
+          },
+          {
+            "text": "Conserve avec toi cette sensation de douceur pour la suite de ta journée.",
+            "pause": 5
+          }
+        ],
+        "enveloppante": [
+          {
+            "text": "Prends une respiration et installe-toi dans cette parenthèse.",
+            "pause": 56
+          },
+          {
+            "text": "Pense à une petite chose de ta journée qui t'a fait du bien.",
+            "pause": 56
+          },
+          {
+            "text": "Observe ce qu'elle fait naître en toi, sans chercher une émotion particulière.",
+            "pause": 56
+          },
+          {
+            "text": "Tu peux laisser émerger une autre image, ou simplement rester avec la première.",
+            "pause": 56
+          },
+          {
+            "text": "Accueille aussi les moments difficiles sans les juger.",
+            "pause": 56
+          },
+          {
+            "text": "Conserve avec toi cette sensation de douceur pour la suite de ta journée.",
+            "pause": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "clarte",
+      "name": "Clarté intérieure",
+      "minutes": 9,
+      "category": "Concentration",
+      "description": "Se recentrer avant de repartir.",
+      "scripts": {
+        "discrete": [
+          {
+            "text": "Ferme les yeux si cela te convient et installe-toi.",
+            "pause": 250
+          },
+          {
+            "text": "Quand tu es prêt, reprends doucement tes activités, avec plus d'espace.",
+            "pause": 5
+          }
+        ],
+        "equilibree": [
+          {
+            "text": "Ferme les yeux si cela te convient et installe-toi.",
+            "pause": 117
+          },
+          {
+            "text": "Imagine que ces pensées reposent un instant à côté de toi.",
+            "pause": 117
+          },
+          {
+            "text": "Choisis une intention simple pour les prochaines heures.",
+            "pause": 117
+          },
+          {
+            "text": "Quand tu es prêt, reprends doucement tes activités, avec plus d'espace.",
+            "pause": 5
+          }
+        ],
+        "enveloppante": [
+          {
+            "text": "Ferme les yeux si cela te convient et installe-toi.",
+            "pause": 76
+          },
+          {
+            "text": "Observe ce qui occupe ton esprit aujourd'hui.",
+            "pause": 76
+          },
+          {
+            "text": "Imagine que ces pensées reposent un instant à côté de toi.",
+            "pause": 76
+          },
+          {
+            "text": "Ramène ton attention vers une respiration, puis une autre.",
+            "pause": 76
+          },
+          {
+            "text": "Choisis une intention simple pour les prochaines heures.",
+            "pause": 76
+          },
+          {
+            "text": "Quand tu es prêt, reprends doucement tes activités, avec plus d'espace.",
+            "pause": 5
+          }
+        ]
+      }
+    }
+  ]
+}

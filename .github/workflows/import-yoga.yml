@@ -1,0 +1,43 @@
+name: Snapshot Yoga API (manual source update)
+on:
+  push:
+    branches: [dev/sichosana-20261105]
+    paths:
+      - ".github/workflows/import-yoga.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Freeze independent yoga catalog
+        run: python scripts/import-yoga-api.py --output-json static/data/yoga-api-library.json
+      - name: Validate provenance and content
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('static/data/yoga-api-library.json')
+          j=json.loads(p.read_text())
+          assert len(j['poses'])>=10
+          assert j['source'].startswith('https://yoga-api-nzy4.onrender.com')
+          assert len({x['id'] for x in j['poses']})==len(j['poses'])
+          assert all(x['imageLocal'] is None for x in j['poses'])
+          print('normalized poses',len(j['poses']))
+          PY
+      - name: Commit frozen snapshot to development branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add static/data/yoga-api-library.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data(yoga): source API figée sans images tierces"
+            git fetch origin "$GITHUB_REF_NAME"
+            git rebase "origin/$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
