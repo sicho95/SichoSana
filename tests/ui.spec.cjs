@@ -402,4 +402,6 @@ test('v231: nom sanskrit et consigne de maintien différente après transition',
  expect(hold).not.toBe(entry);expect(hold).toContain('nuque');
  await page.locator('[data-action="switch-variant"]').click();
  await expect(page.locator('.session-pose-image img')).toHaveAttribute('src','/media/original/adho-mukha.png');
+ await expect(page.locator('.transition-label')).toContainText('Adaptation');
+ await expect(page.locator('.practice-instructions p')).toContainText('paumes au sol');
 });

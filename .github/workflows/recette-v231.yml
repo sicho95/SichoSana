@@ -2,7 +2,7 @@ name: SichoSana v2.3.1 — génération et recette isolée
 on:
   push:
     branches: [fix/v2.3.1-recette]
-    paths-ignore: ['static/voice/vivienne-fr-v6/**']
+    paths-ignore: ['static/voice/vivienne-fr-v6/**', 'static/media/variants/**']
   workflow_dispatch:
 permissions:
   contents: write
