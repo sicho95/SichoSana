@@ -288,12 +288,30 @@ test('v231: séance compacte et lecteur unique, transition automatique',async({p
  const controls=await page.locator('.session-controls').boundingBox();
  expect(controls.y+controls.height).toBeLessThanOrEqual(665);
  const before=await page.evaluate(()=>window.__plays.length);
+ const stepText=await page.locator('#step-countdown').textContent();
+ const [min,sec]=stepText.split(':').map(Number);
  // Simule le temps écoulé sans générer de geste utilisateur.
  await page.clock.install();
- await page.clock.fastForward(240000);
+ await page.clock.fastForward((min*60+sec+2)*1000);
  await expect.poll(()=>page.evaluate(()=>window.__plays.length)).toBeGreaterThan(before);
  expect(await page.evaluate(()=>window.__players.length)).toBe(1);
  await page.locator('[data-action="previous-step"]').click();
  await page.locator('[data-action="cancel-session"]').click();
  await expect(page.locator('#bottomnav')).toBeVisible();
+});
+
+test('v231: image entière, commandes visibles, deux chronos sur iPad et ordinateur',async({page})=>{
+ for(const size of [{width:768,height:1024},{width:1440,height:900}]){
+  await page.setViewportSize(size);
+  if(!await page.locator('.hero [data-action="start-yoga"]').isVisible())await signIn(page);
+  await page.locator('.hero [data-action="start-yoga"]').click();
+  await expect(page.locator('#step-countdown')).toBeVisible();
+  await expect(page.locator('#countdown')).toBeVisible();
+  const controls=await page.locator('.session-controls').boundingBox();
+  expect(controls.y+controls.height).toBeLessThanOrEqual(size.height+1);
+  await expect(page.locator('.session-pose-image img')).toHaveCSS('object-fit','contain');
+  await page.screenshot({path:'screenshots/v231-session-'+size.width+'.png'});
+  await page.locator('[data-action="cancel-session"]').click();
+  await page.locator(size.width>=1200?'#sidebar [data-value="home"]':'#bottomnav [data-value="home"]').click().catch(async()=>{await page.locator('#sidebar [data-value="home"]').click();});
+ }
 });

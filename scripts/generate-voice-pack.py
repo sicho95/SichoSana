@@ -14,7 +14,7 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def spoken_title(name):
-    return 'Nous allons pratiquer la posture suivante : ' + name + ', en douceur. '
+    return 'Nous allons pratiquer cette posture de yoga, appelée ' + name.lower() + ', en douceur. '
 
 def clips(catalog, yoga, guidance, salutations):
     found = []
@@ -34,9 +34,9 @@ def clips(catalog, yoga, guidance, salutations):
         progression=guidance.get("poses",{}).get(pose["id"])
         if progression:
             found.append(("prepare_"+pose["id"],
-                          "Préparons doucement la posture suivante : "+pose["nom"]+", à ton rythme. "+progression["preparation"], "yoga"))
+                          "Préparons doucement cette posture de yoga, appelée "+pose["nom"].lower()+", à ton rythme. "+progression["preparation"], "yoga"))
             found.append(("easy_"+pose["id"],
-                          "Passons à la version douce de la posture suivante : "+pose["nom"]+". "+progression["facile"], "yoga"))
+                          "Passons à la version douce de cette posture de yoga, appelée "+pose["nom"].lower()+", à ton rythme. "+progression["facile"], "yoga"))
     for pose in salutations.get("extraPoses", []):
         found.append(("pose_" + pose["id"], spoken_title(pose["nom"])+pose["instructions"]+" "+pose["prudence"], "yoga"))
     # Les deux voix par étape sont générées en avance, aucune synthèse sur le NAS.

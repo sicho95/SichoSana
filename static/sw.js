@@ -109,7 +109,7 @@ self.addEventListener('fetch',event=>{
   return;
  }
  event.respondWith(caches.match(request).then(cached=>cached||fetch(request).then(response=>{
-  if(response.status===200&&(ESSENTIAL.includes(url.pathname)||url.pathname.startsWith('/media/'))){
+  if(response.status===200&&(ESSENTIAL.includes(url.pathname)||url.pathname.startsWith('/media/')||url.pathname==='/voice/vivienne-fr-v3/manifest.json')){
    caches.open(VERSION).then(cache=>cache.put(request,response.clone())).catch(()=>{});
   }
   return response;

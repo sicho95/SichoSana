@@ -206,7 +206,7 @@ function posePicture(id,kind='thumb'){
  if(!original&&!fallback)return '<span class="pose-missing" aria-label="Illustration exacte non disponible">Illustration exacte à compléter</span>';
  const assetId=originalArt.aliases?.[id]||id;
  const src=original?'/media/original/'+encodeURIComponent(assetId)+'.png':fallback;
- return '<img loading="lazy" decoding="async" data-pose-image="'+escapeHTML(id)+'"'+
+ return '<img loading="'+(kind==='session-photo'?'eager':'lazy')+'" decoding="async" data-pose-image="'+escapeHTML(id)+'"'+
    // Le visuel original validé ne doit jamais être remplacé par un ancien dessin tiers.
 
    ' class="pose-photo '+kind+'" src="'+escapeHTML(src)+'" alt="Posture '+escapeHTML(yoga.poses.find(p=>p.id===id)?.nom||id)+'">';
@@ -245,7 +245,7 @@ function astroPage(){
  return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture culturelle et symbolique, sans prédiction scientifique.')+
  '<div class="astro-controls"><div class="field"><label for="astro-sign">Mon signe astrologique</label><select id="astro-sign"><option value="">Choisir un signe</option>'+signs.map(s=>'<option value="'+s+'" '+(profile().zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
  '<div class="segment astro-periods sliding-segment" role="group" aria-label="Période" style="--count:3;--index:'+['daily','weekly','monthly'].indexOf(astroPeriod)+'">'+[['daily','Aujourd’hui'],['weekly','Cette semaine'],['monthly','Ce mois']].map(([id,name])=>'<button type="button" data-action="astro-period" data-value="'+id+'" aria-pressed="'+(astroPeriod===id)+'">'+name+'</button>').join('')+'</div></div>'+
- '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+escapeHTML(a.periodKey||'Lecture indisponible')+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML((a.stale?'Dernière lecture enregistrée — non actualisée. ':'')+a.text)+'</p>'+
+ '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+escapeHTML(a.periodKey?(a.period==='weekly'?'Semaine du ':a.period==='monthly'?'Mois de ':'')+a.periodKey:'Lecture indisponible')+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML((a.stale?'Dernière lecture enregistrée — non actualisée. ':'')+a.text)+'</p>'+
  '<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="/astro-source.html">Horoscopes publics</a></div></div>'+
  '<div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Observe ta respiration et choisis une intention simple.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
 }
@@ -512,6 +512,8 @@ async function cacheVoicePack(){
  try{
   if(!('caches' in window))throw Error('Cache non disponible.');
   const m=await voiceManifest(),cache=await caches.open('sichosana-vivienne-'+m.packId),items=Object.values(m.files);
+  if(!originalBundleReady)throw Error('Illustrations originales indisponibles.');
+  const artIds=[...new Set(originalArt.files.map(id=>originalArt.aliases?.[id]||id))];
   let done=0;voiceStatus='Téléchargement : 0 / '+items.length;render();
   for(const x of items){
    const url='/voice/'+encodeURIComponent(m.packId)+'/'+encodeURIComponent(x.src);
@@ -519,8 +521,10 @@ async function cacheVoicePack(){
    done++;voiceStatus='Téléchargement : '+done+' / '+items.length;
    const e=$('#voice-status');if(e)e.textContent=voiceStatus;
   }
-  const mr=await fetch('/voice/'+encodeURIComponent(m.packId)+'/manifest.json');if(mr.ok)await cache.put('/voice/'+encodeURIComponent(m.packId)+'/manifest.json',mr);
-  voiceStatus=done+' fichiers audio disponibles hors ligne.';render();notice('Pack vocal installé.');
+  const mr=await fetch('/voice/'+encodeURIComponent(m.packId)+'/manifest.json');if(!mr.ok)throw Error('Manifeste indisponible');await cache.put('/voice/'+encodeURIComponent(m.packId)+'/manifest.json',mr);
+  for(const id of artIds){const url='/media/original/'+encodeURIComponent(id)+'.png';if(!await cache.match(url)){const r=await fetch(url);if(!r.ok)throw Error('Illustration absente : '+id);await cache.put(url,r.clone());}}
+  if(artIds.length!==58)throw Error('Bibliothèque incomplète');
+  voiceStatus=done+' fichiers audio et '+artIds.length+' illustrations disponibles hors ligne.';render();notice('Pack vocal installé.');
  }catch(err){voiceStatus='Téléchargement hors ligne bloqué par Safari. Les consignes restent accessibles en ligne ; réessaie depuis l’écran d’accueil ou un autre navigateur.';render();notice('Téléchargement audio non autorisé sur cet appareil.');}
 }
 async function exportData(){

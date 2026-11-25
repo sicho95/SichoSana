@@ -1,0 +1,90 @@
+name: SichoSana v2.3.1 — génération et recette isolée
+on:
+  push:
+    branches: [fix/v2.3.1-recette]
+    paths-ignore: ['static/voice/vivienne-fr-v3/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate and verify Vivienne v3
+        run: |
+          python -m pip install "edge-tts>=7,<9"
+          python scripts/generate-voice-pack.py --jobs 3
+          python scripts/verify-v231-voice.py
+      - name: Non-regression API, SQLite, catalog and deployment
+        run: |
+          python -m compileall -q server scripts
+          python -m unittest discover -s tests -v
+          python scripts/verify-v23-art-and-salutations.py --root .
+          node --check static/app.js
+          node --check static/auth.js
+          node --check static/sw.js
+          node --check tests/ui.spec.cjs
+          sh -n scripts/upgrade-v2.3.1-no-git-qnap.sh
+          docker compose config -q
+      - run: npm install --no-save --no-package-lock @playwright/test@1.64.1
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Browser tests isolated per engine
+        run: |
+          set -eu
+          mkdir -p screenshots
+          for engine in chromium webkit; do
+            export SICHOSANA_TEST_MODE=1 SICHOSANA_HOST=127.0.0.1
+            export SICHOSANA_PUBLIC_URL=http://127.0.0.1:8080
+            export SICHOSANA_DATA_DIR="${RUNNER_TEMP}/sichosana-${engine}"
+            mkdir -p "$SICHOSANA_DATA_DIR"
+            python - <<'PY'
+          from server import app,accounts
+          app.initialize()
+          with app.connection() as c:
+              aid=accounts.create_admin(c,'Sicho','admin@example.test','TestAdminPassword2026!')
+              c.execute("UPDATE accounts SET must_change=0 WHERE id=?",(aid,))
+          PY
+            python -m server.app >"/tmp/sichosana-${engine}.log" 2>&1 &
+            pid=$!
+            trap 'kill "$pid" 2>/dev/null || true' EXIT
+            for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8080/api/health && break; sleep 1; done
+            curl -fsS http://127.0.0.1:8080/api/health
+            npx playwright test tests/ui.spec.cjs --browser="$engine" --reporter=line --workers=1
+            mkdir -p "recette-${engine}"
+            cp -r screenshots "recette-${engine}/"
+            kill "$pid"
+            wait "$pid" || true
+            trap - EXIT
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v231-visual-recette
+          path: |
+            recette-*/
+            screenshots/
+            test-results/
+          retention-days: 15
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vivienne-fr-v3-candidate
+          path: static/voice/vivienne-fr-v3/
+          retention-days: 15
+      - name: Publish candidate assets only if tests passed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add static/voice/vivienne-fr-v3/
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: Vivienne v3 — recette automatisée passée"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
