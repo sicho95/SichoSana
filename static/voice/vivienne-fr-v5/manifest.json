@@ -1,0 +1,2099 @@
+{
+  "format": "sichosana-voice-pack",
+  "packId": "vivienne-fr-v5",
+  "locale": "fr-FR",
+  "voiceId": "fr-FR-VivienneMultilingualNeural",
+  "rateYoga": "-22%",
+  "rateMeditation": "-32%",
+  "pitch": "-1Hz",
+  "volume": "+0%",
+  "sourceIdentity": "ResurGo_Fitness Running female coach v2",
+  "status": "candidate-awaiting-damien-audition",
+  "catalogSha256": "48d126d87143fab06bf65e9ff5ab3b5c88a34758fd2736c3ed200c30791173c5",
+  "yogaCatalogSha256": "24e91edeb62a77c31b0aa344f183e78b5c47a8b212eb223f28a2968bd2827a1d",
+  "guidanceSha256": "a52b258b1d622540bfa06580cd6c66aa495cabb32eb88fd753782ccbe3d2d437",
+  "salutationsSha256": "0c63738fb5a8071ddde143c07e2238cf4e870981eb297bcfd12154bd9a9d4369",
+  "transitionsSha256": "917e986d7f756eedc67760dfeac266f75fbdc4ea3e0e00f8600b127322e1d03f",
+  "files": {
+    "ancrage_discrete_00": {
+      "src": "ancrage_discrete_00.mp3",
+      "sha256": "b9387fb56abd0f31e8b3add2ce4b2c5b2ba79aea41963fa8fd645db041fcf091",
+      "bytes": 30816,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6",
+      "durationSeconds": 5.136,
+      "kind": "meditation"
+    },
+    "ancrage_discrete_01": {
+      "src": "ancrage_discrete_01.mp3",
+      "sha256": "f076fc692f1f44424ef618ff4210b71b36e8abe3be0f27e1897f8d726492a698",
+      "bytes": 39600,
+      "textSha256": "706e8b3230adc7abbebd4fc4366a6c813c151679249e5695ca2d8cc4530bb928",
+      "durationSeconds": 6.6,
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_00": {
+      "src": "ancrage_enveloppante_00.mp3",
+      "sha256": "3acde7ae81de824823f89298f96309e72d63f50dab8e3f009ac7f95786803697",
+      "bytes": 30816,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6",
+      "durationSeconds": 5.136,
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_01": {
+      "src": "ancrage_enveloppante_01.mp3",
+      "sha256": "5262bbe470f30c4f80932fa1c98a69324e26ff06635bfd133ff25dd181ed54aa",
+      "bytes": 22896,
+      "textSha256": "b46fd9a538882885bfaa01e8fc1736849b4055d59ff6114d3f2dfaf04bc935d2",
+      "durationSeconds": 3.816,
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_02": {
+      "src": "ancrage_enveloppante_02.mp3",
+      "sha256": "bbb0d1f8d0bfa453a4c959449737b67975b3d19e6bad62e99d06014f19a43cf3",
+      "bytes": 36432,
+      "textSha256": "6205cb35ef95feab378f64eec0e4ab888450af11336c3c8ff6a5a9d586001aff",
+      "durationSeconds": 6.072,
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_03": {
+      "src": "ancrage_enveloppante_03.mp3",
+      "sha256": "29fb25661183316d77ad4cc5f086a40e8f0def6d14d1479b0732f1b9153e7546",
+      "bytes": 29664,
+      "textSha256": "7e6b5e7026771b0101753f94c2057941c5793e2cfcabdabf47872631ff7fb7e9",
+      "durationSeconds": 4.944,
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_04": {
+      "src": "ancrage_enveloppante_04.mp3",
+      "sha256": "02d6e42cb68141977e867f86766fa56afcbf08911f9fe8ff74489ab586bb848d",
+      "bytes": 29808,
+      "textSha256": "cef1fa08545241f9b75660b36a4d0ef988c3003858d0ff4c136b2628833e97b0",
+      "durationSeconds": 4.968,
+      "kind": "meditation"
+    },
+    "ancrage_enveloppante_05": {
+      "src": "ancrage_enveloppante_05.mp3",
+      "sha256": "ccd618fe5bd293d31dc0a87399ede486ab63e906115f210d744ab412e1e5e6ba",
+      "bytes": 39600,
+      "textSha256": "706e8b3230adc7abbebd4fc4366a6c813c151679249e5695ca2d8cc4530bb928",
+      "durationSeconds": 6.6,
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_00": {
+      "src": "ancrage_equilibree_00.mp3",
+      "sha256": "04cea255fbdbddf1d2e65a565e59f11ef7f0388ec500f0f0e522c54d453dfe7a",
+      "bytes": 30816,
+      "textSha256": "3ddcfb13c5c65975deb6b5d663bab286617849815df1d666852f3da452c8bfa6",
+      "durationSeconds": 5.136,
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_01": {
+      "src": "ancrage_equilibree_01.mp3",
+      "sha256": "22ff7f52cc2c53500c9eda0ff76af1addeb5a48c2b251180324aaa880fa06dbb",
+      "bytes": 36432,
+      "textSha256": "6205cb35ef95feab378f64eec0e4ab888450af11336c3c8ff6a5a9d586001aff",
+      "durationSeconds": 6.072,
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_02": {
+      "src": "ancrage_equilibree_02.mp3",
+      "sha256": "60ef6c45ca07f405fbe67eece99abc5ed7ce84ca2baad51cf6e4c815b407f1ef",
+      "bytes": 29808,
+      "textSha256": "cef1fa08545241f9b75660b36a4d0ef988c3003858d0ff4c136b2628833e97b0",
+      "durationSeconds": 4.968,
+      "kind": "meditation"
+    },
+    "ancrage_equilibree_03": {
+      "src": "ancrage_equilibree_03.mp3",
+      "sha256": "236258acb2bcd6b62d43fea3311ffe58546318ca80f25a5d8db5f8377fa6093b",
+      "bytes": 39600,
+      "textSha256": "706e8b3230adc7abbebd4fc4366a6c813c151679249e5695ca2d8cc4530bb928",
+      "durationSeconds": 6.6,
+      "kind": "meditation"
+    },
+    "clarte_discrete_00": {
+      "src": "clarte_discrete_00.mp3",
+      "sha256": "a5060d3020bb8f628c02197f104cafbe284f320089b6a167ca479f2c93ae18db",
+      "bytes": 24480,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2",
+      "durationSeconds": 4.08,
+      "kind": "meditation"
+    },
+    "clarte_discrete_01": {
+      "src": "clarte_discrete_01.mp3",
+      "sha256": "02923bd9f7b8c425761b8ba9a60c7736d0f8a2f9435b88c3162e78ec440cb318",
+      "bytes": 35280,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620",
+      "durationSeconds": 5.88,
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_00": {
+      "src": "clarte_enveloppante_00.mp3",
+      "sha256": "8fc8c1e478cac3ea513aeaa1fbfd3f16662a423ba15590c5994725ae4fb2643e",
+      "bytes": 24480,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2",
+      "durationSeconds": 4.08,
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_01": {
+      "src": "clarte_enveloppante_01.mp3",
+      "sha256": "0889cec1500b55fd08283036013a2bbfcd6f3816bcdaf67ab3f720c2c4cfd3b7",
+      "bytes": 21312,
+      "textSha256": "48d975e0a1b5f1b125848b63f4ce9b01aecebe7bef0a521f9324e1657988f176",
+      "durationSeconds": 3.552,
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_02": {
+      "src": "clarte_enveloppante_02.mp3",
+      "sha256": "fdbf3166c7ccf23fc6798cd6b9d08c37c952f8b39d325e32ee7ee09bf425c3c6",
+      "bytes": 26352,
+      "textSha256": "eee7dee20d87bc8b6b871d7718039eff9bfbcf2138686a29f875134daeea0cf5",
+      "durationSeconds": 4.392,
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_03": {
+      "src": "clarte_enveloppante_03.mp3",
+      "sha256": "6a06ae22a4b86356d5d224590feb2c06518553feb6a6a21e3193ff4db8fb6e6f",
+      "bytes": 31248,
+      "textSha256": "6d5bce4f49de9cff289a5f695b0b235739dd0732b938be4e38501b48d13882d5",
+      "durationSeconds": 5.208,
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_04": {
+      "src": "clarte_enveloppante_04.mp3",
+      "sha256": "a5137822d648e0cab66e6383bccc5e5838af7752db73cc4db629785a5b3c4fc2",
+      "bytes": 24480,
+      "textSha256": "2331ef73e2172fbd3c7c95a27c2e1bc608798936577370dfd717e110d336b99d",
+      "durationSeconds": 4.08,
+      "kind": "meditation"
+    },
+    "clarte_enveloppante_05": {
+      "src": "clarte_enveloppante_05.mp3",
+      "sha256": "5abb7a986ff4f4e83be090d0a1ec42aa349eea6936c1e85ff3ca4a18aa908974",
+      "bytes": 35280,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620",
+      "durationSeconds": 5.88,
+      "kind": "meditation"
+    },
+    "clarte_equilibree_00": {
+      "src": "clarte_equilibree_00.mp3",
+      "sha256": "8e7ea9f1ddb224ad4fb343408b8f5ecfd71bad29fcae69a1f4de3c0da15b1767",
+      "bytes": 24480,
+      "textSha256": "3186e68cbe4cc9375fdc6273898d61274f6e43440aa23761f7f9be4a172912f2",
+      "durationSeconds": 4.08,
+      "kind": "meditation"
+    },
+    "clarte_equilibree_01": {
+      "src": "clarte_equilibree_01.mp3",
+      "sha256": "960548a3d314e47f75c2156118a706af44b94525a929a84c05f52313f3447761",
+      "bytes": 26352,
+      "textSha256": "eee7dee20d87bc8b6b871d7718039eff9bfbcf2138686a29f875134daeea0cf5",
+      "durationSeconds": 4.392,
+      "kind": "meditation"
+    },
+    "clarte_equilibree_02": {
+      "src": "clarte_equilibree_02.mp3",
+      "sha256": "1842ead74f8b069ebe66646880843557207cbd6f34e1bfd79356353f49dd3203",
+      "bytes": 24480,
+      "textSha256": "2331ef73e2172fbd3c7c95a27c2e1bc608798936577370dfd717e110d336b99d",
+      "durationSeconds": 4.08,
+      "kind": "meditation"
+    },
+    "clarte_equilibree_03": {
+      "src": "clarte_equilibree_03.mp3",
+      "sha256": "5e4d125a80692f8fd45db897204a9891dd3d70c6e9c88f917d11b4b5e5712ecf",
+      "bytes": 35568,
+      "textSha256": "e0c92dd442b28ba1ff7e3f5e339b4f8fa79ee5d52bfe2e6916f0528664256620",
+      "durationSeconds": 5.928,
+      "kind": "meditation"
+    },
+    "detente_discrete_00": {
+      "src": "detente_discrete_00.mp3",
+      "sha256": "1277b0e9c867953d2e44d05a721c7f4bd8f30700bbb93d8ad8c322299c7dd493",
+      "bytes": 30240,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc",
+      "durationSeconds": 5.04,
+      "kind": "meditation"
+    },
+    "detente_discrete_01": {
+      "src": "detente_discrete_01.mp3",
+      "sha256": "75bf59f76b41fbc9c2b462ec02c484cac62deb352b321721bdd1f9e68e2d7c52",
+      "bytes": 42912,
+      "textSha256": "7c06b75593bb6871d8223d69c0f3557396f95eb329457622de9958f2ed333489",
+      "durationSeconds": 7.152,
+      "kind": "meditation"
+    },
+    "detente_enveloppante_00": {
+      "src": "detente_enveloppante_00.mp3",
+      "sha256": "550ad0d3cddb01a0e09eb727919649f71195e92d83ed0e5807f1d7d0c4ed006f",
+      "bytes": 30240,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc",
+      "durationSeconds": 5.04,
+      "kind": "meditation"
+    },
+    "detente_enveloppante_01": {
+      "src": "detente_enveloppante_01.mp3",
+      "sha256": "25e61f17cf45ad2b93036b834694148818394fd099c251b1ea68debfdaa52bf9",
+      "bytes": 24912,
+      "textSha256": "6e0e474b82e8dd41fac1b134344dc3661d3b7cd216f3ede3d3aa4420963506ec",
+      "durationSeconds": 4.152,
+      "kind": "meditation"
+    },
+    "detente_enveloppante_02": {
+      "src": "detente_enveloppante_02.mp3",
+      "sha256": "6f027e451d80830a5db7b57486dff3bfbba00b93dfbb88ab02677c0ef964e29a",
+      "bytes": 27360,
+      "textSha256": "6b159546fb4034a8278c925425ec921be87e0c9af145bfcac571acad2cfde7c5",
+      "durationSeconds": 4.56,
+      "kind": "meditation"
+    },
+    "detente_enveloppante_03": {
+      "src": "detente_enveloppante_03.mp3",
+      "sha256": "b3183341792fd34250d8ce352c3db101f22d3623040b4fa6e510b2b1ea8d230f",
+      "bytes": 29232,
+      "textSha256": "893de1fe155e60db6621d7f129b7097bcd498b42122f97f17aefc85d6571d654",
+      "durationSeconds": 4.872,
+      "kind": "meditation"
+    },
+    "detente_enveloppante_04": {
+      "src": "detente_enveloppante_04.mp3",
+      "sha256": "4bc4d1bea2887245bf08085911db811b1255477616946f53c522f54577359800",
+      "bytes": 31104,
+      "textSha256": "55942422371bffea397f9cff1e8c7a2245a062c0341d0ef822611c6e74c2a214",
+      "durationSeconds": 5.184,
+      "kind": "meditation"
+    },
+    "detente_enveloppante_05": {
+      "src": "detente_enveloppante_05.mp3",
+      "sha256": "b19ede58e615f11a0904154a1e1bd9da4342832e13018afdb40d5416ab90054f",
+      "bytes": 42912,
+      "textSha256": "7c06b75593bb6871d8223d69c0f3557396f95eb329457622de9958f2ed333489",
+      "durationSeconds": 7.152,
+      "kind": "meditation"
+    },
+    "detente_equilibree_00": {
+      "src": "detente_equilibree_00.mp3",
+      "sha256": "184452cce1fab4d4fdd25bf45d502b324ae216dc4b27193465ea388edcea8d33",
+      "bytes": 30240,
+      "textSha256": "fea6dbb02ee1fc72f2e5dfc412cda9d27c4086f2ef1cdc228af094ff9bb968dc",
+      "durationSeconds": 5.04,
+      "kind": "meditation"
+    },
+    "detente_equilibree_01": {
+      "src": "detente_equilibree_01.mp3",
+      "sha256": "ed02616004998677ff04ff4eae35ffedcdf4664184df7a72f5915a91e506b387",
+      "bytes": 27360,
+      "textSha256": "6b159546fb4034a8278c925425ec921be87e0c9af145bfcac571acad2cfde7c5",
+      "durationSeconds": 4.56,
+      "kind": "meditation"
+    },
+    "detente_equilibree_02": {
+      "src": "detente_equilibree_02.mp3",
+      "sha256": "0ec4cea534ba1c18b9f2dfbe84448b0b01e20d1e74a885d3e7eab91efd7f97af",
+      "bytes": 31104,
+      "textSha256": "55942422371bffea397f9cff1e8c7a2245a062c0341d0ef822611c6e74c2a214",
+      "durationSeconds": 5.184,
+      "kind": "meditation"
+    },
+    "detente_equilibree_03": {
+      "src": "detente_equilibree_03.mp3",
+      "sha256": "4b840cbe65e3e23bf522468f48390d25d98109fc3d24485124e99b876e8c509e",
+      "bytes": 42912,
+      "textSha256": "7c06b75593bb6871d8223d69c0f3557396f95eb329457622de9958f2ed333489",
+      "durationSeconds": 7.152,
+      "kind": "meditation"
+    },
+    "easy_adho-mukha": {
+      "src": "easy_adho-mukha.mp3",
+      "sha256": "61b141dd6e35b56538872376e38deb354bc8a89b502fe2ee41f4e12bbfea3a40",
+      "bytes": 91872,
+      "textSha256": "8bc77a9fa3f60a942811a2fe89c66bc89b532629247e6f78d753447bed809bd7",
+      "durationSeconds": 15.312,
+      "kind": "yoga"
+    },
+    "easy_anjaneyasana": {
+      "src": "easy_anjaneyasana.mp3",
+      "sha256": "c1fbcbe26b12bf1fdfdfb7b17662642543d479cafac671618e803b2101cf92cf",
+      "bytes": 90432,
+      "textSha256": "0aa674098957feb6e0f4452f9f954022fc019384df3f2fca7828daf936ac8062",
+      "durationSeconds": 15.072,
+      "kind": "yoga"
+    },
+    "easy_baddha-konasana": {
+      "src": "easy_baddha-konasana.mp3",
+      "sha256": "8c3f22ec35ef10d4bc72e6a144dda2a1718bdd682c7ecc35bfd8a3d8c2ce0261",
+      "bytes": 89424,
+      "textSha256": "81a13a0dc518aaae31fdf297c2930dad053ed8014eb6495135992dc2ae11bbd0",
+      "durationSeconds": 14.904,
+      "kind": "yoga"
+    },
+    "easy_balasana": {
+      "src": "easy_balasana.mp3",
+      "sha256": "1ce307e6c17669cdf1a0b7500e825ed8f7f19bc7d29d34b82f2d48a23d38732e",
+      "bytes": 78912,
+      "textSha256": "63276bb0bc288b5f251cacf2cbfc666c1e1b77b91ad26e56f3a0688c92eccd70",
+      "durationSeconds": 13.152,
+      "kind": "yoga"
+    },
+    "easy_bhujangasana": {
+      "src": "easy_bhujangasana.mp3",
+      "sha256": "5188265845ecf99698019f147c9d9a1ad64af59510397975c149081b468ff9bc",
+      "bytes": 88992,
+      "textSha256": "d8b75fe9cd48f19e9bb85efb7339f4ae2ea44b4be7cb4923d13ff8acd46b5415",
+      "durationSeconds": 14.832,
+      "kind": "yoga"
+    },
+    "easy_marjaryasana": {
+      "src": "easy_marjaryasana.mp3",
+      "sha256": "44844e12f3601f4f40a779e1707ed10ac45e559c708bf79411ad4353d1852e37",
+      "bytes": 86688,
+      "textSha256": "0ffe9e6c274eb9080664146b6cadc4c3ca09648abd8dc14aa6ab712eea5a7e98",
+      "durationSeconds": 14.448,
+      "kind": "yoga"
+    },
+    "easy_paschimottanasana": {
+      "src": "easy_paschimottanasana.mp3",
+      "sha256": "15a161129c10c82c428a615bc07e980ef77bfce4af0747f8affb40870a7d2784",
+      "bytes": 95328,
+      "textSha256": "2dc2356d0fa0cfbd2ad6f6ce97d8c31cc3d79f2e57f931fa6093614ccc0e1cfa",
+      "durationSeconds": 15.888,
+      "kind": "yoga"
+    },
+    "easy_savasana": {
+      "src": "easy_savasana.mp3",
+      "sha256": "10af87c76538e871757101431286f0ede35e8554abd8702b69508f2c9c5773e4",
+      "bytes": 92736,
+      "textSha256": "fb0d0aa83c1893458f2b4223355221d574f280615adc492502044b0fba9181ee",
+      "durationSeconds": 15.456,
+      "kind": "yoga"
+    },
+    "easy_setu-bandha": {
+      "src": "easy_setu-bandha.mp3",
+      "sha256": "8572503b63b6a559d251fecf4d38aa9f4ff0b0c4ae42e0eea35e15668941ae84",
+      "bytes": 82944,
+      "textSha256": "a1cb37a95259112c51c810381730c934420fcf58856dbc084ebabe4b0702065c",
+      "durationSeconds": 13.824,
+      "kind": "yoga"
+    },
+    "easy_supta-matsyendrasana": {
+      "src": "easy_supta-matsyendrasana.mp3",
+      "sha256": "032ba7749c8fb8b5e1dc6ec091e8d3adab6f321165ecf933da55947c9baacf4e",
+      "bytes": 87984,
+      "textSha256": "71074282c2cd3ea5be1b683bf4c369a8cf70d8fef5ce7ec7194a59dbc5619d3f",
+      "durationSeconds": 14.664,
+      "kind": "yoga"
+    },
+    "easy_tadasana": {
+      "src": "easy_tadasana.mp3",
+      "sha256": "91976665c34733582cb183c59b723c9de81f704f736e7839893020f4b2882533",
+      "bytes": 89280,
+      "textSha256": "a2ef75f67f809096f0275bfa74b34ba53b414b1d891c5f61a96a0d7f464e9b98",
+      "durationSeconds": 14.88,
+      "kind": "yoga"
+    },
+    "easy_virabhadrasana2": {
+      "src": "easy_virabhadrasana2.mp3",
+      "sha256": "0f6fb619a2e2a928600e3e25ed892f4ed4acd60ba437abbe0f3664053bf16302",
+      "bytes": 77616,
+      "textSha256": "571c4079c0d7ae7cad66c141f8f778d1d9d1dd302e4b3124cb8b339189ebd390",
+      "durationSeconds": 12.936,
+      "kind": "yoga"
+    },
+    "easy_vrksasana": {
+      "src": "easy_vrksasana.mp3",
+      "sha256": "fd772d2170353bd56f0e48b888e186f7e6788d133a4f61e8da23d00f9bd1d3d7",
+      "bytes": 97632,
+      "textSha256": "1dc6fa833937bbe84cad9f9c38a38ba4901c723463036bf8df81ae8ff0dd7819",
+      "durationSeconds": 16.272,
+      "kind": "yoga"
+    },
+    "gratitude_discrete_00": {
+      "src": "gratitude_discrete_00.mp3",
+      "sha256": "a6c39a326f6eb49c83c92a737bee0ce7bdb55cd0909ee4cf1046812ffd62c33a",
+      "bytes": 26784,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd",
+      "durationSeconds": 4.464,
+      "kind": "meditation"
+    },
+    "gratitude_discrete_01": {
+      "src": "gratitude_discrete_01.mp3",
+      "sha256": "5287658d1853350509d3215073d74187fe9fefdc687ffb8e9674e7f7c1b535d5",
+      "bytes": 30096,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2",
+      "durationSeconds": 5.016,
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_00": {
+      "src": "gratitude_enveloppante_00.mp3",
+      "sha256": "d89d57e837cfefb47f273fd60ad12a84624436637ea563bdbccbb1b1a029a05d",
+      "bytes": 26784,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd",
+      "durationSeconds": 4.464,
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_01": {
+      "src": "gratitude_enveloppante_01.mp3",
+      "sha256": "b9a530ba968ee439c7cfbd1343c6a9933dce4861f01c9a7bac1c33685e5eee2f",
+      "bytes": 24048,
+      "textSha256": "8260995a01c70994f36b693d9c0f8ac5dcdcbba489b04381b6642889eec1ee92",
+      "durationSeconds": 4.008,
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_02": {
+      "src": "gratitude_enveloppante_02.mp3",
+      "sha256": "058e8a52cc2a4bbe7c72e937bb02024b8f64eaf5ac04d35b7a6813a8eb65032a",
+      "bytes": 35856,
+      "textSha256": "303d42b44579f5ffe68cf5c018db6800c5c5a371888782756328eb76a87b496b",
+      "durationSeconds": 5.976,
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_03": {
+      "src": "gratitude_enveloppante_03.mp3",
+      "sha256": "2d3f90c9544a218ebaf02bc40fcb183d060d2f8a15c97c4fe48b29cfad9640cd",
+      "bytes": 34560,
+      "textSha256": "04f635325b3cb12ac207923d450acaedb6658520220d83a56605f30416adc6aa",
+      "durationSeconds": 5.76,
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_04": {
+      "src": "gratitude_enveloppante_04.mp3",
+      "sha256": "0260223cff7441f764cb357c1328e6f1fe44d7068bc1f2af3303f6d83cd76914",
+      "bytes": 22608,
+      "textSha256": "fedda97cbf28603653c80e3a694cab057246f855b1f37e7b679c5b922d87b422",
+      "durationSeconds": 3.768,
+      "kind": "meditation"
+    },
+    "gratitude_enveloppante_05": {
+      "src": "gratitude_enveloppante_05.mp3",
+      "sha256": "9fa141225d8de22d7c03ef23d3e2da6fdd7bcbd39ff1ec1a8a772c458f291da9",
+      "bytes": 30096,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2",
+      "durationSeconds": 5.016,
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_00": {
+      "src": "gratitude_equilibree_00.mp3",
+      "sha256": "272be7d51b4718b45671b9726960c3f0605ac852d3b49a21e28b68f9cfc0786a",
+      "bytes": 26784,
+      "textSha256": "9937e032885509a567bb36e73ce85ccad6ec7c954336ab2ea4ce8eb3f32526bd",
+      "durationSeconds": 4.464,
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_01": {
+      "src": "gratitude_equilibree_01.mp3",
+      "sha256": "39a55e035ae50ddb39c0ad1d94139ee6ac6b0eb05ac946391a1acae754d3ebc0",
+      "bytes": 35856,
+      "textSha256": "303d42b44579f5ffe68cf5c018db6800c5c5a371888782756328eb76a87b496b",
+      "durationSeconds": 5.976,
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_02": {
+      "src": "gratitude_equilibree_02.mp3",
+      "sha256": "eea8287ffadfe13f00e67acac5565b079d73f2c154625c7819a82c94e308e72a",
+      "bytes": 22608,
+      "textSha256": "fedda97cbf28603653c80e3a694cab057246f855b1f37e7b679c5b922d87b422",
+      "durationSeconds": 3.768,
+      "kind": "meditation"
+    },
+    "gratitude_equilibree_03": {
+      "src": "gratitude_equilibree_03.mp3",
+      "sha256": "56b08d42ba27fb911d55e079422a244099186ff3ad57b2e84ce3b33ad53252a2",
+      "bytes": 30096,
+      "textSha256": "56d24b973196132ef696094a9e366b98413676fb42c96c8ff23550a0dc8141f2",
+      "durationSeconds": 5.016,
+      "kind": "meditation"
+    },
+    "hold_adho-mukha_easy": {
+      "src": "hold_adho-mukha_easy.mp3",
+      "sha256": "b8bdfc90d1b5cb249a0a8ed77e1a69f0fc88d5a03ed78858bf5703e08b7ddda8",
+      "bytes": 55728,
+      "textSha256": "6abfffcb9e96a29b495a456f48cb318f72fc5ecd898fb6c65f135bd0450a1c1d",
+      "durationSeconds": 9.288,
+      "kind": "yoga"
+    },
+    "hold_adho-mukha_full": {
+      "src": "hold_adho-mukha_full.mp3",
+      "sha256": "b5bc0dab72997a09d7e8ab42af5f90a215fbaa011a33b366bdc4e6f9a347ff9c",
+      "bytes": 64944,
+      "textSha256": "df75246a7f80eb04fc039f4a364842ba86c70bf347fc8da6ce6e7cf08960cadf",
+      "durationSeconds": 10.824,
+      "kind": "yoga"
+    },
+    "hold_anjaneyasana_easy": {
+      "src": "hold_anjaneyasana_easy.mp3",
+      "sha256": "7da6b37763faf964086d32a7e35ad2c1860960ebfebdbd5e42baca4358345353",
+      "bytes": 51264,
+      "textSha256": "4d3189451d5c0b65ae4c37636495c2a4b372081a6471b5775783812e0a0be052",
+      "durationSeconds": 8.544,
+      "kind": "yoga"
+    },
+    "hold_anjaneyasana_full": {
+      "src": "hold_anjaneyasana_full.mp3",
+      "sha256": "f16f7c27cd2c5c6c7f283ee089493acdf793f56112d86cecf39a55785815de44",
+      "bytes": 50832,
+      "textSha256": "cb1ecbee20793295e15d09e5c34813de8a5623577ecf2276401887591406a41d",
+      "durationSeconds": 8.472,
+      "kind": "yoga"
+    },
+    "hold_baddha-konasana_easy": {
+      "src": "hold_baddha-konasana_easy.mp3",
+      "sha256": "f78ffa0a3e7d14524a758350da2f4515376f4324cc2e8cd732885df8ad82390b",
+      "bytes": 44928,
+      "textSha256": "1f24c37bbdd574955c69f1019b5b056e72ed946739abfed842bfe1df7b3db3d8",
+      "durationSeconds": 7.488,
+      "kind": "yoga"
+    },
+    "hold_baddha-konasana_full": {
+      "src": "hold_baddha-konasana_full.mp3",
+      "sha256": "c602440e1ce14d21c32b5341880227e2081d4fe2c0abaffc2ca39fd26a0814db",
+      "bytes": 34272,
+      "textSha256": "2890fd17665495d6932e7b95f6b92d19ec08ff0896b0fbbc3d555f7886810541",
+      "durationSeconds": 5.712,
+      "kind": "yoga"
+    },
+    "hold_balasana_easy": {
+      "src": "hold_balasana_easy.mp3",
+      "sha256": "bab305b2f24cad7d430f36636ecef438d32d42b3e883f49a0aa73c21f60299a0",
+      "bytes": 41184,
+      "textSha256": "14870dffd4ea232a3a023ebcdf3b041fa8647f2a228a198d483a2248e3f2eedf",
+      "durationSeconds": 6.864,
+      "kind": "yoga"
+    },
+    "hold_balasana_full": {
+      "src": "hold_balasana_full.mp3",
+      "sha256": "14545f0e6dddf107e83f3ac1d3c68c0ecb6dd6cf70e29b17713b1b60084fb644",
+      "bytes": 41040,
+      "textSha256": "ef258dd2e0d0db3ee66e9239f26b745025703e2c373d33823e450dbfd9684f68",
+      "durationSeconds": 6.84,
+      "kind": "yoga"
+    },
+    "hold_bhujangasana_easy": {
+      "src": "hold_bhujangasana_easy.mp3",
+      "sha256": "2f21c17b6eb614de7cb7f73adbfc07e696a014cd9b62cef307c987ecd969563c",
+      "bytes": 48096,
+      "textSha256": "0015511eb27c3caaa69f695d528137f20d210d7b77af3ede32d84d1f43fe3ff9",
+      "durationSeconds": 8.016,
+      "kind": "yoga"
+    },
+    "hold_bhujangasana_full": {
+      "src": "hold_bhujangasana_full.mp3",
+      "sha256": "96bf817c53bd983325e4809915fbe5fbdbffdbf7eb868e490ce9303ad10100c9",
+      "bytes": 59760,
+      "textSha256": "10d694a5c2a898e072192f12ef5a6e43ccc8cb6c5b187a1370ee72a1909c5a9e",
+      "durationSeconds": 9.96,
+      "kind": "yoga"
+    },
+    "hold_marjaryasana_easy": {
+      "src": "hold_marjaryasana_easy.mp3",
+      "sha256": "f77ba64a1ae803a90047882b949f4d230ba060598cd885d6a8d1b6f88985fb02",
+      "bytes": 41184,
+      "textSha256": "48f0446caead7f8c625c27feff7fb2a3887bd28dd0f5634b89ec787defc5896e",
+      "durationSeconds": 6.864,
+      "kind": "yoga"
+    },
+    "hold_marjaryasana_full": {
+      "src": "hold_marjaryasana_full.mp3",
+      "sha256": "9e00ebe6b1a6aa46ee874be75b3ff9b36e3756723be9113e07d63d13ff8cca39",
+      "bytes": 26352,
+      "textSha256": "7c84e5813d011703987ab627194e82a16765fa09a6c72bf030bf2121f417174d",
+      "durationSeconds": 4.392,
+      "kind": "yoga"
+    },
+    "hold_paschimottanasana_easy": {
+      "src": "hold_paschimottanasana_easy.mp3",
+      "sha256": "08e29c2e6cbd8d045740090493fffee76de0f3093b4d6666a918457a8bcac168",
+      "bytes": 36720,
+      "textSha256": "26f1925131b5813f3e804ae6d6362aaa95dcb37499daa39c18c593a68f0a9d59",
+      "durationSeconds": 6.12,
+      "kind": "yoga"
+    },
+    "hold_paschimottanasana_full": {
+      "src": "hold_paschimottanasana_full.mp3",
+      "sha256": "dc58bee03fe8c5f55aede977e9a6307365cd09200b6708ec0d68f1e91783b51c",
+      "bytes": 33984,
+      "textSha256": "4cea9b25c66c34d4056b97a812b17bbbb3d751179073928433544ba221076dce",
+      "durationSeconds": 5.664,
+      "kind": "yoga"
+    },
+    "hold_savasana_easy": {
+      "src": "hold_savasana_easy.mp3",
+      "sha256": "b7f909374a3a3db41b69f1521e695620a6620aea831219e11fca235de0049373",
+      "bytes": 54720,
+      "textSha256": "4274ea305aba72d26f3a04fbbcb8a0f4f748b9aa99b4d1c33f694b4f28ccc85b",
+      "durationSeconds": 9.12,
+      "kind": "yoga"
+    },
+    "hold_savasana_full": {
+      "src": "hold_savasana_full.mp3",
+      "sha256": "a180c8dcbb703453d9f45e6b2cb9d81ba9ca6fef4a0619206d18b46db5247b77",
+      "bytes": 40608,
+      "textSha256": "0f78094d3c820545aa8372aec66a54a46be05407e187ff39808718473f015e59",
+      "durationSeconds": 6.768,
+      "kind": "yoga"
+    },
+    "hold_setu-bandha_easy": {
+      "src": "hold_setu-bandha_easy.mp3",
+      "sha256": "8f29eeafa03c301a1d61162fb35e8c7c9696a7f92d456f45c29e081bb2d1e385",
+      "bytes": 30816,
+      "textSha256": "dfedf3a85dcc13ef01c1f5d8c28fdf3761c9087178e97cf955e3527c68151a6b",
+      "durationSeconds": 5.136,
+      "kind": "yoga"
+    },
+    "hold_setu-bandha_full": {
+      "src": "hold_setu-bandha_full.mp3",
+      "sha256": "86756787701d7bef18b3976fbd7acce4cce4e2c86618894834bacac7b965bc33",
+      "bytes": 37152,
+      "textSha256": "9bb5cc01fd543dff90b72053255d0b497703aaf0bf90d0627522a8b637ccb1d5",
+      "durationSeconds": 6.192,
+      "kind": "yoga"
+    },
+    "hold_supta-matsyendrasana_easy": {
+      "src": "hold_supta-matsyendrasana_easy.mp3",
+      "sha256": "a4959fa7e39c9878766fd1e553701cc09e2f6a1d2ea17dfb3c15096c1c700366",
+      "bytes": 46368,
+      "textSha256": "316127e7a2fd761b2a480870a61f0054cbcd0393c1256604752f48d58c8a92b8",
+      "durationSeconds": 7.728,
+      "kind": "yoga"
+    },
+    "hold_supta-matsyendrasana_full": {
+      "src": "hold_supta-matsyendrasana_full.mp3",
+      "sha256": "bb0ed24d8c77dac8ce7bf265fbc9238c85661e6adf1ea5ab916b1c76d24b978e",
+      "bytes": 43488,
+      "textSha256": "be5e35e033af147b4b6a8b45995bed71f54e37611c1b6ec5f8609280f9094c48",
+      "durationSeconds": 7.248,
+      "kind": "yoga"
+    },
+    "hold_tadasana_easy": {
+      "src": "hold_tadasana_easy.mp3",
+      "sha256": "b6f3dd8ceeecc374521405a68227835a9f755ce53bffc70180a63978a6f16ff0",
+      "bytes": 35568,
+      "textSha256": "026b62d827eeb61c08bff6474591d2d799ea6e89f1e36f087b528bad23d0f9c3",
+      "durationSeconds": 5.928,
+      "kind": "yoga"
+    },
+    "hold_tadasana_full": {
+      "src": "hold_tadasana_full.mp3",
+      "sha256": "ffd8baacc562ea7253fc35bfb580ff57c3d019ee737e905f2f2720efb165612b",
+      "bytes": 34848,
+      "textSha256": "87a2e787d8261979f110e75fa62198e985c676d1d9b47497b327d65a0fcc8907",
+      "durationSeconds": 5.808,
+      "kind": "yoga"
+    },
+    "hold_virabhadrasana2_easy": {
+      "src": "hold_virabhadrasana2_easy.mp3",
+      "sha256": "5eebe246354fe2c3a0adfe082636e1980477c000b8b49a42f2542336b07dcaa8",
+      "bytes": 47808,
+      "textSha256": "45b611fc6b59727cd9778b81b5205c42f5540ef964cbb5339bd0708b5f3484b3",
+      "durationSeconds": 7.968,
+      "kind": "yoga"
+    },
+    "hold_virabhadrasana2_full": {
+      "src": "hold_virabhadrasana2_full.mp3",
+      "sha256": "427c94f96113100272c7d12c05c92f60dd471b7e8bddc11be946dc01cbdfa738",
+      "bytes": 54000,
+      "textSha256": "6d416e9253cfceded60cbe90a310f0d9e5ab991b6affb9045c5ae9915400949e",
+      "durationSeconds": 9.0,
+      "kind": "yoga"
+    },
+    "hold_vrksasana_easy": {
+      "src": "hold_vrksasana_easy.mp3",
+      "sha256": "f9c60ec128871a8fed3e5866229089c6da3e8ce64b085efb0f1b1fb76b855746",
+      "bytes": 39600,
+      "textSha256": "a930a44fc47c78a5745e3a79c765c06eec175f42fb1e38f5fdc621178f811512",
+      "durationSeconds": 6.6,
+      "kind": "yoga"
+    },
+    "hold_vrksasana_full": {
+      "src": "hold_vrksasana_full.mp3",
+      "sha256": "035694fab295f07ec225c78dc31274dff401aace40c5e553df18b4666dfa582d",
+      "bytes": 41184,
+      "textSha256": "612be6b3d596ea7c010a3274b7a9d7a581586cf445635ed13d6f29d2632919b9",
+      "durationSeconds": 6.864,
+      "kind": "yoga"
+    },
+    "learn_full_adho-mukha": {
+      "src": "learn_full_adho-mukha.mp3",
+      "sha256": "2cf35a690a930de0fc44093294b8ba18a80178ed708fcdb9a80b11f17555c3e3",
+      "bytes": 205488,
+      "textSha256": "49bb3341782b1e723278cdc594be422f14d2ca07f9faa81937c7f12bac0da89c",
+      "durationSeconds": 34.248,
+      "kind": "yoga"
+    },
+    "learn_full_anjaneyasana": {
+      "src": "learn_full_anjaneyasana.mp3",
+      "sha256": "a2b50dfe4134afe041d93b3d8125bf024ff97ae4125975a02a07f5777732b900",
+      "bytes": 144720,
+      "textSha256": "c9e0506a71baddb5397ae08d0b3e4571d2e6ec9a7c0f35952020d084007fa189",
+      "durationSeconds": 24.12,
+      "kind": "yoga"
+    },
+    "learn_full_baddha-konasana": {
+      "src": "learn_full_baddha-konasana.mp3",
+      "sha256": "b4fec4c1356280b219fc3eaac63c52942a0895cbe7e3d909dd6d3252c43873b9",
+      "bytes": 128736,
+      "textSha256": "a67ebc19a8e63597d41904bd4e81b7951f6dca64e7bfdaacd8e0453f81c15a5b",
+      "durationSeconds": 21.456,
+      "kind": "yoga"
+    },
+    "learn_full_balasana": {
+      "src": "learn_full_balasana.mp3",
+      "sha256": "d3af4c8f378f76df56bbe284ea27c97d5417edc70ab206ee3d0a66026d560144",
+      "bytes": 151056,
+      "textSha256": "8537525d0ada543fe95968ddcb16cd8637ce5f4e2ac40e24f83eadf315cdbba8",
+      "durationSeconds": 25.176,
+      "kind": "yoga"
+    },
+    "learn_full_bhujangasana": {
+      "src": "learn_full_bhujangasana.mp3",
+      "sha256": "8d4d50280c1fa265b879f5ff97db16b9c6277492daf0efb4a76356fb1f93c0d1",
+      "bytes": 164160,
+      "textSha256": "1e623d9870613c6fe680c7deba6c7d60cbc47d491029e22db19153c8e2b4756d",
+      "durationSeconds": 27.36,
+      "kind": "yoga"
+    },
+    "learn_full_marjaryasana": {
+      "src": "learn_full_marjaryasana.mp3",
+      "sha256": "98f3fc1eebfbb99f89f025dbd6e95535da7757c020ed230fc48649799f7e8f94",
+      "bytes": 160848,
+      "textSha256": "ee4d11ff26ed1606313756188271589c400c444b8091f3aa7cfb1743c1fbbbbe",
+      "durationSeconds": 26.808,
+      "kind": "yoga"
+    },
+    "learn_full_paschimottanasana": {
+      "src": "learn_full_paschimottanasana.mp3",
+      "sha256": "ec2837383ee582e28922e981341369a7a7dde97af7250694afdf78997b1f23a8",
+      "bytes": 153216,
+      "textSha256": "f2b3126985a46009d1cc4c6dff8d45363fc327859cc96a4189a93ab79bab65fc",
+      "durationSeconds": 25.536,
+      "kind": "yoga"
+    },
+    "learn_full_savasana": {
+      "src": "learn_full_savasana.mp3",
+      "sha256": "fed6991d54598606d43aa3c3397768ba30c61777b038a921f86369b7fa24e220",
+      "bytes": 137952,
+      "textSha256": "7da8becc8f0d04e0c82fb639cded0e1ebf28368d24884c72c42d61714ea6a465",
+      "durationSeconds": 22.992,
+      "kind": "yoga"
+    },
+    "learn_full_setu-bandha": {
+      "src": "learn_full_setu-bandha.mp3",
+      "sha256": "17d164b4cd335c1be1a3929f9f3581c5c8ce5ab42a23d6a550e669e63010c98c",
+      "bytes": 159408,
+      "textSha256": "9f4df60fe5edefed645fd386f160a7a6d3cbad8e6ea354325fe182d15f381d51",
+      "durationSeconds": 26.568,
+      "kind": "yoga"
+    },
+    "learn_full_supta-matsyendrasana": {
+      "src": "learn_full_supta-matsyendrasana.mp3",
+      "sha256": "60d87fe237cf47ab4e7805418ba249fa4ceca8763a8d65e52ecd0a0e5f7dca71",
+      "bytes": 147312,
+      "textSha256": "32695a7986a390f50273a55fe2d853548987f156d51555c1c94e171a545a69dc",
+      "durationSeconds": 24.552,
+      "kind": "yoga"
+    },
+    "learn_full_tadasana": {
+      "src": "learn_full_tadasana.mp3",
+      "sha256": "fe3e6ab5c7686cdf7d9f1340a1cb1e03129f60a28d6caaf46cc63ebc20b7bbc3",
+      "bytes": 145872,
+      "textSha256": "150d5df085b00fa510b128989c8ad9122bc6975cabd1966f78e22a689ca79cf6",
+      "durationSeconds": 24.312,
+      "kind": "yoga"
+    },
+    "learn_full_virabhadrasana2": {
+      "src": "learn_full_virabhadrasana2.mp3",
+      "sha256": "937d7dd33ab72c0e443d7643f2a4bc3448b461e8fad68e94c1f1db7f4121ec79",
+      "bytes": 144720,
+      "textSha256": "85f9fc64de14cfe9dfd5e051379c616c2a87ce6bbebc9865ceade3dab78738c8",
+      "durationSeconds": 24.12,
+      "kind": "yoga"
+    },
+    "learn_full_vrksasana": {
+      "src": "learn_full_vrksasana.mp3",
+      "sha256": "77d773122b4387208846643fe90d145f6dc68e0b614a212f84f4738927224c59",
+      "bytes": 133056,
+      "textSha256": "53190f3f0041829f5099793e8e8821f930a0197b4443573e84a306c0d1dc56a7",
+      "durationSeconds": 22.176,
+      "kind": "yoga"
+    },
+    "pose_adho-mukha": {
+      "src": "pose_adho-mukha.mp3",
+      "sha256": "1134807264b676bfa0e99395c4a9c90774cc9fdb1be5c9587cea2b5434f03a67",
+      "bytes": 125856,
+      "textSha256": "f95ae4b651fd5142836f2224b56469299fa3d0cd91fae746e6f2075506483715",
+      "durationSeconds": 20.976,
+      "kind": "yoga"
+    },
+    "pose_anjaneyasana": {
+      "src": "pose_anjaneyasana.mp3",
+      "sha256": "7c81da3d3db43808844ea0baa375ef3e1c92a882613889f95a595e20d09b3264",
+      "bytes": 85824,
+      "textSha256": "33c5388c83a809a817983297aeaddd3772713143da95ab66a6cc5d55750080e8",
+      "durationSeconds": 14.304,
+      "kind": "yoga"
+    },
+    "pose_ardha-chandra-lateral": {
+      "src": "pose_ardha-chandra-lateral.mp3",
+      "sha256": "1d9e5208a44324c46bf84c53e572d937e2fc52108bad1f2e4ede4a65f3f42bc7",
+      "bytes": 139680,
+      "textSha256": "5183f1edcf915d801e13a03431bd5b090ccc9feb4584bee0abc8bbf7981c2a29",
+      "durationSeconds": 23.28,
+      "kind": "yoga"
+    },
+    "pose_ardha-uttanasana": {
+      "src": "pose_ardha-uttanasana.mp3",
+      "sha256": "7989226eeb9e573f62161354810b9f6e20343af64ecad411effb10952c04c530",
+      "bytes": 121392,
+      "textSha256": "c3052770c8b35e944dc730b0987a2267e63d9674cbb8d9d0b396c314674b59c1",
+      "durationSeconds": 20.232,
+      "kind": "yoga"
+    },
+    "pose_baddha-konasana": {
+      "src": "pose_baddha-konasana.mp3",
+      "sha256": "12459365346ad358c31541e5110a3d9a69f25ac1cf5cfff03d83995069dd8894",
+      "bytes": 79632,
+      "textSha256": "328e383c94e35a1d3a6df759af122a167124bcac6ffe16d0b9da51825b292b5a",
+      "durationSeconds": 13.272,
+      "kind": "yoga"
+    },
+    "pose_balasana": {
+      "src": "pose_balasana.mp3",
+      "sha256": "a0ec0e85166cfc4b92f271a47c3f9b180e33d50e2dcdfd0c7d6cd028ea863e4f",
+      "bytes": 90576,
+      "textSha256": "6cd0cb0eca98a3d210a1e6e6617fb00014fbaf42442c742e8f8ac3b2e562c108",
+      "durationSeconds": 15.096,
+      "kind": "yoga"
+    },
+    "pose_bhujangasana": {
+      "src": "pose_bhujangasana.mp3",
+      "sha256": "59836a29c943442b7c96d7d6c301f4851abab13ead8d2e2605e49b52bcd1f4ba",
+      "bytes": 94464,
+      "textSha256": "88bdf5dcb8af494475c3ac4dc7a511eb26854245fa83c53071a7316e3c560bc9",
+      "durationSeconds": 15.744,
+      "kind": "yoga"
+    },
+    "pose_chaturanga": {
+      "src": "pose_chaturanga.mp3",
+      "sha256": "07f5aaff9be936a050236c5912cedbe8aa5be662ac7d3e813ef5a8d024310cfe",
+      "bytes": 118368,
+      "textSha256": "c2933d408695b9f88916e6d19c408c063b05c00e5306819813a53dfb64a820df",
+      "durationSeconds": 19.728,
+      "kind": "yoga"
+    },
+    "pose_marjaryasana": {
+      "src": "pose_marjaryasana.mp3",
+      "sha256": "eec8f1c5bd7e52a5a1eac72a17c80aed6ba7616f5357fb77c089748aebfd0236",
+      "bytes": 89280,
+      "textSha256": "ed7d3a6382cefcc5d0a72fe11613e625a3b6043f343bd1e9afbe06bac728a465",
+      "durationSeconds": 14.88,
+      "kind": "yoga"
+    },
+    "pose_parsvottanasana": {
+      "src": "pose_parsvottanasana.mp3",
+      "sha256": "b1c243ecaa7d5aad98cee10d88780d1451804e529e3a4ac0d3e4c7980efd3c92",
+      "bytes": 117360,
+      "textSha256": "8b8b808468adb6d259294a6ef2e9ee085de88d9a3bbcc7c474272e703d772261",
+      "durationSeconds": 19.56,
+      "kind": "yoga"
+    },
+    "pose_paschimottanasana": {
+      "src": "pose_paschimottanasana.mp3",
+      "sha256": "3509205cf61ad7e1e2b4ffd70e68237fb294b76f6a59609c6b9faf63a9ea927e",
+      "bytes": 96336,
+      "textSha256": "5133b0a8ad908556f07125ee1d90bb0217df64f5f14a1bc9b05f72ea43050223",
+      "durationSeconds": 16.056,
+      "kind": "yoga"
+    },
+    "pose_phalakasana": {
+      "src": "pose_phalakasana.mp3",
+      "sha256": "ed465ef5f075ca6a4b9de4ec9a325cc9b8a30576b23193ae7564832c6f13866d",
+      "bytes": 115056,
+      "textSha256": "1509bc41ba8c345013aa15f1817e475674e1e14b1a4a9476335dcb5b9b22cf5a",
+      "durationSeconds": 19.176,
+      "kind": "yoga"
+    },
+    "pose_savasana": {
+      "src": "pose_savasana.mp3",
+      "sha256": "daab088a0b7d5d5429a996a0b2b8724409df7266083478f543d522b93c942078",
+      "bytes": 87552,
+      "textSha256": "8d5344a78e8111e900255c023de027c73d543fe3f931c49edf23f43e66d5750b",
+      "durationSeconds": 14.592,
+      "kind": "yoga"
+    },
+    "pose_setu-bandha": {
+      "src": "pose_setu-bandha.mp3",
+      "sha256": "3782fb2389f15be09809579a7b2e3fad5a14a27d6e1d9cc7245a1deebe717885",
+      "bytes": 80352,
+      "textSha256": "0553c36e6997b350c95580fc8e5ab2df50c538fc12bd06e4fe6e62a74c416a5f",
+      "durationSeconds": 13.392,
+      "kind": "yoga"
+    },
+    "pose_skandasana": {
+      "src": "pose_skandasana.mp3",
+      "sha256": "c97e72d53e49a7e5b6ed74ebd571856abc7143a928cb3cc954a49e5fe69ca722",
+      "bytes": 116640,
+      "textSha256": "f358bdfc248bc5c3965cfa7e2ff094bdd7f0cfd380564a542da41f58400313df",
+      "durationSeconds": 19.44,
+      "kind": "yoga"
+    },
+    "pose_supta-matsyendrasana": {
+      "src": "pose_supta-matsyendrasana.mp3",
+      "sha256": "d723f1940c9909126e4edd958292fc9cc4a61304941ab0ccdf5dcdb52b1b3242",
+      "bytes": 88848,
+      "textSha256": "35a77f98576086add13d0d0551d8bf802c7d3317ed89ec46d6e1afc2b149a245",
+      "durationSeconds": 14.808,
+      "kind": "yoga"
+    },
+    "pose_tadasana": {
+      "src": "pose_tadasana.mp3",
+      "sha256": "88fc3a851265e8abf0a01c7aac1fb3a1898df39540b2cdfdfe8a9888bed96749",
+      "bytes": 72864,
+      "textSha256": "f5ca24093ce01779c7951a7f36a0e3e5196b3528382847d1b3858b2b0cdd245a",
+      "durationSeconds": 12.144,
+      "kind": "yoga"
+    },
+    "pose_trikonasana": {
+      "src": "pose_trikonasana.mp3",
+      "sha256": "1823c8a34dfeafed83a5732ef45b5657e9d5a8ada0d21763dbc5d6db619eb238",
+      "bytes": 117648,
+      "textSha256": "25ab7518cd4ef9e25605c175b87614387763ad2fb1a58b7c782c295d04ec7a1e",
+      "durationSeconds": 19.608,
+      "kind": "yoga"
+    },
+    "pose_urdhva-hastasana": {
+      "src": "pose_urdhva-hastasana.mp3",
+      "sha256": "cf36a3bbaa8cdc00a5c9e31406e8fb31adcdd230c71cb7c0229a5552dca53344",
+      "bytes": 114624,
+      "textSha256": "022ec8bb7e92d47ef106b742a911a67d156f76dde98075c04ff87bddf4417f98",
+      "durationSeconds": 19.104,
+      "kind": "yoga"
+    },
+    "pose_urdhva-mukha": {
+      "src": "pose_urdhva-mukha.mp3",
+      "sha256": "55ced9da65adaf9cb576e21ab6b2b1c8c98b4293047ad6709622f238b9748b72",
+      "bytes": 132480,
+      "textSha256": "740672f63f2f423f558cdea64e4ba123effa9b541282b2418fae606e4ee42a4e",
+      "durationSeconds": 22.08,
+      "kind": "yoga"
+    },
+    "pose_utkata-konasana": {
+      "src": "pose_utkata-konasana.mp3",
+      "sha256": "6303bd9d2c234116d6bf1039503fac35fc77156d8692d0951d38149cc0248f79",
+      "bytes": 119376,
+      "textSha256": "41807a973485bef022e124dda047d74398832bacf6699c2087758e6f2220b772",
+      "durationSeconds": 19.896,
+      "kind": "yoga"
+    },
+    "pose_uttanasana": {
+      "src": "pose_uttanasana.mp3",
+      "sha256": "917b20363a1a8c54f4e79b82f20d35f9c012c43fe60c5e13845c2ccb93f66674",
+      "bytes": 116784,
+      "textSha256": "62242830168d933fefc7cb15dc9ae9bdb90a4503dd8f83403107727ae3ddf27c",
+      "durationSeconds": 19.464,
+      "kind": "yoga"
+    },
+    "pose_utthita-tadasana": {
+      "src": "pose_utthita-tadasana.mp3",
+      "sha256": "800ae5e5c43ee8ec2cddd58941b81e4c7dcdbd8052ba5cf4a5cc0e17e3979cb3",
+      "bytes": 112032,
+      "textSha256": "32e8fa584379423ba9b9f85b4030edce64b8513126bd1a67a52ad78ec09782dc",
+      "durationSeconds": 18.672,
+      "kind": "yoga"
+    },
+    "pose_virabhadrasana2": {
+      "src": "pose_virabhadrasana2.mp3",
+      "sha256": "d49dba7c6f666053f69ff2e9775426b1165af7ec833ad98efa027b6201e03754",
+      "bytes": 82368,
+      "textSha256": "4fd006f9bfa0132de93bc408ed733cfdd53cc88b13a313b18cf1fd1711c48352",
+      "durationSeconds": 13.728,
+      "kind": "yoga"
+    },
+    "pose_vrksasana": {
+      "src": "pose_vrksasana.mp3",
+      "sha256": "48d93e02ff4f953178bc63e27a583da0eef65a0d73ad5c2036a33989cec1fd53",
+      "bytes": 76320,
+      "textSha256": "208c0d2765679dd6469aaa2a87c1418b372734ec10fd4f3aac6c1030d6eef2f4",
+      "durationSeconds": 12.72,
+      "kind": "yoga"
+    },
+    "prepare_adho-mukha": {
+      "src": "prepare_adho-mukha.mp3",
+      "sha256": "7f76a9e4b3907b60fc139841f5166ce18e217c3f36652b0b0b1908c1f76a6508",
+      "bytes": 80784,
+      "textSha256": "1b0b5ab516f9e6e28d9a000887a3b607b12cc7519d99dc9637546d1c60236b66",
+      "durationSeconds": 13.464,
+      "kind": "yoga"
+    },
+    "prepare_anjaneyasana": {
+      "src": "prepare_anjaneyasana.mp3",
+      "sha256": "b14124f9d4d779e37bc2aa19cd1e4a3360308194d3c2ce54643031c8f3b1d2c2",
+      "bytes": 68544,
+      "textSha256": "a6201e6baa6ccc82daf71ddba01315ff26186167bf2cb70ef0aabf9ebb7db3d3",
+      "durationSeconds": 11.424,
+      "kind": "yoga"
+    },
+    "prepare_baddha-konasana": {
+      "src": "prepare_baddha-konasana.mp3",
+      "sha256": "61aab90c95ec8e24bc565140cf03099f51017256451c445fd0f06639d0b350ad",
+      "bytes": 63792,
+      "textSha256": "afe614905e52db9bb5b78244fc60be4140fce985efc225fe5dc2e8e59ea90e93",
+      "durationSeconds": 10.632,
+      "kind": "yoga"
+    },
+    "prepare_balasana": {
+      "src": "prepare_balasana.mp3",
+      "sha256": "55e18becdbbcc88f4ffbcfac20d4ab9203d87ee48122cb3443286663f9170ef8",
+      "bytes": 64656,
+      "textSha256": "c10b5e5e02d6bfc80ef00b3b6d75f1e521c527788116b4e25f40d53c306f7d49",
+      "durationSeconds": 10.776,
+      "kind": "yoga"
+    },
+    "prepare_bhujangasana": {
+      "src": "prepare_bhujangasana.mp3",
+      "sha256": "c5974979db9a0317623cd09544255836b53b5f2d9bce285ddfe29a068078c6b3",
+      "bytes": 68832,
+      "textSha256": "3ac2920fb6bb553f6a33e02d2c1cd238e04d0ada3e35ee9366c7ee7952f321a7",
+      "durationSeconds": 11.472,
+      "kind": "yoga"
+    },
+    "prepare_marjaryasana": {
+      "src": "prepare_marjaryasana.mp3",
+      "sha256": "8f00a2be0519b020122f6de113901f7d32c51485fec04c4b01c5a44745ba1697",
+      "bytes": 78048,
+      "textSha256": "6f9647acf84117a9989a9bbc2e3245045b32984640d3851fca280549cda84c33",
+      "durationSeconds": 13.008,
+      "kind": "yoga"
+    },
+    "prepare_paschimottanasana": {
+      "src": "prepare_paschimottanasana.mp3",
+      "sha256": "4a713acbe11643cfef693c2d19995abb2afe9af17a2ff4405afa60107215539b",
+      "bytes": 71712,
+      "textSha256": "d90d26ee53eae9e178e8a4a37a02b849b7ca549421629931904c123b2279abcc",
+      "durationSeconds": 11.952,
+      "kind": "yoga"
+    },
+    "prepare_savasana": {
+      "src": "prepare_savasana.mp3",
+      "sha256": "eddc525c193b9a5cf8dd49410cc47c066dc91368ef7b77061e319d8fdf2e844d",
+      "bytes": 71856,
+      "textSha256": "1118e530b29a9cff7be408d3f47ac36336174d4d66f5d1fc696d998850d7e84a",
+      "durationSeconds": 11.976,
+      "kind": "yoga"
+    },
+    "prepare_setu-bandha": {
+      "src": "prepare_setu-bandha.mp3",
+      "sha256": "0440a78c8c659858f587b1477eeab92cd27ae256df809ebe07890fb6cc255417",
+      "bytes": 74160,
+      "textSha256": "42bcdfe2cb02f40ebe542a47f0375b5fb2e258c5e23ad3826f84b04ca36c1b74",
+      "durationSeconds": 12.36,
+      "kind": "yoga"
+    },
+    "prepare_supta-matsyendrasana": {
+      "src": "prepare_supta-matsyendrasana.mp3",
+      "sha256": "6b2f974e4967b1f5b31c2350c1ad07bab5941623b369013b5efe0fe880cda8fd",
+      "bytes": 78480,
+      "textSha256": "616d15ef24f361ac240d1704d63858a71c9520d75a862d95f9c226a35a1059a1",
+      "durationSeconds": 13.08,
+      "kind": "yoga"
+    },
+    "prepare_tadasana": {
+      "src": "prepare_tadasana.mp3",
+      "sha256": "eb1459f1374d7de3dbf250e60476ca4e95782bf99b091aa5386dddedd17e05d6",
+      "bytes": 66960,
+      "textSha256": "db6cfd0534030f7651f23969f8ea13e6d1a94eb2da88e2849c3ed5a21291785c",
+      "durationSeconds": 11.16,
+      "kind": "yoga"
+    },
+    "prepare_virabhadrasana2": {
+      "src": "prepare_virabhadrasana2.mp3",
+      "sha256": "0d2af1e658505e4b9762fa6f384aa658b983f2613dc5e1c57dc185146b5a56f0",
+      "bytes": 67392,
+      "textSha256": "bf3f2fc61415054b604027a0e6e713af6c4e4efa9fd9c58587a2aa6c169c192c",
+      "durationSeconds": 11.232,
+      "kind": "yoga"
+    },
+    "prepare_vrksasana": {
+      "src": "prepare_vrksasana.mp3",
+      "sha256": "6d6ee9d4d3864a04d0e9d5f564428ef5ffc6f42c6ce5709c2d920bbed8e6c29c",
+      "bytes": 59904,
+      "textSha256": "7327bea1d0c063958e299ef5329afdef5ccf3a3454426e16d2f72e3449f114aa",
+      "durationSeconds": 9.984,
+      "kind": "yoga"
+    },
+    "respirer_discrete_00": {
+      "src": "respirer_discrete_00.mp3",
+      "sha256": "a2b4353ff45d984112c6c8d15f4a08519b2b4cc138048e09098e890ea13b23d3",
+      "bytes": 43920,
+      "textSha256": "15117a2a88b107bd1a17dce2f3e03ef3eb4b68bc14eb5317df43130e703f0705",
+      "durationSeconds": 7.32,
+      "kind": "meditation"
+    },
+    "respirer_discrete_01": {
+      "src": "respirer_discrete_01.mp3",
+      "sha256": "bf6406fc3fbbf079576b207eec52f48b962e8478b0d1b23d52151a881a4b07ea",
+      "bytes": 40320,
+      "textSha256": "65b07ff4c51f1cbb00a59c2e23c879823a493433f516acf06f2b8ce442ed2efa",
+      "durationSeconds": 6.72,
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_00": {
+      "src": "respirer_enveloppante_00.mp3",
+      "sha256": "ea82e7487455ff96dfd005831cc7998dc1278453b4e91955005f5e9641e04cd9",
+      "bytes": 43920,
+      "textSha256": "15117a2a88b107bd1a17dce2f3e03ef3eb4b68bc14eb5317df43130e703f0705",
+      "durationSeconds": 7.32,
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_01": {
+      "src": "respirer_enveloppante_01.mp3",
+      "sha256": "23a67163a7a836ef962a8bb4985dba46926c835ef5aa923f292183731edb892f",
+      "bytes": 34992,
+      "textSha256": "aa4726c8a76570c944860952fabeb42081672a335cd21cf4b946bb2026ed9edf",
+      "durationSeconds": 5.832,
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_02": {
+      "src": "respirer_enveloppante_02.mp3",
+      "sha256": "be419242e1da80856aacffbacc1847f98a143e94a49af83882725145d38d3762",
+      "bytes": 27504,
+      "textSha256": "9398fceab2935f00242df8f193aa93536e8ca20f001fdcada89f9e0dae6f46c6",
+      "durationSeconds": 4.584,
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_03": {
+      "src": "respirer_enveloppante_03.mp3",
+      "sha256": "a2b04e11f803bb67751133f5ad2985cac19d4ee3d1cae230a0ac5f1f8230268a",
+      "bytes": 31248,
+      "textSha256": "f12a92e0d270159be1ecb99816d84403414739714287a1b75265d4d64452cff9",
+      "durationSeconds": 5.208,
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_04": {
+      "src": "respirer_enveloppante_04.mp3",
+      "sha256": "fd8f5048564017019e7439defc97449415c63cc1dea2c05803ac5efc1d05fee2",
+      "bytes": 32544,
+      "textSha256": "06a7d179059e7c0e3452d50a84a632375bb285f57501f397e3e37b482e04c2b1",
+      "durationSeconds": 5.424,
+      "kind": "meditation"
+    },
+    "respirer_enveloppante_05": {
+      "src": "respirer_enveloppante_05.mp3",
+      "sha256": "cf432f9c4905cf8bf593fc48758af15082be3fd8aee13c40af44eb2886072623",
+      "bytes": 40320,
+      "textSha256": "65b07ff4c51f1cbb00a59c2e23c879823a493433f516acf06f2b8ce442ed2efa",
+      "durationSeconds": 6.72,
+      "kind": "meditation"
+    },
+    "respirer_equilibree_00": {
+      "src": "respirer_equilibree_00.mp3",
+      "sha256": "610095d063f4e8781a55935e04ebd94d0e776e34080e2bcf18a332f481075539",
+      "bytes": 43920,
+      "textSha256": "15117a2a88b107bd1a17dce2f3e03ef3eb4b68bc14eb5317df43130e703f0705",
+      "durationSeconds": 7.32,
+      "kind": "meditation"
+    },
+    "respirer_equilibree_01": {
+      "src": "respirer_equilibree_01.mp3",
+      "sha256": "56cb93d47265cf08168e76466c001d5215ca5f33858898b0e84e2f5b1dadcc27",
+      "bytes": 27504,
+      "textSha256": "9398fceab2935f00242df8f193aa93536e8ca20f001fdcada89f9e0dae6f46c6",
+      "durationSeconds": 4.584,
+      "kind": "meditation"
+    },
+    "respirer_equilibree_02": {
+      "src": "respirer_equilibree_02.mp3",
+      "sha256": "cae8e25d87af8a30f0f3c95b04a3d008913a1511538b379ac7fb5824028dd1ed",
+      "bytes": 32544,
+      "textSha256": "06a7d179059e7c0e3452d50a84a632375bb285f57501f397e3e37b482e04c2b1",
+      "durationSeconds": 5.424,
+      "kind": "meditation"
+    },
+    "respirer_equilibree_03": {
+      "src": "respirer_equilibree_03.mp3",
+      "sha256": "2e7cbcef91cbb8f69e3f31f02709afb4cdc6ffb879d3e4c5cb9fa12bc2ce8c99",
+      "bytes": 40320,
+      "textSha256": "65b07ff4c51f1cbb00a59c2e23c879823a493433f516acf06f2b8ce442ed2efa",
+      "durationSeconds": 6.72,
+      "kind": "meditation"
+    },
+    "salutation_salutation-lune_00_easy": {
+      "src": "salutation_salutation-lune_00_easy.mp3",
+      "sha256": "93498045fb2aeb2e1d89a2348b4a70978c873450649de40ae4444b8ff2b1bd60",
+      "bytes": 60480,
+      "textSha256": "7c75685ae74a1e09fb9a6142524f006892b98400fae6cbf8f640e87e8f64d33e",
+      "durationSeconds": 10.08,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_00_full": {
+      "src": "salutation_salutation-lune_00_full.mp3",
+      "sha256": "06c5cd1f995eb59cb0b2c6b8b7f687f3ee616501dfcdafaa821959403975c40e",
+      "bytes": 60048,
+      "textSha256": "7c75685ae74a1e09fb9a6142524f006892b98400fae6cbf8f640e87e8f64d33e",
+      "durationSeconds": 10.008,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_01_easy": {
+      "src": "salutation_salutation-lune_01_easy.mp3",
+      "sha256": "b575a3a2dca371286a61ea3579f85d7ef334c839353357b6cf86fb959a647ed1",
+      "bytes": 62352,
+      "textSha256": "7da51723484ff0a86d9f5e57fb3b1186dcc3119ab8d31114ee55fe3fa4a13fd7",
+      "durationSeconds": 10.392,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_01_full": {
+      "src": "salutation_salutation-lune_01_full.mp3",
+      "sha256": "452a3a4595c3f3759a0f4ff64bfa8d8602749a1efc6e95b4b3710ae37b41b5f0",
+      "bytes": 62496,
+      "textSha256": "7da51723484ff0a86d9f5e57fb3b1186dcc3119ab8d31114ee55fe3fa4a13fd7",
+      "durationSeconds": 10.416,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_02_easy": {
+      "src": "salutation_salutation-lune_02_easy.mp3",
+      "sha256": "5dcfa7779103de62c9a7e98c78a221fdda5f628689f94ddf73a9c0215ef38efb",
+      "bytes": 59472,
+      "textSha256": "15f804d5acadafe12f81c29c8eaf4537ea3fd47edac6a24b4b687de6ddf1824d",
+      "durationSeconds": 9.912,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_02_full": {
+      "src": "salutation_salutation-lune_02_full.mp3",
+      "sha256": "922d5f27fb4599b87a55ce7092d9978a9f37bca2a940f7a2ea52ca71f7e31464",
+      "bytes": 59760,
+      "textSha256": "15f804d5acadafe12f81c29c8eaf4537ea3fd47edac6a24b4b687de6ddf1824d",
+      "durationSeconds": 9.96,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_03_easy": {
+      "src": "salutation_salutation-lune_03_easy.mp3",
+      "sha256": "fbe27e80d217990ec3a9095ae67eeb937c75c65ec0853ad1060d8ff665dc0e0a",
+      "bytes": 53712,
+      "textSha256": "bb37527bc27e378baa4a90eca37eea6077bf5575d34a4b9d4403d2b7a2983905",
+      "durationSeconds": 8.952,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_03_full": {
+      "src": "salutation_salutation-lune_03_full.mp3",
+      "sha256": "bdf89ccb098d4a99c9018cebe24a9a94fb81f5386e49e873f940f45d37f4b90b",
+      "bytes": 52704,
+      "textSha256": "bb37527bc27e378baa4a90eca37eea6077bf5575d34a4b9d4403d2b7a2983905",
+      "durationSeconds": 8.784,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_04_easy": {
+      "src": "salutation_salutation-lune_04_easy.mp3",
+      "sha256": "7961a689ca965f82dfc4188b710d458eb20432b2e1487cb236e74dc1c1818344",
+      "bytes": 58320,
+      "textSha256": "75c09b09066058db907406a58e381e6ed8ddf22fa7fd1e8b94568c13d22657fb",
+      "durationSeconds": 9.72,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_04_full": {
+      "src": "salutation_salutation-lune_04_full.mp3",
+      "sha256": "7e70cbcdf3c2d2aab31f258dfead6d2f4d6c094f9011ce05e946794ddcd72668",
+      "bytes": 58320,
+      "textSha256": "75c09b09066058db907406a58e381e6ed8ddf22fa7fd1e8b94568c13d22657fb",
+      "durationSeconds": 9.72,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_05_easy": {
+      "src": "salutation_salutation-lune_05_easy.mp3",
+      "sha256": "0d6e6f478dd97e6eadd2110a81f0acff2c3f0396f743006fd9123aafe1173391",
+      "bytes": 54288,
+      "textSha256": "08f32e5bfcb6de6fd08554dffbda4f467bf9455116ba3d01d5c8de3def258532",
+      "durationSeconds": 9.048,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_05_full": {
+      "src": "salutation_salutation-lune_05_full.mp3",
+      "sha256": "c6f9b5251e9560cbff01bce20b1a0f10bb274afe6986b16a32d1cfe1c57c5a12",
+      "bytes": 54432,
+      "textSha256": "08f32e5bfcb6de6fd08554dffbda4f467bf9455116ba3d01d5c8de3def258532",
+      "durationSeconds": 9.072,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_06_easy": {
+      "src": "salutation_salutation-lune_06_easy.mp3",
+      "sha256": "d99f0189a45d045bfcd0575e540e4e1032757f5516a9098a8ca637d967903567",
+      "bytes": 51840,
+      "textSha256": "f30e6f3132750e27e115479048ae010c94644aa9053c648f0b08f5f5daf9394b",
+      "durationSeconds": 8.64,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_06_full": {
+      "src": "salutation_salutation-lune_06_full.mp3",
+      "sha256": "7b8cb4684522deb0b696eae6a9a4f06a9b3d3f1d869dc8982164236d432f9441",
+      "bytes": 52128,
+      "textSha256": "f30e6f3132750e27e115479048ae010c94644aa9053c648f0b08f5f5daf9394b",
+      "durationSeconds": 8.688,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_07_easy": {
+      "src": "salutation_salutation-lune_07_easy.mp3",
+      "sha256": "f9782b26f538e32e5195d454d89e94ccdf3feb84b38df7eb9a66c04509925364",
+      "bytes": 63504,
+      "textSha256": "e3636ae55df9d8f201bcd937d7780f365e4b2e7ee580afef2d56b95b9e4de6dc",
+      "durationSeconds": 10.584,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_07_full": {
+      "src": "salutation_salutation-lune_07_full.mp3",
+      "sha256": "21784455e18dbaa9ed250c3f1ad3d03937630837e1ffeea379ea1796bb32fcd0",
+      "bytes": 63216,
+      "textSha256": "e3636ae55df9d8f201bcd937d7780f365e4b2e7ee580afef2d56b95b9e4de6dc",
+      "durationSeconds": 10.536,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_08_easy": {
+      "src": "salutation_salutation-lune_08_easy.mp3",
+      "sha256": "9d6f816bb65b7b23a8ca7d945c42cf3cfbca17d1463f081cdd59df7c7e6785fd",
+      "bytes": 58896,
+      "textSha256": "07c39d59a1d66e5945f064c857b2367545d58dcec8b1c9b8a5c36aa3df884c10",
+      "durationSeconds": 9.816,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_08_full": {
+      "src": "salutation_salutation-lune_08_full.mp3",
+      "sha256": "aeb9b23e7f4753234fc71f0b3c75bfdaaf88bf204272187890eb31f40b2d86fb",
+      "bytes": 58608,
+      "textSha256": "07c39d59a1d66e5945f064c857b2367545d58dcec8b1c9b8a5c36aa3df884c10",
+      "durationSeconds": 9.768,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_09_easy": {
+      "src": "salutation_salutation-lune_09_easy.mp3",
+      "sha256": "2264c75596d09b8fbe568dcaf07feb3d790e3515ed22195d0e595c68d28cfb9e",
+      "bytes": 55152,
+      "textSha256": "357881a1c3c5f42037ceb1e5fad4f38d15bdfa4141cdcb4508b7382fedd00e66",
+      "durationSeconds": 9.192,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_09_full": {
+      "src": "salutation_salutation-lune_09_full.mp3",
+      "sha256": "3da15d134eda5eccedb2783e2db5ee1b956184a635aba562b7a65d1bf5af63f3",
+      "bytes": 55584,
+      "textSha256": "357881a1c3c5f42037ceb1e5fad4f38d15bdfa4141cdcb4508b7382fedd00e66",
+      "durationSeconds": 9.264,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_10_easy": {
+      "src": "salutation_salutation-lune_10_easy.mp3",
+      "sha256": "52c30209c12ca306015c808dad3b07a6485458a82737457c9ce0ab077f7f8917",
+      "bytes": 47808,
+      "textSha256": "6c91a7b1565bbb4d8554eeba590302af054d366eae075f7338c23861309008da",
+      "durationSeconds": 7.968,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_10_full": {
+      "src": "salutation_salutation-lune_10_full.mp3",
+      "sha256": "ba8d78b4768aac323493e03da0d2a221d8a5dacb95d9f715b2d7a9ec46122475",
+      "bytes": 48528,
+      "textSha256": "6c91a7b1565bbb4d8554eeba590302af054d366eae075f7338c23861309008da",
+      "durationSeconds": 8.088,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_11_easy": {
+      "src": "salutation_salutation-lune_11_easy.mp3",
+      "sha256": "83e22642ea76f8ef4329b13f0aa380a719234c89bc6978230152de3dfe040880",
+      "bytes": 47808,
+      "textSha256": "0e01b92148be140e18270cde6829b98eea97972a338b01f06937eee3b35a97ea",
+      "durationSeconds": 7.968,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_11_full": {
+      "src": "salutation_salutation-lune_11_full.mp3",
+      "sha256": "2d1ecca90d05e4a9eaabd6832903c696cf367f26aa831a07a408c497611ddc8f",
+      "bytes": 47664,
+      "textSha256": "0e01b92148be140e18270cde6829b98eea97972a338b01f06937eee3b35a97ea",
+      "durationSeconds": 7.944,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_12_easy": {
+      "src": "salutation_salutation-lune_12_easy.mp3",
+      "sha256": "beebe5e9f5539958694b61a5fad9947fb34a0f95d3be346b6182069431b2aa1d",
+      "bytes": 43200,
+      "textSha256": "8a1ab8be8ec690205858680dc4124c05e8704ae9e3e220168f8591d0fdef28a9",
+      "durationSeconds": 7.2,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_12_full": {
+      "src": "salutation_salutation-lune_12_full.mp3",
+      "sha256": "cb5f8c71fa6b286baeaa308b8f3d97fce2f627f89db14728ea3194635e81b9cf",
+      "bytes": 43488,
+      "textSha256": "8a1ab8be8ec690205858680dc4124c05e8704ae9e3e220168f8591d0fdef28a9",
+      "durationSeconds": 7.248,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_13_easy": {
+      "src": "salutation_salutation-lune_13_easy.mp3",
+      "sha256": "2a12496e2fbbfd8a4a15fba7a195861c32cd6a4a3e90ac75477e96808756215b",
+      "bytes": 58320,
+      "textSha256": "4d77145edf9741aeb596abd2b635d72724b2977616340cb8d7e226f37bd797e6",
+      "durationSeconds": 9.72,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_13_full": {
+      "src": "salutation_salutation-lune_13_full.mp3",
+      "sha256": "bc16f9a940c3012ae8e82ab39a730d594ab2144025b8faa4e6097f47cfda3369",
+      "bytes": 58464,
+      "textSha256": "4d77145edf9741aeb596abd2b635d72724b2977616340cb8d7e226f37bd797e6",
+      "durationSeconds": 9.744,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_14_easy": {
+      "src": "salutation_salutation-lune_14_easy.mp3",
+      "sha256": "93df9073a2eb7f4bd2b862f173c7fd07332772c6f2c24ca50538db52f93c7992",
+      "bytes": 49248,
+      "textSha256": "114e309b360c9f7527b395a393dfc44b58fad1ba82fc57ad7901a3eb09b401c7",
+      "durationSeconds": 8.208,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_14_full": {
+      "src": "salutation_salutation-lune_14_full.mp3",
+      "sha256": "91bcbbe898628fd7c61a7ca4c2a34537dd4f2203d3b3183a5ea40f72c6af6cd5",
+      "bytes": 49824,
+      "textSha256": "114e309b360c9f7527b395a393dfc44b58fad1ba82fc57ad7901a3eb09b401c7",
+      "durationSeconds": 8.304,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_15_easy": {
+      "src": "salutation_salutation-lune_15_easy.mp3",
+      "sha256": "23c7d3746a18e7634712ed032e79a8e16967bba38e87d2d546a878ed8a640c0e",
+      "bytes": 65952,
+      "textSha256": "2ef34ad00c4c894a169f26e1000dda1daf6aa9b399f00f45dce6089aa275f160",
+      "durationSeconds": 10.992,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_15_full": {
+      "src": "salutation_salutation-lune_15_full.mp3",
+      "sha256": "31a3a02151e273ebcb151cc58931c6417f39395353cd996bc626c3d67ea03280",
+      "bytes": 65808,
+      "textSha256": "2ef34ad00c4c894a169f26e1000dda1daf6aa9b399f00f45dce6089aa275f160",
+      "durationSeconds": 10.968,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_16_easy": {
+      "src": "salutation_salutation-lune_16_easy.mp3",
+      "sha256": "799d4172ec8ae63830da088b25e91598fe246394e4308d214f50155ca1917e37",
+      "bytes": 65808,
+      "textSha256": "af9ed33a2d87e1f0225af6be6c09af5dc69551f4fd6d9c8dc7da7cbfb7377312",
+      "durationSeconds": 10.968,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_16_full": {
+      "src": "salutation_salutation-lune_16_full.mp3",
+      "sha256": "e253be9665eece1c9e8af0e2ebbb70a88dc07db0c4e8f7444a70e43b192f324b",
+      "bytes": 65664,
+      "textSha256": "af9ed33a2d87e1f0225af6be6c09af5dc69551f4fd6d9c8dc7da7cbfb7377312",
+      "durationSeconds": 10.944,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_17_easy": {
+      "src": "salutation_salutation-lune_17_easy.mp3",
+      "sha256": "d7ab8fa936802e301a14b8c0ed07e28e3ed899c7f7e3fe7140a7d340a18d8c7b",
+      "bytes": 56016,
+      "textSha256": "c894e0e2877f0dc15e5685c10e32bc7742ea293ae8cf6269890d8cb2e5fc9141",
+      "durationSeconds": 9.336,
+      "kind": "yoga"
+    },
+    "salutation_salutation-lune_17_full": {
+      "src": "salutation_salutation-lune_17_full.mp3",
+      "sha256": "03d1986dd9cf9b43d1fda583a86795e9f04385cc5300d9e01e6a25c4622aedb6",
+      "bytes": 56304,
+      "textSha256": "c894e0e2877f0dc15e5685c10e32bc7742ea293ae8cf6269890d8cb2e5fc9141",
+      "durationSeconds": 9.384,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_00_easy": {
+      "src": "salutation_salutation-soleil_00_easy.mp3",
+      "sha256": "11c9cc2a3cb59c6aa111b0ae6a9495e080cedbae4023aaf9aa68819ccb4725f3",
+      "bytes": 61776,
+      "textSha256": "0754a48a3ee9f2f9031d1e12d80fe05defe90bcb349bc9d73ca9e2a06df9f768",
+      "durationSeconds": 10.296,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_00_full": {
+      "src": "salutation_salutation-soleil_00_full.mp3",
+      "sha256": "041b7b4214373a2d3c805a91b4ec9365b36b7676f55688d77d6e0c983fd44afb",
+      "bytes": 61776,
+      "textSha256": "0754a48a3ee9f2f9031d1e12d80fe05defe90bcb349bc9d73ca9e2a06df9f768",
+      "durationSeconds": 10.296,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_01_easy": {
+      "src": "salutation_salutation-soleil_01_easy.mp3",
+      "sha256": "451d1ec6f2c2bc157c9f6a6a051fedae0114698888305e7c19635378061d6fa8",
+      "bytes": 55152,
+      "textSha256": "3d145bdefc3cc29af24ba94781145cba40dc44cd70912a4942c601f4225700c0",
+      "durationSeconds": 9.192,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_01_full": {
+      "src": "salutation_salutation-soleil_01_full.mp3",
+      "sha256": "bd49ece5c9e49380e628d4b8cab01a2e1ba7687c306647091b990a0e06bd76a3",
+      "bytes": 55152,
+      "textSha256": "3d145bdefc3cc29af24ba94781145cba40dc44cd70912a4942c601f4225700c0",
+      "durationSeconds": 9.192,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_02_easy": {
+      "src": "salutation_salutation-soleil_02_easy.mp3",
+      "sha256": "258c07b16dc99cac3e625fa75b66e20a6d8cb4e18a581a05c7082f2900a328b6",
+      "bytes": 56304,
+      "textSha256": "db4ef8cffabb84edfce857294536bf4a1753f8aff6d68e97bb89eb2bab6f694a",
+      "durationSeconds": 9.384,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_02_full": {
+      "src": "salutation_salutation-soleil_02_full.mp3",
+      "sha256": "8bc0a1b87066f9acbd3326df632f1fb0c8941b25af4c296bd9a74f7332ef1e2f",
+      "bytes": 56304,
+      "textSha256": "db4ef8cffabb84edfce857294536bf4a1753f8aff6d68e97bb89eb2bab6f694a",
+      "durationSeconds": 9.384,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_03_easy": {
+      "src": "salutation_salutation-soleil_03_easy.mp3",
+      "sha256": "5df088e048f10f583b040df688304eb204da10a5a3f446ed8701c8199c15425f",
+      "bytes": 65808,
+      "textSha256": "5a3149b8a8ab14d90ac28254710057981471fffb665e97c092d87455ece7cc2c",
+      "durationSeconds": 10.968,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_03_full": {
+      "src": "salutation_salutation-soleil_03_full.mp3",
+      "sha256": "08f8c6a894210ac2d3b48c252da3c69523c1bb919be23c08948fd2f5e7bbcac6",
+      "bytes": 65808,
+      "textSha256": "5a3149b8a8ab14d90ac28254710057981471fffb665e97c092d87455ece7cc2c",
+      "durationSeconds": 10.968,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_04_easy": {
+      "src": "salutation_salutation-soleil_04_easy.mp3",
+      "sha256": "72f27ca9d62334c7d3c8f310ecb4b96ebaf4786b2c6429bc0ffa0f7b048ea26c",
+      "bytes": 50256,
+      "textSha256": "6abc4d0fe25382948cbda392b6f1014ae1945e46eb3e88c0aac8d84ba6770c6f",
+      "durationSeconds": 8.376,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_04_full": {
+      "src": "salutation_salutation-soleil_04_full.mp3",
+      "sha256": "c92a70acee40364fe0c71b606a798abaf92781d72b001a4e2bff175752a7506b",
+      "bytes": 50256,
+      "textSha256": "6abc4d0fe25382948cbda392b6f1014ae1945e46eb3e88c0aac8d84ba6770c6f",
+      "durationSeconds": 8.376,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_05_easy": {
+      "src": "salutation_salutation-soleil_05_easy.mp3",
+      "sha256": "32d32894ce9a2d8ccde34d0cf17f33424f505a2cf3db1355ec8103163436c277",
+      "bytes": 68112,
+      "textSha256": "5012770e92553272ee9b4db4b2eab19b181cc3c0f2cfefecfd3fc2732fe4d504",
+      "durationSeconds": 11.352,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_05_full": {
+      "src": "salutation_salutation-soleil_05_full.mp3",
+      "sha256": "ed058175ba1adeb787af7ec1aeefdfdf2e66b0a9eab0a2d51bda115a65176639",
+      "bytes": 66672,
+      "textSha256": "5bc2e18cf4cb9dd27b40120937a542fcfffcc287f9ed1f6b2cbcc3d305afa2aa",
+      "durationSeconds": 11.112,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_06_easy": {
+      "src": "salutation_salutation-soleil_06_easy.mp3",
+      "sha256": "381358e9a25bd31d5a54856d13de1ed621c15b0b9d55c2d0791477837486b00c",
+      "bytes": 70128,
+      "textSha256": "847b49d7045b482d62cff71644b7a473a9399c250dbdba74538049bd33ea5cf5",
+      "durationSeconds": 11.688,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_06_full": {
+      "src": "salutation_salutation-soleil_06_full.mp3",
+      "sha256": "3832f9cb4a65e49e577b15a2296dd734e1378e0de8925485bc28dc933681a928",
+      "bytes": 68688,
+      "textSha256": "cbe181756ab0daca8bdd350777b96d8546d30db1e5c9da5d72b10d395fe9162d",
+      "durationSeconds": 11.448,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_07_easy": {
+      "src": "salutation_salutation-soleil_07_easy.mp3",
+      "sha256": "8cc9eda4bd1c0d02567f1fdc2fe06138e19c66936a5ed002c47c71afbbaa6d00",
+      "bytes": 71424,
+      "textSha256": "42e82738421ad71e887deb3c14aa4e9ce6fdbb0bcd5e300b6dbf082dfe1a6eaa",
+      "durationSeconds": 11.904,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_07_full": {
+      "src": "salutation_salutation-soleil_07_full.mp3",
+      "sha256": "16108d105ee7f2bc096c28d9bfa7272fb023e3128dac1a50de2475216c583c36",
+      "bytes": 71424,
+      "textSha256": "42e82738421ad71e887deb3c14aa4e9ce6fdbb0bcd5e300b6dbf082dfe1a6eaa",
+      "durationSeconds": 11.904,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_08_easy": {
+      "src": "salutation_salutation-soleil_08_easy.mp3",
+      "sha256": "df27f5c17b1e5d501f10b55097789fb8395aafe466fdb6a9151d155ca1a5e332",
+      "bytes": 55440,
+      "textSha256": "1e9bebeb97ba22345450d7a8a71abc61aa6990475399c6b54bf1d35cdff6b7eb",
+      "durationSeconds": 9.24,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_08_full": {
+      "src": "salutation_salutation-soleil_08_full.mp3",
+      "sha256": "088a896345d23d02f5fc74992241623d874a9498e967ef7e11967832deef79a0",
+      "bytes": 55440,
+      "textSha256": "1e9bebeb97ba22345450d7a8a71abc61aa6990475399c6b54bf1d35cdff6b7eb",
+      "durationSeconds": 9.24,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_09_easy": {
+      "src": "salutation_salutation-soleil_09_easy.mp3",
+      "sha256": "12c24f1d83a099e7f7a8360211ce1ad874e6a45c22c96dcc697ce69974f7efcd",
+      "bytes": 56160,
+      "textSha256": "c69e781b6c4b1abbe1f432edf87992da9824375cc588d81c26e336eda6869b69",
+      "durationSeconds": 9.36,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_09_full": {
+      "src": "salutation_salutation-soleil_09_full.mp3",
+      "sha256": "9613682efdc09ae97ce48d57a515236effab4c695ba14026f927996ebe02f8bf",
+      "bytes": 56016,
+      "textSha256": "c69e781b6c4b1abbe1f432edf87992da9824375cc588d81c26e336eda6869b69",
+      "durationSeconds": 9.336,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_10_easy": {
+      "src": "salutation_salutation-soleil_10_easy.mp3",
+      "sha256": "84149bfa3875466fe5496c0f5810237b454ff1d299304b81bc1c2dcf896324a4",
+      "bytes": 56880,
+      "textSha256": "275b6ae9ca232263f99a10934b540fbf66cf18bfa6fdd716fa8be73af2411867",
+      "durationSeconds": 9.48,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_10_full": {
+      "src": "salutation_salutation-soleil_10_full.mp3",
+      "sha256": "292eb7034aadde64d9fbff5275bfe85092bd33bbe34bb5418a14dcbc45fb0a7d",
+      "bytes": 56592,
+      "textSha256": "275b6ae9ca232263f99a10934b540fbf66cf18bfa6fdd716fa8be73af2411867",
+      "durationSeconds": 9.432,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_11_easy": {
+      "src": "salutation_salutation-soleil_11_easy.mp3",
+      "sha256": "d8a1529f73dcb0c6ca597d00eebc1a22b31c8d3e6c7df8caccff1b465b79f749",
+      "bytes": 52128,
+      "textSha256": "0467891ad2795aa3543ea65f541d09b2d838c1130f820a2b3237625ff087722a",
+      "durationSeconds": 8.688,
+      "kind": "yoga"
+    },
+    "salutation_salutation-soleil_11_full": {
+      "src": "salutation_salutation-soleil_11_full.mp3",
+      "sha256": "a91a644374cf4b57c03b165e181982c2eb31d929d119bf38783e524691f12880",
+      "bytes": 52128,
+      "textSha256": "0467891ad2795aa3543ea65f541d09b2d838c1130f820a2b3237625ff087722a",
+      "durationSeconds": 8.688,
+      "kind": "yoga"
+    },
+    "sommeil_discrete_00": {
+      "src": "sommeil_discrete_00.mp3",
+      "sha256": "5a462a73acd20f51ce0773b019c9393813a70bf315cc6e125bb907a415355b29",
+      "bytes": 37440,
+      "textSha256": "ced087df6e0fd8b8daed8d2f04b36af80cd110c22afdd5b4ad35f93adcb347f3",
+      "durationSeconds": 6.24,
+      "kind": "meditation"
+    },
+    "sommeil_discrete_01": {
+      "src": "sommeil_discrete_01.mp3",
+      "sha256": "dad200fd0da3bf13b659c6a9aadd30d72efc45c64ff6c56313a656d55c7ceed5",
+      "bytes": 28944,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62",
+      "durationSeconds": 4.824,
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_00": {
+      "src": "sommeil_enveloppante_00.mp3",
+      "sha256": "607ef45fd61ee390ffb37de5926e407921f19e78011ac73ac0581f88cb40ede2",
+      "bytes": 37440,
+      "textSha256": "ced087df6e0fd8b8daed8d2f04b36af80cd110c22afdd5b4ad35f93adcb347f3",
+      "durationSeconds": 6.24,
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_01": {
+      "src": "sommeil_enveloppante_01.mp3",
+      "sha256": "43cfe9d81688d5927e7900ce37f607d1586d64607661668a8aa6cc06e530c4c8",
+      "bytes": 22896,
+      "textSha256": "c464affbcf79d26428b376988428eb4e3087136fb729567c51d1600896014cda",
+      "durationSeconds": 3.816,
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_02": {
+      "src": "sommeil_enveloppante_02.mp3",
+      "sha256": "c3377f25d23f3c3bb143200365008c8d761768c615d35c8571a62a7d19e3dc0a",
+      "bytes": 30096,
+      "textSha256": "a85fe8e17ee55fcf11294078e61bb16dfa59e006f7c4ae5e21fd65443ff2d3f0",
+      "durationSeconds": 5.016,
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_03": {
+      "src": "sommeil_enveloppante_03.mp3",
+      "sha256": "bcd1abb692ce6dc4a46dfffe3f7cf6baea2ada4af9d3aa9e4617114d4b35671d",
+      "bytes": 32976,
+      "textSha256": "7bdd570a388e55aa3fe2c3f107e930ec6d1defec54c1c1b3b73ed4246a389510",
+      "durationSeconds": 5.496,
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_04": {
+      "src": "sommeil_enveloppante_04.mp3",
+      "sha256": "d476e2f00562874dfef057e238db281a009588977e2216e4045fef113fde53f4",
+      "bytes": 34848,
+      "textSha256": "1c4f77458b429acee247b8dc07c179ebb3f3a658216f9b30481fca84c470c33c",
+      "durationSeconds": 5.808,
+      "kind": "meditation"
+    },
+    "sommeil_enveloppante_05": {
+      "src": "sommeil_enveloppante_05.mp3",
+      "sha256": "b7a6c9533ac2ced543282c590667863fad1004e06dbae746a69faa1f0a20d0ca",
+      "bytes": 28944,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62",
+      "durationSeconds": 4.824,
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_00": {
+      "src": "sommeil_equilibree_00.mp3",
+      "sha256": "43012ab77f43b38d1ef7cbd5d2189150c64210fdfbcc15df179bbb17047bf66e",
+      "bytes": 37440,
+      "textSha256": "ced087df6e0fd8b8daed8d2f04b36af80cd110c22afdd5b4ad35f93adcb347f3",
+      "durationSeconds": 6.24,
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_01": {
+      "src": "sommeil_equilibree_01.mp3",
+      "sha256": "8cbb4d90312b0229e1109b796aa405dcfbd0e69043bf2527a99856086800ab38",
+      "bytes": 30096,
+      "textSha256": "a85fe8e17ee55fcf11294078e61bb16dfa59e006f7c4ae5e21fd65443ff2d3f0",
+      "durationSeconds": 5.016,
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_02": {
+      "src": "sommeil_equilibree_02.mp3",
+      "sha256": "c3341f64498d4c9fb91c53e7750e15043374f0455100b03a23788794721bad26",
+      "bytes": 34848,
+      "textSha256": "1c4f77458b429acee247b8dc07c179ebb3f3a658216f9b30481fca84c470c33c",
+      "durationSeconds": 5.808,
+      "kind": "meditation"
+    },
+    "sommeil_equilibree_03": {
+      "src": "sommeil_equilibree_03.mp3",
+      "sha256": "87e186d9fb2f599c34f22ac96463e4eadce9ccc36d8c2be5a355c5478a758fb0",
+      "bytes": 28944,
+      "textSha256": "d1ec853e669ca246ce64704cbc84687503cc2e9098351ddb188482c916acdb62",
+      "durationSeconds": 4.824,
+      "kind": "meditation"
+    },
+    "transition_adho-mukha_anjaneyasana_easy": {
+      "src": "transition_adho-mukha_anjaneyasana_easy.mp3",
+      "sha256": "871f575a11cf8ac77196f45d3bd9984a20036c671b0f7aac40dcc0552d6cbdf7",
+      "bytes": 86688,
+      "textSha256": "c9cafe01871c96ffbf1f15cd4170cd36deffbd189f745c5c6cd484b8de46d518",
+      "durationSeconds": 14.448,
+      "kind": "yoga"
+    },
+    "transition_adho-mukha_anjaneyasana_full": {
+      "src": "transition_adho-mukha_anjaneyasana_full.mp3",
+      "sha256": "2a1ea240b5e413a1a9834de5560852773b184d479b8535285c0b1c94489cd78c",
+      "bytes": 62640,
+      "textSha256": "108ea196ee9787911a4eb5032da9e17e9112916532cfba76e66c2b440d908059",
+      "durationSeconds": 10.44,
+      "kind": "yoga"
+    },
+    "transition_anjaneyasana_balasana_easy": {
+      "src": "transition_anjaneyasana_balasana_easy.mp3",
+      "sha256": "a4ad5c03bb10f28f9e06a0de656d5fb9bed77aba9e5191a59401c17154a01138",
+      "bytes": 60624,
+      "textSha256": "5400e0962b9aabdf6aecf039cfb27c3ea62c1106d6df16ba2b2d211f82d9952a",
+      "durationSeconds": 10.104,
+      "kind": "yoga"
+    },
+    "transition_anjaneyasana_balasana_full": {
+      "src": "transition_anjaneyasana_balasana_full.mp3",
+      "sha256": "20c780d382cbe40036158e08c51c3173b3ca92898a05a57887ef7158342272f5",
+      "bytes": 52848,
+      "textSha256": "c421041f1b2c9df16d5cd0e3c26ec95774fcacfd813546125b3b199b9d7d60e4",
+      "durationSeconds": 8.808,
+      "kind": "yoga"
+    },
+    "transition_anjaneyasana_virabhadrasana2_easy": {
+      "src": "transition_anjaneyasana_virabhadrasana2_easy.mp3",
+      "sha256": "9e443020f89248ac69b3226b5e29bf9af8ce7c935d2e7638571c435c15202eae",
+      "bytes": 81792,
+      "textSha256": "0056f16163e817565770e7afa76f83683e8a409bcac6a1545d0645172906ff32",
+      "durationSeconds": 13.632,
+      "kind": "yoga"
+    },
+    "transition_anjaneyasana_virabhadrasana2_full": {
+      "src": "transition_anjaneyasana_virabhadrasana2_full.mp3",
+      "sha256": "83bde09acf95e6d30da0289cb78b6e2990f6e37b729181faee5ef2bdd08e691e",
+      "bytes": 62064,
+      "textSha256": "d7562d8f0c46436765413806b1e21b0584b3719df61b5cea13a049a73269e951",
+      "durationSeconds": 10.344,
+      "kind": "yoga"
+    },
+    "transition_baddha-konasana_paschimottanasana_easy": {
+      "src": "transition_baddha-konasana_paschimottanasana_easy.mp3",
+      "sha256": "48e74ab72068a9e12eb099bd04b4a135ff47d4b0e23423da0d9b7d58be45341e",
+      "bytes": 70848,
+      "textSha256": "e43c7a7289f5c178e5b2f71162b710af3ebfa30d84f4a6bbd378009efb6b49b9",
+      "durationSeconds": 11.808,
+      "kind": "yoga"
+    },
+    "transition_baddha-konasana_paschimottanasana_full": {
+      "src": "transition_baddha-konasana_paschimottanasana_full.mp3",
+      "sha256": "2796a1fcb036e085746981f0ee0fe268210576bcdb294dfbf8fd8c9bc950c1cb",
+      "bytes": 59040,
+      "textSha256": "230f453337194eb0690db87e99d612c4190625840966bf8a75cc53af9f273e8d",
+      "durationSeconds": 9.84,
+      "kind": "yoga"
+    },
+    "transition_baddha-konasana_supta-matsyendrasana_easy": {
+      "src": "transition_baddha-konasana_supta-matsyendrasana_easy.mp3",
+      "sha256": "bffedc3e04f761514bb9cbff4ace6273fa67b35bb4a8e2aedb9ffdc366b26ad4",
+      "bytes": 86400,
+      "textSha256": "36ff07ec875b08a9d28b877a0c2890a724aedd8ed09858199592c86fba47b0d9",
+      "durationSeconds": 14.4,
+      "kind": "yoga"
+    },
+    "transition_baddha-konasana_supta-matsyendrasana_full": {
+      "src": "transition_baddha-konasana_supta-matsyendrasana_full.mp3",
+      "sha256": "6957562ed3cb35ce3513fb26cf11d2817e087096cc13cd30f00609d1009b3014",
+      "bytes": 71856,
+      "textSha256": "7f99609b078150cda3d397467d4f879687d805ab3e912cd3f49c5804812c5fa1",
+      "durationSeconds": 11.976,
+      "kind": "yoga"
+    },
+    "transition_balasana_baddha-konasana_easy": {
+      "src": "transition_balasana_baddha-konasana_easy.mp3",
+      "sha256": "9c25d6ebd4bcdcac7d1bac2734561486ef9cc31ba9993ce2fdd6f1b9837a7276",
+      "bytes": 75456,
+      "textSha256": "5a63f953245ad0221b517c7ce03b8dc6593261ff1a3050cdd8c3c9ba38124dfa",
+      "durationSeconds": 12.576,
+      "kind": "yoga"
+    },
+    "transition_balasana_baddha-konasana_full": {
+      "src": "transition_balasana_baddha-konasana_full.mp3",
+      "sha256": "998bc78dd2b7db18def9a985a923f36372f85543481ce283d481e9498111f1b8",
+      "bytes": 50688,
+      "textSha256": "57cfcbb6cb9c216e8552b1485577c7edff6f62ac86b5f8668fc8f9bd83d2eb17",
+      "durationSeconds": 8.448,
+      "kind": "yoga"
+    },
+    "transition_balasana_savasana_easy": {
+      "src": "transition_balasana_savasana_easy.mp3",
+      "sha256": "4c8f6117ae49c44e52c83e6d599cee11288d88d94759b547dd35a8f42a4b18cb",
+      "bytes": 86976,
+      "textSha256": "6cfea6efd216d2ce6f3b25306f2dd85fade9477a92c1985b57519cd0864ecc5c",
+      "durationSeconds": 14.496,
+      "kind": "yoga"
+    },
+    "transition_balasana_savasana_full": {
+      "src": "transition_balasana_savasana_full.mp3",
+      "sha256": "37320657c5d9ef2559c7cb927fdf558fe312b2030a30f45bb1ef0123d1ee0c29",
+      "bytes": 53712,
+      "textSha256": "f4a67775d19bc2ce244f0d12d1e9783111ce3e936bb39e336288af88c7b9847b",
+      "durationSeconds": 8.952,
+      "kind": "yoga"
+    },
+    "transition_bhujangasana_balasana_easy": {
+      "src": "transition_bhujangasana_balasana_easy.mp3",
+      "sha256": "c1917dd7cbdcd0c3aa97d807b1485e34c1c5abb711b99bb138844b4d999dea77",
+      "bytes": 63504,
+      "textSha256": "15cb1e6841e5689eaf2a387a71ac91a798a7f0c311d08f1987b5097bfc28dee1",
+      "durationSeconds": 10.584,
+      "kind": "yoga"
+    },
+    "transition_bhujangasana_balasana_full": {
+      "src": "transition_bhujangasana_balasana_full.mp3",
+      "sha256": "044deeb0354a8c8a8aa369afcea036834b00968ebd870057e6c8f5428bcc0616",
+      "bytes": 51408,
+      "textSha256": "c7a330b135eff9c65736afdf81bb08ff77401182128b82a737d698418423c676",
+      "durationSeconds": 8.568,
+      "kind": "yoga"
+    },
+    "transition_marjaryasana_anjaneyasana_easy": {
+      "src": "transition_marjaryasana_anjaneyasana_easy.mp3",
+      "sha256": "b414a96fe0a332ffec138c81c2dd881da69e994ba717e56d3eff34d3195b9d15",
+      "bytes": 68256,
+      "textSha256": "fd117105869d16f2e8524bc9686b48c4c1a2fe809aa80267f70adba6987d0ff4",
+      "durationSeconds": 11.376,
+      "kind": "yoga"
+    },
+    "transition_marjaryasana_anjaneyasana_full": {
+      "src": "transition_marjaryasana_anjaneyasana_full.mp3",
+      "sha256": "c6afb7c71df5fd5a727d18bbeb5d937ab0dcbbd1cd34125b92a6b5f9540aaeed",
+      "bytes": 57312,
+      "textSha256": "889246a9ce922a8059ee61492721ad08bfbb807702d8aed4f718b00fed144f11",
+      "durationSeconds": 9.552,
+      "kind": "yoga"
+    },
+    "transition_marjaryasana_baddha-konasana_easy": {
+      "src": "transition_marjaryasana_baddha-konasana_easy.mp3",
+      "sha256": "42884d35f771eeb513d17833b71d19345cb5034c562dc5e5d1a055b94ca36935",
+      "bytes": 75888,
+      "textSha256": "c5b6ad57a3e973e457e5d9724238024800ac3b7d417d7813593a44be81e106de",
+      "durationSeconds": 12.648,
+      "kind": "yoga"
+    },
+    "transition_marjaryasana_baddha-konasana_full": {
+      "src": "transition_marjaryasana_baddha-konasana_full.mp3",
+      "sha256": "959e6d27cfd663242d09d32591260a9d96fd861e243ecad15c1e683b5f4e6f84",
+      "bytes": 54720,
+      "textSha256": "0445fda2cfb537f9253ad9755e922a0110490e8c5919e0b16e2620aa688b430e",
+      "durationSeconds": 9.12,
+      "kind": "yoga"
+    },
+    "transition_marjaryasana_balasana_easy": {
+      "src": "transition_marjaryasana_balasana_easy.mp3",
+      "sha256": "25bb8c3aa31a131dc3455f6b605feba1123a9db3b049fae4f9698b977befecad",
+      "bytes": 58320,
+      "textSha256": "6aa5ad6f9b4f457762a9f215fb10ae49c1287d6d501a8ee91d1e7b31caeadc9e",
+      "durationSeconds": 9.72,
+      "kind": "yoga"
+    },
+    "transition_marjaryasana_balasana_full": {
+      "src": "transition_marjaryasana_balasana_full.mp3",
+      "sha256": "3f6d979476dbb9af2d029371b892cf5078180a98132baba3a581b8eea76e1d73",
+      "bytes": 49536,
+      "textSha256": "644680f2d1b09fc70d6b4bd25e739f1290cf52dedfcf1cb60baaa6b6e8090011",
+      "durationSeconds": 8.256,
+      "kind": "yoga"
+    },
+    "transition_paschimottanasana_supta-matsyendrasana_easy": {
+      "src": "transition_paschimottanasana_supta-matsyendrasana_easy.mp3",
+      "sha256": "9822fff1cd91bef301d9a3dc55bab3d34396ef5247b38c13cd951541fde3be06",
+      "bytes": 86688,
+      "textSha256": "7b5c187ff404507f853c969e43422f13d213bf726b02c6bcbb6fc1cf6c27a3b4",
+      "durationSeconds": 14.448,
+      "kind": "yoga"
+    },
+    "transition_paschimottanasana_supta-matsyendrasana_full": {
+      "src": "transition_paschimottanasana_supta-matsyendrasana_full.mp3",
+      "sha256": "45f6cd6f35bc126c370443c5f771e6a7f49a757e5a1d26325d5c70fa9cd6dc85",
+      "bytes": 70704,
+      "textSha256": "d8aa3bc2d30673d1f3e1e5b3fb6864fd0859a89b530779494c0e1473ec94303e",
+      "durationSeconds": 11.784,
+      "kind": "yoga"
+    },
+    "transition_supta-matsyendrasana_savasana_easy": {
+      "src": "transition_supta-matsyendrasana_savasana_easy.mp3",
+      "sha256": "0b8a08e60b9548853ac9f5370af90f01c465a71a13d719b9d7f9485900446780",
+      "bytes": 72432,
+      "textSha256": "b8e86204d67aae1561457dff6de0c5cf69709761f58e84d613a4bddea931714a",
+      "durationSeconds": 12.072,
+      "kind": "yoga"
+    },
+    "transition_supta-matsyendrasana_savasana_full": {
+      "src": "transition_supta-matsyendrasana_savasana_full.mp3",
+      "sha256": "0ae847dd82e05ea3e31f5b150e8f92dff3fbe9942f72025b83c65b3ea1222012",
+      "bytes": 53568,
+      "textSha256": "2bf0cf476519ff38ef6bd586d6249f9892c4230d85167bc3b3f672b0edc44a65",
+      "durationSeconds": 8.928,
+      "kind": "yoga"
+    },
+    "transition_tadasana_adho-mukha_easy": {
+      "src": "transition_tadasana_adho-mukha_easy.mp3",
+      "sha256": "a9f7933eb2eb035c52c4af520f8eb3b35ead50a84d096c1dd3b1f9e1d8e579d5",
+      "bytes": 87264,
+      "textSha256": "fb59f543afbcb66751933c5aa73696006e98a419537059f02ec6fbac0678b187",
+      "durationSeconds": 14.544,
+      "kind": "yoga"
+    },
+    "transition_tadasana_adho-mukha_full": {
+      "src": "transition_tadasana_adho-mukha_full.mp3",
+      "sha256": "26b68999e7af44a32cfae9be5201caf4feff9d6c984c6d041e24a8ddb572b5d6",
+      "bytes": 73728,
+      "textSha256": "32db4a0d488b3d13e4503e1a24d673a537cc807a1892b0311250c88bc33946f5",
+      "durationSeconds": 12.288,
+      "kind": "yoga"
+    },
+    "transition_tadasana_marjaryasana_easy": {
+      "src": "transition_tadasana_marjaryasana_easy.mp3",
+      "sha256": "c66de1c5b8498ae3ee974fbff06d590474c2946726174dd0727f83384bab6ae5",
+      "bytes": 69696,
+      "textSha256": "8c146dea71d504f0a060c69c6e44d843426440cf9a836e4af4689c2944c366e5",
+      "durationSeconds": 11.616,
+      "kind": "yoga"
+    },
+    "transition_tadasana_marjaryasana_full": {
+      "src": "transition_tadasana_marjaryasana_full.mp3",
+      "sha256": "238f5992eea864bcb11a7e3c8aa0754df26fab48d16f487f191e7ce3794e5f0f",
+      "bytes": 67824,
+      "textSha256": "e3834db3bd2b80d0458bd493c919e75b4d32dbc709b7ffde778b81ee24e668de",
+      "durationSeconds": 11.304,
+      "kind": "yoga"
+    },
+    "transition_tadasana_vrksasana_easy": {
+      "src": "transition_tadasana_vrksasana_easy.mp3",
+      "sha256": "ce1b92b8ba5f70899aaec00a4e584748cfff7a7f9554dd07be7b06d194297276",
+      "bytes": 62928,
+      "textSha256": "e90fc4075de72d96de17cd5f7f5b432ccfe7acbb14f5410b11343425ff9e3a83",
+      "durationSeconds": 10.488,
+      "kind": "yoga"
+    },
+    "transition_tadasana_vrksasana_full": {
+      "src": "transition_tadasana_vrksasana_full.mp3",
+      "sha256": "ceb7cd313ccb12ad6f491bb7a2cd0ba62160fb78262e40764c534608e1a48652",
+      "bytes": 56304,
+      "textSha256": "3cc0170c1c40e747629954024444973362c02359c823dd964136925df5023b49",
+      "durationSeconds": 9.384,
+      "kind": "yoga"
+    },
+    "transition_virabhadrasana2_balasana_easy": {
+      "src": "transition_virabhadrasana2_balasana_easy.mp3",
+      "sha256": "ccc8708b9654d63fa1639dd067ebc2b3614bd462946b55a68573c545f2ca780f",
+      "bytes": 67248,
+      "textSha256": "5ce949c7525f635cfb047abd7307695845ddcd24699ffb9201d4757dc50347db",
+      "durationSeconds": 11.208,
+      "kind": "yoga"
+    },
+    "transition_virabhadrasana2_balasana_full": {
+      "src": "transition_virabhadrasana2_balasana_full.mp3",
+      "sha256": "fd67e4e6aa4e81c3e0e847967151086e2f60b7987544bcedf368e7653c114149",
+      "bytes": 55872,
+      "textSha256": "5fcff00c7cdc49667b4f24aedfbb4644d404f744f49c554bc538ff7bbba55ed9",
+      "durationSeconds": 9.312,
+      "kind": "yoga"
+    },
+    "transition_virabhadrasana2_bhujangasana_easy": {
+      "src": "transition_virabhadrasana2_bhujangasana_easy.mp3",
+      "sha256": "121a760eaaad691330d1188d44fbe472adeedb9fa7390d4ee37e6e0ad01ad9bf",
+      "bytes": 62208,
+      "textSha256": "6c8dcc78da89d1143a66f31e1ab0abdb63178020812b84dadee9751392b5b609",
+      "durationSeconds": 10.368,
+      "kind": "yoga"
+    },
+    "transition_virabhadrasana2_bhujangasana_full": {
+      "src": "transition_virabhadrasana2_bhujangasana_full.mp3",
+      "sha256": "30cc93253285e6652cac15ae4ee102866e6ac2851c4a5773c15ad49278d3f336",
+      "bytes": 57456,
+      "textSha256": "1f5915d24b9dd4a037573ec9cd4bdf8edf8501f19018dd4afc2fe07a418ed619",
+      "durationSeconds": 9.576,
+      "kind": "yoga"
+    },
+    "transition_vrksasana_virabhadrasana2_easy": {
+      "src": "transition_vrksasana_virabhadrasana2_easy.mp3",
+      "sha256": "6a0150bdd0972ce8ae0cebbf9e20293fe6d3bfdc9b15c7fb5245e205d512638f",
+      "bytes": 74448,
+      "textSha256": "6a4833cd42a004d7a9fbbac30916de67213c27f058eec28be4e940dd1ac679ee",
+      "durationSeconds": 12.408,
+      "kind": "yoga"
+    },
+    "transition_vrksasana_virabhadrasana2_full": {
+      "src": "transition_vrksasana_virabhadrasana2_full.mp3",
+      "sha256": "0338d1b81bacd1f583b7867092a433de90cbe3484f17994ef4a4ce8aac5b3a58",
+      "bytes": 60624,
+      "textSha256": "7c2aafa3326869a1a5549e47855b0a861168132865421f22f8d5f3a9454b71ce",
+      "durationSeconds": 10.104,
+      "kind": "yoga"
+    }
+  }
+}
