@@ -402,11 +402,25 @@ class Handler(SimpleHTTPRequestHandler):
         try:
             if accounts.api(self, 'GET', path, connection):
                 return
+            if path == "/astro/lecture":
+                params = parse_qs(urlsplit(self.path).query)
+                sign, period = params.get("sign", [""])[0], params.get("period", ["daily"])[0]
+                if sign not in astrology.SIGNS or period not in astrology.PERIODS:
+                    return self.json_response(400, {"error": "Signe ou période invalide"})
+                result = astrology.daily(sign, period)
+                body = astrology.public_reading(sign, period, result).encode("utf-8")
+                self.send_response(200 if result["available"] else 503)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
             if path == "/api/v1/content/horoscope":
                 params=parse_qs(urlsplit(self.path).query)
                 return self.json_response(200, astrology.daily(params.get('sign',[''])[0], params.get('period',['daily'])[0]))
             if path == "/api/health":
-                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.1", "build": "20261125-r8"})
+                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.1", "build": "20261125-r9"})
             if path == "/api/v1/public-config":
                 return self.json_response(200, {"donationUrl": donation_destination()})
             if path == "/api/v1/media/original-status":

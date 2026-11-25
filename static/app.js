@@ -3,7 +3,7 @@
 'use strict';
 import * as Accounts from './auth.js';
 const $ = (s) => document.querySelector(s);
-const APP_VERSION='2.3.1', UI_BUILD='20261125-r8';
+const APP_VERSION='2.3.1', UI_BUILD='20261125-r9';
 let serverVersion=null, serverBuild=null, versionChecked=false;
 function versionPanel(){return '<section class="card version-panel"><h2>À propos de SichoSana</h2><p id="ui-version">Application : '+APP_VERSION+' · '+UI_BUILD+'</p><p id="server-version">Serveur : '+escapeHTML((serverVersion?(serverVersion+(serverBuild?' · '+serverBuild:'')):(versionChecked?'indisponible':'vérification…')))+'</p>'+(serverVersion&&(serverVersion!==APP_VERSION||(serverBuild&&serverBuild!==UI_BUILD))?'<p class="attention">Versions différentes. Actualise l’application avant de poursuivre.</p>':'')+'<button class="secondary" data-action="check-version">Vérifier la version</button></section>';}
 async function checkVersion(){try{const r=await fetch('/api/health',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();serverVersion=typeof d.version==='string'?d.version:null;serverBuild=typeof d.build==='string'?d.build:null;}catch(_){serverVersion=null;}versionChecked=true;if(!session&&(page==='profile'||page==='admin')&&Accounts.loggedIn()&&!Accounts.mustChangePassword())render();}
@@ -102,7 +102,7 @@ function dailyReflection(){
  const [y,m,d]=todayKey().split('-').map(Number),day=Math.floor(Date.UTC(y,m-1,d)/86400000);
  return list[order[((day%order.length)+order.length)%order.length]];
 }
-const astroCacheKey=(sign,period)=>'astro-v231:'+sign+':'+period;
+const astroCacheKey=(sign,period)=>'astro-v231-full:'+sign+':'+period;
 function astroPeriodKey(period,d=new Date()){
  const key=x=>[x.getFullYear(),String(x.getMonth()+1).padStart(2,'0'),String(x.getDate()).padStart(2,'0')].join('-');
  if(period==='monthly')return key(d).slice(0,7);
@@ -114,10 +114,10 @@ function localAstro(){
  if(!sign)return {text:'Choisis ton signe pour découvrir ton horoscope.',sign:'Non configuré',available:false};
  let cached=null;try{cached=JSON.parse(localStorage.getItem(astroCacheKey(sign,period))||'null');}catch(_){}
  const item=astrologyLive?.sign===sign&&astrologyLive?.period===period?astrologyLive:null;
- const valid=x=>x?.available&&x.sign===sign&&x.period===period&&x.periodKey===astroPeriodKey(period);
+ const valid=x=>x?.full===true&&x?.available&&x.sign===sign&&x.period===period&&x.periodKey===astroPeriodKey(period);
  if(valid(item))return item;
  if(valid(cached))return {...cached,cached:true};
- if(cached?.available)return {...cached,cached:true,stale:true};
+ if(cached?.full===true&&cached?.available)return {...cached,cached:true,stale:true};
  return {text:item?.text||'Horoscope momentanément indisponible. Réessaie avec une connexion.',sign,period,available:false,reason:item?.reason};
 }
 async function refreshAstrology(){
@@ -192,7 +192,7 @@ function home(){
  const r=dailyRoutine(),astro=localAstro(),reflection=dailyReflection(),n=profile().history.filter(x=>x.date===todayKey()).length;
  return heading('Bienvenue','Un moment pour soi','Du mouvement, de la douceur et un peu de temps pour toi.')+
  '<div class="home-desktop-layout"><div class="home-main"><section class="hero"><div class="hero-content"><span class="pill">Séance du jour</span><h2>'+escapeHTML(r.name)+'</h2><p>'+escapeHTML(r.subtitle)+'</p><div class="meta"><span>'+r.duration+' min</span><span>'+escapeHTML(r.level)+'</span></div><button class="primary" type="button" data-action="start-yoga" data-value="'+r.id+'">▷ Commencer ma séance</button></div><div class="hero-art" aria-hidden="true">'+logo+'</div></section>'+
- '<div class="wellness-row"><article class="tile"><div class="tile-icon">☼</div><h3>Méditation guidée</h3><p>Une parenthèse calme, avec un niveau de guidage qui respecte ton rythme.</p><button class="text-link" data-action="page" data-value="meditate">Découvrir les séances ›</button></article><article class="tile"><div class="tile-icon">☾</div><h3>Astro du jour</h3><p>'+escapeHTML((astro.stale?'Dernière lecture ('+astro.periodKey+') : ':'')+astro.text)+'</p><button class="text-link" data-action="page" data-value="astro">Mon inspiration ›</button></article></div>'+
+ '<div class="wellness-row"><article class="tile"><div class="tile-icon">☼</div><h3>Méditation guidée</h3><p>Une parenthèse calme, avec un niveau de guidage qui respecte ton rythme.</p><button class="text-link" data-action="page" data-value="meditate">Découvrir les séances ›</button></article><article class="tile"><div class="tile-icon">☾</div><h3>Astro du jour</h3><p>'+escapeHTML((astro.stale?'Dernière lecture ('+astro.periodKey+') : ':'')+(astro.preview||astro.text))+'</p><button class="text-link" data-action="page" data-value="astro">Mon inspiration ›</button></article></div>'+
  '<div class="section-heading"><h2>Explorer le yoga</h2><button class="text-link" data-action="page" data-value="yoga">Toutes les séances ›</button></div><div class="cards">'+yoga.routines.slice(1,4).map(routineCard).join('')+'</div></div>'+
  '<aside class="home-aside">'+programSidebar()+'<div class="card"><div class="eyebrow">Rituel de la semaine</div><h3>7 jours de présence</h3><p class="muted">La régularité se construit sans pression.</p>'+weeklyStats()+'<p class="muted">'+n+' séance'+(n>1?'s':'')+' terminée'+(n>1?'s':'')+' aujourd’hui.</p></div>'+
  '<div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><div class="eyebrow">Ta progression</div>'+smallStats()+'<button class="text-link" data-action="page" data-value="profile">Voir mon suivi ›</button></div></aside></div>';
@@ -249,14 +249,31 @@ function meditationPage(){
  '<div class="section-heading"><h2>Choisir un moment</h2></div>'+pills(opts,meditationFilter,'med-filter')+
  '<div class="cards">'+subset.map(medCard).join('')+'</div>';
 }
+function formatAstroDate(a){
+ if(!a.periodKey)return 'Lecture indisponible';
+ const date=new Date(a.periodKey+(a.period==='monthly'?'-01':'')+'T12:00:00');
+ if(Number.isNaN(date.getTime()))return 'Date indisponible';
+ if(a.period==='monthly')return new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(date);
+ const fmt=new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+ if(a.period==='weekly'){const end=new Date(date);end.setDate(end.getDate()+6);return 'Du '+fmt.format(date)+' au '+fmt.format(end);}
+ return fmt.format(date);
+}
+function updateAstroCanonical(){
+ let node=document.querySelector('link[data-astro-canonical]');
+ const data=!session&&page==='astro'&&Accounts.loggedIn()&&!Accounts.mustChangePassword()?localAstro():null;
+ if(!data?.full||!data.canonicalUrl){node?.remove();return;}
+ try{const url=new URL(data.canonicalUrl);if(url.origin!=='https://sigastra.com'){node?.remove();return;}
+ if(!node){node=document.createElement('link');node.rel='canonical';node.dataset.astroCanonical='1';document.head.append(node);}
+ node.href=url.href;}catch(_){node?.remove();}
+}
 function astroPage(){
  const a=localAstro(),reflection=dailyReflection();
  const link=escapeHTML(a.sourceUrl||'https://sigastra.com/fr/horoscope-du-jour');
  return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture culturelle et symbolique, sans prédiction scientifique.')+
  '<div class="astro-controls"><div class="field"><label for="astro-sign">Mon signe astrologique</label><select id="astro-sign"><option value="">Choisir un signe</option>'+signs.map(s=>'<option value="'+s+'" '+(profile().zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
  '<div class="segment astro-periods sliding-segment" role="group" aria-label="Période" style="--count:3;--index:'+['daily','weekly','monthly'].indexOf(astroPeriod)+'">'+[['daily','Aujourd’hui'],['weekly','Cette semaine'],['monthly','Ce mois']].map(([id,name])=>'<button type="button" data-action="astro-period" data-value="'+id+'" aria-pressed="'+(astroPeriod===id)+'">'+name+'</button>').join('')+'</div></div>'+
- '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+escapeHTML(a.periodKey?(a.period==='weekly'?'Semaine du ':a.period==='monthly'?'Mois de ':'')+a.periodKey:'Lecture indisponible')+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML((a.stale?'Dernière lecture enregistrée — non actualisée. ':'')+a.text)+'</p>'+
- ''+(!a.available?'<button class="secondary" data-action="refresh-astro">Réessayer</button>':'')+'<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="/astro-source.html">Horoscopes publics</a></div></div>'+
+ '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+escapeHTML(formatAstroDate(a))+'</span><h2>L’inspiration des astres</h2><div class="astro-quote">'+(a.stale?'<p class="muted">Dernière lecture enregistrée — non actualisée.</p>':'')+String(a.text||'').split(/\n\s*\n/).map(p=>'<p>'+escapeHTML(p)+'</p>').join('')+'</div>'+
+ ''+(!a.available?'<button class="secondary" data-action="refresh-astro">Réessayer</button>':'')+'<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="'+(a.available?'/astro/lecture?sign='+encodeURIComponent(a.sign)+'&amp;period='+encodeURIComponent(a.period):'/astro-source.html')+'">Lecture publique</a></div></div>'+
  '<div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Observe ta respiration et choisis une intention simple.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
 }
 function smallStats(){
@@ -339,6 +356,7 @@ function stepIndex(s){
  return s.steps.length-1;
 }
 function render(){
+ updateAstroCanonical();
  if(!Accounts.loggedIn() || Accounts.mustChangePassword()){
   document.body.classList.remove('immersive-session');
    document.documentElement.dataset.theme='linen';

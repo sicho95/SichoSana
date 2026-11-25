@@ -72,3 +72,28 @@ class PeriodTests(unittest.TestCase):
         self.assertEqual(m['easy']['adho-mukha'],'adho-mukha-easy')
         self.assertEqual(m['alternatives']['adho-mukha'][0]['image'],'adho-mukha-floor')
         self.assertIn('au sol',m['alternatives']['adho-mukha'][0]['text'])
+
+    def test_horoscope_full_and_canonical(self):
+        import json,os
+        from unittest.mock import patch,MagicMock
+        from server import astrology
+        payload={"items":[{"text":"Première phrase. Deuxième phrase. Troisième phrase entière.\n\nDernier paragraphe complet."}],"attribution":{"localizedHref":"https://sigastra.com/fr/horoscope-du-jour","canonicalTag":'<link rel="canonical" href="https://sigastra.com/fr/horoscope-du-jour">' }}
+        response=MagicMock()
+        response.status=200
+        response.read.return_value=json.dumps(payload).encode()
+        response.__enter__.return_value=response
+        astrology.CACHE.clear()
+        try:
+            with patch.dict(os.environ,{"SICHOSANA_ASTRO_ENABLED":"1"}),patch.object(astrology,"urlopen",return_value=response) as request:
+                for period in ("daily","weekly","monthly"):
+                    result=astrology.daily("Verseau",period)
+                    self.assertTrue(result["full"])
+                    self.assertIn("full=1",request.call_args.args[0].full_url)
+                    self.assertEqual(result["text"],payload["items"][0]["text"])
+                    self.assertEqual(result["preview"],"Première phrase.")
+                    self.assertIn('<link rel="canonical" href="https://sigastra.com/fr/horoscope-du-jour">',astrology.public_reading("Verseau",period,result))
+                    self.assertIn("Dernier paragraphe complet.",astrology.public_reading("Verseau",period,result))
+        finally:
+            astrology.CACHE.clear()
+        with self.assertRaises(ValueError):
+            astrology.source_canonical('<link rel="canonical" href="https://example.com/">')

@@ -405,3 +405,23 @@ test('v231: nom sanskrit et consigne de maintien différente après transition',
  await expect(page.locator('.transition-label')).toContainText('Adaptation');
  await expect(page.locator('.practice-instructions p')).toContainText('paumes au sol');
 });
+
+test('v231: horoscope entier, texte courant et date française',async({page})=>{
+ await page.setViewportSize({width:390,height:664});await signIn(page);
+ const full="Première phrase. Deuxième phrase. Troisième phrase complète.\n\nDernier paragraphe sans coupure.";
+ await page.route('**/api/v1/content/horoscope?*',async route=>{
+  const params=new URL(route.request().url()).searchParams,period=params.get('period');
+  const now=new Date(),date=now.toISOString().slice(0,10);
+  const key=period==='monthly'?date.slice(0,7):date;
+  await route.fulfill({json:{available:true,full:true,text:full,preview:"Première phrase.",sign:params.get('sign'),period,periodKey:key,canonicalUrl:"https://sigastra.com/fr/horoscope-du-jour",sourceUrl:"https://sigastra.com/fr/horoscope-du-jour"}});
+ });
+ await page.locator('#bottomnav [data-value="astro"]').click();
+ await page.locator('#astro-sign').selectOption('Verseau');
+ await page.locator('[data-action="astro-period"][data-value="monthly"]').click();
+ await expect(page.locator('.astro-quote')).toContainText('Dernier paragraphe sans coupure.');
+ await expect(page.locator('.astrology-card .pill')).not.toContainText(/\d{4}-\d{2}/);
+ expect(parseFloat(await page.locator('.astro-quote').evaluate(n=>getComputedStyle(n).fontSize))).toBeLessThanOrEqual(18);
+ await expect(page.locator('head link[data-astro-canonical]')).toHaveAttribute('href','https://sigastra.com/fr/horoscope-du-jour');
+ await page.locator('#bottomnav [data-value="home"]').click();
+ await expect(page.locator('head link[data-astro-canonical]')).toHaveCount(0);
+});

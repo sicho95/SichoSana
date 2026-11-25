@@ -8,7 +8,8 @@ const info=async sign=>{
  const data=await res.json();
  const section=document.createElement('article');section.className='card';
  const heading=document.createElement('h2');heading.textContent=sign;section.append(heading);
- const paragraph=document.createElement('p');paragraph.textContent=data.text||'Indisponible';section.append(paragraph);
+ const paragraph=document.createElement('p');paragraph.textContent=data.preview||(!data.available?data.text:'Lecture disponible.')||'Indisponible';section.append(paragraph);
+ if(data.available){const reading=document.createElement('a');reading.href='/astro/lecture?sign='+encodeURIComponent(sign)+'&period=daily';reading.textContent='Lire l’horoscope complet';section.append(reading,document.createElement('br'));}
  const link=document.createElement('a');link.href='https://sigastra.com/fr/horoscope-du-jour';link.textContent='Source Sigastra';section.append(link);
  return section;
  }catch(e){const item=document.createElement('article');item.className='card';item.textContent=sign+' — Indisponible';return item;}

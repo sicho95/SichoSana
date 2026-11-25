@@ -11,7 +11,9 @@ import os
 import re
 import threading
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
+from html.parser import HTMLParser
+from html import escape
 from urllib.request import Request, urlopen
 
 SIGNS = {
@@ -36,6 +38,50 @@ def period_key(period, now=None):
     return day.isoformat()
 
 
+class CanonicalParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.href = None
+
+    def handle_starttag(self, tag, attrs):
+        values = dict(attrs)
+        if tag == "link" and values.get("rel") == "canonical":
+            self.href = values.get("href")
+
+
+def source_canonical(tag):
+    parser = CanonicalParser()
+    if not isinstance(tag, str):
+        raise ValueError("Canonical absent")
+    parser.feed(tag)
+    parsed = urlsplit(parser.href or "")
+    if parsed.scheme != "https" or parsed.netloc != "sigastra.com":
+        raise ValueError("Canonical invalide")
+    return parser.href
+
+
+def short_preview(text):
+    first = re.split(r"(?<=[.!?])\s+", text.strip())[0]
+    return first if len(first) <= 240 else "Ton horoscope du jour est disponible."
+
+
+def public_reading(sign, period, result):
+    canonical = result.get("canonicalUrl")
+    head = ('<link rel="canonical" href="'+escape(canonical, quote=True)+'">') if canonical else ""
+    label = {"daily":"du jour","weekly":"de la semaine","monthly":"du mois"}[period]
+    title = escape(sign + " — Horoscope " + label)
+    body = "".join("<p>"+escape(p)+"</p>" for p in result.get("text","").split("\n\n") if p.strip())
+    link = escape(result.get("sourceUrl", SOURCE_URL), quote=True)
+    return ('<!doctype html><html lang="fr"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            '<title>'+title+' — SichoSana</title>'+head+
+            '<link rel="stylesheet" href="/styles.css?v=20261125-r9"></head>'
+            '<body><main class="astro-public"><a href="/astro-source.html">Horoscopes publics</a>'
+            '<article class="card astrology-card"><h1>'+title+'</h1><div class="astro-quote">'+body+'</div>'
+            '<p class="muted">Lecture symbolique, sans prédiction scientifique.</p>'
+            '<p>Source : <a href="'+link+'">Sigastra</a></p></article></main></body></html>')
+
+
 def daily(sign, period="daily"):
     if period not in PERIODS:
         period = "daily"
@@ -49,7 +95,7 @@ def daily(sign, period="daily"):
     with LOCK:
         if key in CACHE:
             return CACHE[key]
-    params = urlencode({"lang": "fr", "sign": SIGNS[sign]})
+    params = urlencode({"lang": "fr", "sign": SIGNS[sign], "full": "1"})
     url = f"https://sigastra.com/api/v1/{period}?" + params
     public_url = os.environ.get("SICHOSANA_PUBLIC_URL", "https://yoga.sicho.cc.cd").rstrip("/")
     try:
@@ -70,13 +116,13 @@ def daily(sign, period="daily"):
                      and isinstance(i.get("text"), str) and i["text"].strip()), None)
         if item is None:
             raise ValueError("Horoscope vide.")
-        full_text = re.sub(r"\s+", " ", item["text"]).strip()
-        short = " ".join(re.split(r"(?<=[.!?])\s+", full_text)[:2]).strip()
+        full_text = "\n\n".join(re.sub(r"\s+", " ", p).strip() for p in re.split(r"\n\s*\n", item["text"].strip()) if p.strip())
         attribution = payload.get("attribution") or {}
+        canonical = source_canonical(attribution.get("canonicalTag"))
         link = attribution.get("localizedHref", SOURCE_URL)
         if not isinstance(link, str) or not link.startswith("https://sigastra.com/"):
             link = SOURCE_URL
-        result = {"available": True, "text": short, "source": SOURCE_NAME,
+        result = {"available": True, "text": full_text, "preview": short_preview(full_text), "canonicalUrl": canonical, "full": True, "source": SOURCE_NAME,
                   "sourceUrl": link, "sign": sign, "period": period, "periodKey": key[0], "date": period_key('daily')}
         with LOCK:
             CACHE[key] = result

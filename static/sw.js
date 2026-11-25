@@ -2,8 +2,8 @@
    Une réponse HTTP 206 ne peut pas être stockée dans CacheStorage.
    Hors ligne, servir un fragment 206 depuis le fichier complet (200) en cache.
    Ne jamais mettre en cache l'API ni les données de compte. */
-const VERSION='sichosana-static-v231-r8-20261125';
-const ESSENTIAL=['/','/index.html','/styles.css','/app.js','/styles.css?v=20261125-r8','/app.js?v=20261125-r8','/auth.js','/icon.svg',
+const VERSION='sichosana-static-v231-r9-20261125';
+const ESSENTIAL=['/','/index.html','/styles.css','/app.js','/styles.css?v=20261125-r9','/app.js?v=20261125-r9','/auth.js','/icon.svg',
   '/manifest.webmanifest','/data/yoga.json','/data/yoga-api-library.json',
   '/data/pose-guidance.json','/data/salutations.json','/data/meditations.json','/data/programs.json',
   '/data/transitions.json','/data/reflections.json','/data/pose-media.json','/data/original-art.json','/data/variant-art.json','/media/yoga-hero.png'];
