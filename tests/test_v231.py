@@ -58,3 +58,17 @@ class PeriodTests(unittest.TestCase):
                 hold=clips['hold_'+pose+'_'+variant]
                 self.assertNotIn('Nous allons pratiquer',hold)
                 self.assertNotEqual(hold,args[2]['poses'][pose]['facile'])
+
+    def test_downward_dog_ground_alignment(self):
+        import json
+        from pathlib import Path
+        root=Path(__file__).resolve().parents[1]/'static/data'
+        g=json.loads((root/'pose-guidance.json').read_text())['poses']['adho-mukha']
+        t=json.loads((root/'transitions.json').read_text())['routes']
+        self.assertIn('au sol',g['facile'])
+        self.assertIn('genoux fléchis',g['facile'])
+        self.assertNotIn('mur',g['facile'])
+        self.assertIn('au sol',t['tadasana>adho-mukha']['easy'])
+        self.assertNotIn('mur',t['adho-mukha>anjaneyasana']['easy'])
+        for variant in ('full','easy'):
+            self.assertIn('repose',g['hold'][variant].lower())

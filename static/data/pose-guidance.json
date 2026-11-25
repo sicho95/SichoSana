@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "SichoSana, guidance pédagogique éditoriale ; représentation visuelle Yoga API pour les correspondances exactes seulement",
-  "note": "Aucune illustration Yoga API ne doit être employée pour une autre posture ; null signifie qu'une illustration exacte n'a pas été identifiée.",
+  "note": "Les illustrations de référence représentent la posture normale. Les supports facultatifs et les amplitudes réduites peuvent ne pas être représentés ; ne jamais présenter une image de référence comme une variante exacte. Relecture éditoriale des 13 postures et 19 liaisons ; validation humaine anatomique restant à réaliser.",
   "stages": [
     "preparation",
     "facile",
@@ -10,7 +10,7 @@
   "poses": {
     "tadasana": {
       "preparation": "Debout, prends trois respirations et répartis le poids entre les deux pieds.",
-      "facile": "Reste près d’un mur, pieds légèrement écartés, mains posées sur les hanches.",
+      "facile": "Debout, pieds légèrement écartés, bras le long du corps, genoux souples. Un appui stable à proximité est facultatif.",
       "respiration": "Inspire en grandissant la colonne, expire en relâchant les épaules.",
       "alignement": "Garde le regard à l’horizon, les genoux souples et le bassin neutre.",
       "prudence": "Évite de verrouiller les genoux. Repose-toi si la station debout est inconfortable.",
@@ -22,19 +22,19 @@
     },
     "balasana": {
       "preparation": "À quatre pattes, effectue quelques bascules légères du bassin.",
-      "facile": "Écarte les genoux et place un coussin entre les talons et le bassin, ou sous le front.",
+      "facile": "À quatre pattes, recule le bassin vers les talons sans forcer. Pose le front sur un support si nécessaire.",
       "respiration": "Laisse le ventre se détendre à l’expiration, sans retenir le souffle.",
       "alignement": "Ne force pas la flexion des genoux ni le contact du front avec le sol.",
       "prudence": "Si les genoux ou les chevilles sont sensibles, adapte le support ou choisis le repos sur le dos.",
       "apiPose": "yoga-api-10",
       "hold": {
-        "full": "Laisse les épaules et le ventre se détendre au fil des expirations.",
-        "easy": "Vérifie que tes supports sont confortables. Respire sans forcer la flexion des genoux."
+        "full": "Laisse les épaules et le ventre se détendre. Reviens à quatre pattes si les genoux deviennent inconfortables.",
+        "easy": "Respire librement. Ajuste le support si nécessaire, ou redresse-toi pour te reposer."
       }
     },
     "marjaryasana": {
       "preparation": "Installe les mains sous les épaules et les genoux sous le bassin, avec un support si besoin.",
-      "facile": "Fais de petits mouvements du dos en restant dans une amplitude confortable.",
+      "facile": "À quatre pattes, mains sous les épaules et genoux sous le bassin, alterne un léger dos rond et un léger retour vers le dos neutre.",
       "respiration": "Expire en arrondissant doucement le dos, inspire en revenant vers une légère ouverture.",
       "alignement": "Déplace le dos progressivement, sans tirer sur la nuque.",
       "prudence": "Pour les poignets sensibles, utilise des poings fermés ou un support stable.",
@@ -46,79 +46,79 @@
     },
     "adho-mukha": {
       "preparation": "Depuis quatre pattes, allonge les bras, puis reviens. Répète sans soulever les genoux.",
-      "facile": "Mains contre un mur ou une table stable, recule les pieds pour allonger le dos.",
+      "facile": "Pose les paumes au sol, soulève le bassin vers le haut et l’arrière. Garde les genoux fléchis et laisse les talons se soulever si nécessaire.",
       "respiration": "Souffle régulièrement en laissant la nuque longue.",
       "alignement": "Garde les genoux fléchis et privilégie la longueur du dos.",
-      "prudence": "Évite l'appui prolongé si les poignets ou les épaules sont douloureux.",
+      "prudence": "Ne force ni les talons ni les genoux. Repose les genoux dès que les poignets, les épaules ou le dos fatiguent. Un chien au mur est une autre adaptation, non illustrée ici.",
       "apiPose": null,
       "hold": {
-        "full": "Relâche la nuque et respire librement. Privilégie la longueur du dos plutôt que celle des jambes.",
-        "easy": "Laisse la nuque dans le prolongement du dos. Respire tranquillement, sans forcer les épaules."
+        "full": "Relâche la nuque, allonge le dos et respire librement. Après quelques respirations, repose les genoux au sol. Reprends seulement si tu es à l’aise.",
+        "easy": "Laisse la nuque dans le prolongement du dos. Après quelques respirations, repose les genoux au sol, puis reprends si tu es à l’aise."
       }
     },
     "virabhadrasana2": {
       "preparation": "Debout, fais un pas latéral raisonnable puis reviens au centre.",
-      "facile": "Réduis la largeur de la fente et garde les mains sur les hanches.",
+      "facile": "Écarte modérément les pieds, ouvre les bras sur les côtés et fléchis peu le genou avant, dans l’axe du pied.",
       "respiration": "Inspire pour allonger le buste, expire en stabilisant les appuis.",
       "alignement": "Oriente le genou avant vers les orteils sans le laisser rentrer vers l’intérieur.",
       "prudence": "Si le genou avant est sensible, réduis l’amplitude ou reviens debout.",
       "apiPose": "yoga-api-45",
       "hold": {
-        "full": "Garde le genou avant dans l’axe du pied. Respire calmement, le regard posé.",
-        "easy": "Stabilise tes appuis sans forcer le genou avant. Relâche les épaules."
+        "full": "Garde le genou avant dans l’axe du pied. Après quelques respirations, tends la jambe, reviens au centre et change de côté.",
+        "easy": "Stabilise les appuis. Après quelques respirations, relâche la fente et change de côté, sans forcer."
       }
     },
     "bhujangasana": {
       "preparation": "Allongé sur le ventre, rapproche doucement les omoplates sans lever le buste.",
-      "facile": "Reste sur les avant-bras en petite extension, ou lève légèrement la poitrine sans pousser sur les mains.",
+      "facile": "Sur le ventre, mains au sol près de la poitrine, décolle légèrement le sternum. Garde les coudes fléchis et le bassin au sol.",
       "respiration": "Inspire tranquillement en allongeant le sternum, expire en reposant le buste.",
       "alignement": "Garde le pubis au sol et la nuque dans l’axe, sans chercher une grande cambrure.",
       "prudence": "Si le bas du dos tire ou fait mal, renonce à cette extension et repose-toi.",
       "apiPose": null,
       "hold": {
-        "full": "Laisse le pubis au sol, la nuque longue et le souffle régulier. Repose le buste si nécessaire.",
-        "easy": "Respire librement et relâche toute tension lombaire. Repose-toi si l’extension devient inconfortable."
+        "full": "Garde le bassin au sol et la nuque longue. Après quelques respirations, repose le buste lentement ; répète seulement si confortable.",
+        "easy": "Respire librement. Repose le buste après quelques respirations et reprends seulement si le dos reste confortable."
       }
     },
     "baddha-konasana": {
       "preparation": "Assis sur un coussin, prends une posture haute et confortable.",
-      "facile": "Éloigne les talons du bassin et soutiens les genoux avec des coussins.",
+      "facile": "Assieds-toi, rapproche les plantes des pieds et éloigne un peu les talons du bassin. Laisse les genoux s’ouvrir naturellement, sans les pousser.",
       "respiration": "Respire en laissant les hanches se relâcher sans chercher à descendre plus bas.",
       "alignement": "Allonge le dos et laisse les genoux libres de rester hauts.",
       "prudence": "Ne presse jamais les genoux vers le sol.",
       "apiPose": "yoga-api-5",
       "hold": {
         "full": "Laisse les hanches se relâcher au rythme du souffle. Ne presse pas les genoux vers le sol.",
-        "easy": "Laisse les supports porter tes jambes. Respire sans chercher à augmenter l’ouverture."
+        "easy": "Respire calmement. Laisse les genoux à une hauteur confortable, avec un coussin sous chacun si nécessaire."
       }
     },
     "vrksasana": {
       "preparation": "Debout près d’un mur, transfère le poids d’un pied à l’autre.",
-      "facile": "Garde la pointe du pied libre au sol ou pose-la contre la cheville, une main sur le mur.",
+      "facile": "Debout, transfère ton poids sur une jambe. Pose la pointe du pied libre au sol près de la cheville, sans appuyer sur le genou. Un mur peut servir d’appui.",
       "respiration": "Respire calmement et fixe un point immobile.",
       "alignement": "Garde le bassin de face et évite toute pression sur l’articulation du genou.",
       "prudence": "Une aide stable est préférable en cas d’équilibre incertain.",
       "apiPose": "yoga-api-41",
       "hold": {
-        "full": "Fixe un point immobile et respire. Change de côté à ton rythme si nécessaire.",
-        "easy": "Garde ton appui stable. Tu peux reposer le pied libre à tout moment."
+        "full": "Fixe un point et respire. Repose le pied libre après quelques respirations puis change de côté.",
+        "easy": "Garde un appui stable. Repose le pied libre, puis pratique de l’autre côté à ton rythme."
       }
     },
     "anjaneyasana": {
       "preparation": "Depuis debout, place un pied devant l’autre et teste une petite fente.",
-      "facile": "Pose le genou arrière sur un support épais et garde les mains sur la cuisse avant.",
+      "facile": "Place un pied devant, genou arrière au sol sur un support si nécessaire. Réduis l’amplitude de la fente et pose les mains sur la cuisse avant.",
       "respiration": "Inspire pour redresser le buste, expire en stabilisant les appuis.",
       "alignement": "Garde le genou avant dans la direction du pied.",
       "prudence": "Évite la pression sur le genou arrière, adapte ou renonce si douleur.",
       "apiPose": "yoga-api-23",
       "hold": {
-        "full": "Garde le genou avant dans la direction du pied, et respire sans creuser le dos.",
-        "easy": "Vérifie que le genou arrière est confortable. Relâche les épaules et laisse le souffle circuler."
+        "full": "Garde le genou avant dans la direction du pied. Après quelques respirations, reviens à quatre pattes et change de côté.",
+        "easy": "Vérifie que le genou arrière est confortable. Reviens à quatre pattes après quelques respirations, puis change de côté."
       }
     },
     "paschimottanasana": {
       "preparation": "Assis sur un coussin, plie les genoux et pose les mains derrière les cuisses.",
-      "facile": "Conserve les genoux bien fléchis et incline légèrement le bassin sans chercher les pieds.",
+      "facile": "Assis, jambes vers l’avant, garde les genoux fléchis. Incline doucement le bassin et pose les mains sur les jambes, sans chercher les pieds.",
       "respiration": "Inspire en allongeant le dos et expire en relâchant les épaules.",
       "alignement": "Ne cherche pas à toucher les orteils; le dos reste aussi long que confortable.",
       "prudence": "Si la flexion réveille une douleur dans le dos ou les jambes, reviens droit.",
@@ -130,20 +130,20 @@
     },
     "supta-matsyendrasana": {
       "preparation": "Sur le dos, plie les genoux puis balance très doucement le bassin de quelques centimètres.",
-      "facile": "Laisse les genoux reposer sur un coussin et limite la rotation.",
+      "facile": "Sur le dos, plie une jambe et guide doucement son genou vers le côté opposé. Soutiens-le avec un coussin si nécessaire.",
       "respiration": "Expire en relâchant les épaules et garde une respiration libre.",
       "alignement": "La rotation vient en douceur, sans contraindre les épaules ni le bassin.",
       "prudence": "Évite toute torsion qui provoque un inconfort lombaire.",
       "apiPose": null,
       "hold": {
-        "full": "Laisse les épaules se déposer, sans imposer de rotation supplémentaire.",
-        "easy": "Respire librement et laisse les supports porter tes jambes. Reviens au centre si nécessaire."
+        "full": "Respire sans imposer de rotation. Reviens au centre doucement, puis pratique du côté opposé.",
+        "easy": "Garde la rotation légère, sans forcer les épaules. Reviens au centre puis change de côté à ton rythme."
       }
     },
     "setu-bandha": {
       "preparation": "Sur le dos, pieds au sol, bascule légèrement le bassin en expirant.",
-      "facile": "Soulève le bassin de quelques centimètres seulement, puis repose-le lentement.",
-      "respiration": "Expire en montant doucement, inspire en redescendant.",
+      "facile": "Sur le dos, genoux fléchis et pieds au sol, soulève le bassin de quelques centimètres puis redescends lentement.",
+      "respiration": "Inspire en soulevant le bassin si cela te convient, expire en le reposant lentement, sans bloquer le souffle.",
       "alignement": "Garde les genoux alignés et la nuque immobile sur le support.",
       "prudence": "N’appuie pas sur la tête ni sur la nuque, arrête si la posture est douloureuse.",
       "apiPose": "yoga-api-4",
@@ -154,14 +154,14 @@
     },
     "savasana": {
       "preparation": "Allonge-toi, prends le temps d’ajuster les supports et ferme les yeux si cela te convient.",
-      "facile": "Pose un coussin sous les genoux ou allonge-toi sur le côté si la position sur le dos gêne.",
+      "facile": "Allonge-toi sur le dos, jambes relâchées, bras légèrement écartés, paumes vers le haut. Un coussin sous les genoux est facultatif.",
       "respiration": "Laisse la respiration reprendre son rythme naturel.",
       "alignement": "Installe-toi dans une posture stable sans effort musculaire.",
       "prudence": "Ajuste les supports pour éviter toute compression ou tension.",
       "apiPose": "yoga-api-11",
       "hold": {
         "full": "Laisse la respiration retrouver son rythme naturel. Relâche progressivement le visage et les mains.",
-        "easy": "Laisse les supports porter ton corps. Reste dans une position confortable, sans effort."
+        "easy": "Laisse les jambes et les bras se relâcher. Ajuste un support si nécessaire ; si le dos reste inconfortable, repose-toi sur le côté."
       }
     }
   }

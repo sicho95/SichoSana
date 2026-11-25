@@ -11,27 +11,27 @@
     },
     "balasana>baddha-konasana": {
       "full": "Redresse le buste, assieds-toi et rapproche les plantes des pieds.",
-      "easy": "Redresse-toi avec appui, assieds-toi sur un coussin et soutiens tes genoux."
+      "easy": "Redresse le buste avec appui, assieds-toi et rapproche les plantes des pieds en gardant les talons éloignés du bassin."
     },
     "baddha-konasana>supta-matsyendrasana": {
-      "full": "Rassemble les genoux, allonge-toi sur le dos puis amorce une rotation confortable.",
-      "easy": "Allonge-toi doucement et soutiens les genoux avec un coussin avant la rotation."
+      "full": "Rassemble les genoux, allonge-toi sur le dos, plie une jambe puis guide le genou vers le côté opposé.",
+      "easy": "Allonge-toi doucement sur le dos, plie une jambe et amorce une petite rotation, avec un coussin sous le genou si nécessaire."
     },
     "supta-matsyendrasana>savasana": {
       "full": "Ramène les genoux au centre, allonge les jambes et relâche les bras.",
-      "easy": "Reviens au centre, installe un coussin sous les genoux ou repose-toi sur le côté."
+      "easy": "Reviens au centre, allonge les jambes sans tension et place un coussin sous les genoux si nécessaire."
     },
     "tadasana>adho-mukha": {
-      "full": "Plie les genoux, pose les mains au sol, recule les pieds et soulève le bassin.",
-      "easy": "Place les mains sur un mur stable et recule les pieds pour allonger le dos."
+      "full": "Plie les genoux, pose les paumes au sol et recule les pieds un à un. Soulève le bassin vers le haut et l’arrière.",
+      "easy": "Descends à quatre pattes, paumes au sol. Soulève le bassin en gardant les genoux fléchis et les talons libres de se soulever."
     },
     "adho-mukha>anjaneyasana": {
-      "full": "Quitte l'appui au mur si nécessaire, reviens à quatre pattes et avance un pied entre les mains.",
-      "easy": "Quitte l'appui au mur ou au sol, puis installe une petite fente avec le genou arrière soutenu."
+      "full": "Repose les genoux au sol, puis avance un pied entre les mains et stabilise la fente basse.",
+      "easy": "Reviens à quatre pattes. Aide un pied à avancer, pose le genou arrière sur un support si nécessaire et redresse le buste."
     },
     "anjaneyasana>virabhadrasana2": {
       "full": "Avec appui, relève-toi, oriente le pied arrière et ouvre les bras en guerrier.",
-      "easy": "Relève-toi avec appui, réduis l'écart des pieds et pose les mains sur les hanches."
+      "easy": "Relève-toi avec appui, écarte modérément les pieds, ouvre les bras sur les côtés et fléchis légèrement le genou avant."
     },
     "virabhadrasana2>bhujangasana": {
       "full": "Reviens au centre, descends avec appui, puis allonge-toi sur le ventre.",
@@ -43,7 +43,7 @@
     },
     "balasana>savasana": {
       "full": "Redresse-toi lentement, assieds-toi puis allonge-toi sur le dos.",
-      "easy": "Redresse-toi avec appui, puis installe-toi sur le dos ou le côté avec des coussins."
+      "easy": "Redresse-toi avec appui, assieds-toi, puis allonge-toi sur le dos. Ajuste un coussin sous les genoux si nécessaire."
     },
     "marjaryasana>anjaneyasana": {
       "full": "Reviens dos neutre, avance un pied entre les mains et stabilise la fente.",
@@ -58,8 +58,8 @@
       "easy": "Rassemble les genoux, garde-les fléchis devant toi et incline légèrement le bassin."
     },
     "paschimottanasana>supta-matsyendrasana": {
-      "full": "Redresse le buste, plie les genoux et allonge-toi sur le dos avant la torsion.",
-      "easy": "Redresse-toi sans forcer, allonge-toi avec appui et soutiens les genoux pour la torsion."
+      "full": "Redresse le buste, plie les genoux, allonge-toi sur le dos et guide un genou vers le côté opposé.",
+      "easy": "Redresse-toi sans forcer, allonge-toi avec appui et amorce une petite rotation d’une jambe, soutenue si nécessaire."
     },
     "tadasana>vrksasana": {
       "full": "Transfère le poids sur un pied, fixe un point et soulève progressivement le pied libre.",
@@ -67,7 +67,7 @@
     },
     "vrksasana>virabhadrasana2": {
       "full": "Repose le pied libre, écarte les pieds et oriente le genou avant vers les orteils.",
-      "easy": "Repose le pied libre, fais un petit pas latéral et pose les mains sur les hanches."
+      "easy": "Repose le pied libre, fais un petit pas latéral, ouvre les bras et fléchis légèrement le genou avant."
     },
     "virabhadrasana2>balasana": {
       "full": "Reviens au centre, descends avec appui à quatre pattes et recule le bassin.",
@@ -75,7 +75,7 @@
     },
     "marjaryasana>baddha-konasana": {
       "full": "Reviens dos neutre, assieds-toi sur le tapis et rapproche les plantes des pieds.",
-      "easy": "Assieds-toi avec appui sur un coussin et soutiens les genoux avec des supports."
+      "easy": "Reviens dos neutre, assieds-toi avec appui, rapproche les plantes des pieds sans forcer l’ouverture des genoux."
     }
   }
 }

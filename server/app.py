@@ -406,7 +406,7 @@ class Handler(SimpleHTTPRequestHandler):
                 params=parse_qs(urlsplit(self.path).query)
                 return self.json_response(200, astrology.daily(params.get('sign',[''])[0], params.get('period',['daily'])[0]))
             if path == "/api/health":
-                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.1", "build": "20261125-r6"})
+                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.1", "build": "20261125-r7"})
             if path == "/api/v1/public-config":
                 return self.json_response(200, {"donationUrl": donation_destination()})
             if path == "/api/v1/media/original-status":

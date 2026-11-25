@@ -42,3 +42,8 @@ Les résultats de CI ne sont jamais présumés. Safari réel, PWA, écoute, vér
 - Cache CDN : app shell/data no-store, URL JS/CSS versionnées, installation SW avec reload, build API r6.
 - Horoscope : capture Nestor signale explicitement configuration désactivée. Activer SICHOSANA_ASTRO_ENABLED=1 dans la configuration locale et vérifier les trois périodes dans le conteneur. Ne pas écraser la configuration NAS.
 - Les illustrations des variantes restent à produire ; l'illustration de la posture cible n'est pas un visuel exact de la version douce.
+
+## r7 — cohérence texte/illustration
+- Relecture des 13 postures pédagogiques et 19 transitions. Chien tête en bas au sol en variante douce (genoux fléchis), pas de mur dans le guidage de séance. Repos après quelques respirations, alternance volontaire des côtés pour les postures asymétriques. Cobra sur les paumes, pas les avant-bras ; guerrier bras ouverts, papillon plantes jointes, torsion une jambe, savasana sur le dos avec supports facultatifs.
+- Références chien tête en bas : https://www.mayoclinic.org/healthy-lifestyle/stress-management/multimedia/downward-facing-dog/vid-20453582 ; https://www.yogajournal.com/poses/downward-facing-dog/ ; https://health.clevelandclinic.org/downward-dog-adho-mukha-svanasana (adaptation mur distincte).
+- Les PNG des variantes spécifiques ne sont pas créés dans cette révision. Revue visuelle exhaustive des 58 images et validation par enseignant de yoga non effectuées. Ne pas assimiler durée d'étape et maintien continu. Recette automatisée et écoute à refaire.
