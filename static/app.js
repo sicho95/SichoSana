@@ -88,17 +88,13 @@ function weeklyStats(){
 }
 function dailyReflection(){
  const p=profile(),list=reflections.reflections||[];
- if(!list.length)return 'Accorde-toi le droit d’habiter pleinement cet instant.';
- const history=(p.reflectionHistory||[]).filter(x=>x.date>=new Date(Date.now()-14*86400000).toISOString().slice(0,10));
- const found=history.find(x=>x.date===todayKey());
- if(found&&Number.isInteger(found.index)&&list[found.index])return list[found.index];
- const seed=(todayKey()+p.id+(Accounts.user()?.id||'')).split('').reduce((v,c)=>(v*33+c.charCodeAt(0))>>>0,5381);
- const recent=new Set(history.slice(-10).map(x=>x.index));
- let index=seed%list.length;
- for(let n=0;n<list.length&&recent.has(index);n++)index=(index+37)%list.length;
- p.reflectionHistory=[...history,{date:todayKey(),index}].slice(-30);
- touch();
- return list[index];
+ if(!list.length)return 'La réflexion du jour est momentanément indisponible.';
+ // Permutation déterministe par profil : stable sur tous ses appareils, sans répétition sur 400 jours.
+ const hash=s=>Array.from(s).reduce((v,c)=>(Math.imul(v,33)+c.charCodeAt(0))>>>0,5381);
+ const order=list.map((_,i)=>i);let seed=hash(p.id+':'+(Accounts.user()?.id||'')+':reflection-v3');
+ for(let i=order.length-1;i>0;i--){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const j=seed%(i+1);[order[i],order[j]]=[order[j],order[i]];}
+ const [y,m,d]=todayKey().split('-').map(Number),day=Math.floor(Date.UTC(y,m-1,d)/86400000);
+ return list[order[((day%order.length)+order.length)%order.length]];
 }
 const astroCacheKey=(sign,period)=>'astro-v231:'+sign+':'+period;
 function astroPeriodKey(period,d=new Date()){
