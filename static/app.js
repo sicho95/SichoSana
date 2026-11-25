@@ -3,7 +3,7 @@
 'use strict';
 import * as Accounts from './auth.js';
 const $ = (s) => document.querySelector(s);
-const APP_VERSION='2.3.1', UI_BUILD='20261125-r7';
+const APP_VERSION='2.3.1', UI_BUILD='20261125-r8';
 let serverVersion=null, serverBuild=null, versionChecked=false;
 function versionPanel(){return '<section class="card version-panel"><h2>À propos de SichoSana</h2><p id="ui-version">Application : '+APP_VERSION+' · '+UI_BUILD+'</p><p id="server-version">Serveur : '+escapeHTML((serverVersion?(serverVersion+(serverBuild?' · '+serverBuild:'')):(versionChecked?'indisponible':'vérification…')))+'</p>'+(serverVersion&&(serverVersion!==APP_VERSION||(serverBuild&&serverBuild!==UI_BUILD))?'<p class="attention">Versions différentes. Actualise l’application avant de poursuivre.</p>':'')+'<button class="secondary" data-action="check-version">Vérifier la version</button></section>';}
 async function checkVersion(){try{const r=await fetch('/api/health',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();serverVersion=typeof d.version==='string'?d.version:null;serverBuild=typeof d.build==='string'?d.build:null;}catch(_){serverVersion=null;}versionChecked=true;if(!session&&(page==='profile'||page==='admin')&&Accounts.loggedIn()&&!Accounts.mustChangePassword())render();}
@@ -26,7 +26,7 @@ const iconPaths={
 };
 function uiIcon(key){return '<svg aria-hidden="true" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+(iconPaths[key]||iconPaths.lotus)+'</svg>';}
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
-let transitions={routes:{}}, reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, originalArt={files:[]}, originalBundleReady=false, donationUrl=null, salutations={routines:[],extraPoses:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
+let variantArt={easy:{},files:{},alternatives:{}}, transitions={routes:{}}, reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, originalArt={files:[]}, originalBundleReady=false, donationUrl=null, salutations={routines:[],extraPoses:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
 const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',dailyGoal:'varie',dailyDuration:20,zodiac:'',favorites:[],history:[],masteredPoseStatus:{},poseVariantStatus:{},createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Essentielles', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
@@ -205,7 +205,10 @@ function yogaApiImage(id){
  if(!ref||!pose?.imageSource)return null;
  return {src:'/media/yoga-api/'+ref+'.png',source:pose.imageSource};
 }
-function posePicture(id,kind='thumb'){
+function posePicture(id,kind='thumb',variant='full'){
+ const v=variant==='easy'?variantArt.easy?.[id]:null;
+ if(v)return variantPicture(v,kind,yoga.poses.find(p=>p.id===id)?.nom||id);
+
  const media=yogaApiImage(id),photo=poseMedia.photos?.find(x=>x.id===id);
  const fallback=media?.src||photo?.src||'';
  const original=originalBundleReady&&originalArt.files?.includes(id);
@@ -217,6 +220,7 @@ function posePicture(id,kind='thumb'){
 
    ' class="pose-photo '+kind+'" src="'+escapeHTML(src)+'" alt="Posture '+escapeHTML(yoga.poses.find(p=>p.id===id)?.nom||id)+'">';
 }
+function variantPicture(id,kind,label){if(!variantArt.files?.[id])return '<span class="pose-missing">Illustration de variante indisponible</span>';return '<img class="pose-photo '+kind+'" loading="'+(kind==='session-photo'?'eager':'lazy')+'" src="/media/variants/'+encodeURIComponent(id)+'.png" alt="'+escapeHTML(label)+' · adaptation" data-variant-image="'+escapeHTML(id)+'">';}
 function yogaPage(){
  const routines=yoga.routines.filter(r=>!r.requiresMastery&&(routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id))));
  const poses=yoga.poses.filter(p=>poseFilter==='Tous'||(poseFilter==='Essentielles'&&!p.id.startsWith('yoga-api-'))||(poseFilter==='Catalogue API'&&p.id.startsWith('yoga-api-'))||p.niveau===poseFilter);
@@ -286,7 +290,7 @@ function poseModal(id){
  poseMedia.photos?.some(x=>x.id===id)?'<p class="image-credit">Illustration de référence : source et licence indiquées dans le Profil.</p>':
  '<p class="image-credit">Illustration exacte non disponible.</p>')+
  (guidance?'<div class="pose-pedagogy"><section><div class="eyebrow">1 · Préparation</div><p>'+escapeHTML(guidance.preparation)+'</p></section>'+
- '<section><div class="eyebrow">2 · Variante facile</div><p>'+escapeHTML(guidance.facile)+'</p></section>'+
+ '<section><div class="eyebrow">2 · Variante facile</div><div class="pose-variant-visual">'+posePicture(id,'large','easy')+'</div><p>'+escapeHTML(guidance.facile)+'</p></section>'+ (variantArt.alternatives?.[id]||[]).map(v=>'<section><h3>'+escapeHTML(v.label)+'</h3><div class="pose-variant-visual">'+variantPicture(v.image,'large',v.label)+'</div><p>'+escapeHTML(v.text)+'</p></section>').join('')+''+
  '<section><div class="eyebrow">3 · Posture complète</div><p>'+escapeHTML(p.instructions)+'</p></section>'+
  '<section><h3>Respiration</h3><p>'+escapeHTML(guidance.respiration)+'</p><h3>Alignement</h3><p>'+escapeHTML(guidance.alignement)+'</p></section></div>':
  '<h3>Installation</h3><p>'+escapeHTML(p.instructions)+'</p>')+
@@ -315,16 +319,16 @@ function activeClip(s,i=stepIndex(s)){const t=transitionFor(s,i),step=s.steps[i]
 function previewMarkup(s,i){
  const next=s.steps[i+1];if(s.type!=='yoga'||!next)return '';
  const remaining=stepBoundary(s,i)-s.elapsed;
- return '<div id="next-pose-preview" class="next-pose-preview" '+(remaining>8?'hidden':'')+'><span>À suivre dans <span id="next-pose-seconds">'+Math.max(0,Math.ceil(remaining))+'</span> s</span><strong>'+escapeHTML(next.title)+'</strong>'+(next.imageId?'<div class="next-pose-thumb">'+posePicture(next.imageId,'preview-photo')+'</div>':'')+'</div>';
+ return '<div id="next-pose-preview" class="next-pose-preview" '+(remaining>8?'hidden':'')+'><span>À suivre dans <span id="next-pose-seconds">'+Math.max(0,Math.ceil(remaining))+'</span> s</span><strong>'+escapeHTML(next.title)+'</strong>'+(next.imageId?'<div class="next-pose-thumb">'+posePicture(next.imageId,'preview-photo',next.imageVariant||'full')+'</div>':'')+'</div>';
 }
 function sessionPage(){
  if(!session)return home();
  const i=stepIndex(session),step=session.steps[i],remaining=session.duration-session.elapsed,progress=Math.min(100,100*session.elapsed/session.duration);
- const target=step.phase==='preparation'||step.phase==='facile';
+ const target=step.phase==='preparation';
  const transition=stepPhase(session,i)==='transition'?transitionFor(session,i):null,phaseText=transition?transition.text:(i>0&&session.type==='yoga'&&step.holdText?step.holdText:step.text);
  return '<div class="session immersive"><header class="practice-heading"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':session.type==='learning'?'Apprentissage guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span></header>'+
  '<div class="practice-clocks"><div><span>Posture / étape</span><div class="session-clock" id="step-countdown">'+formatTime(stepBoundary(session,i)-session.elapsed)+'</div></div><div><span>Séance</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div></div></div>'+
- '<div class="session-stage '+(step.imageId?'has-pose':'no-pose')+'">'+(step.imageId?'<div class="practice-visual"><div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>'+(target?'<span class="target-caption">Posture de référence · adapte l’amplitude et les appuis selon la consigne</span>':'')+'</div>':'')+
+ '<div class="session-stage '+(step.imageId?'has-pose':'no-pose')+'">'+(step.imageId?'<div class="practice-visual"><div class="session-pose-image">'+posePicture(step.imageId,'session-photo',step.imageVariant||'full')+'</div>'+(target?'<span class="target-caption">Posture cible · préparation</span>':'')+'</div>':'')+
  '<div class="practice-instructions">'+(transition?'<div class="transition-label" role="status">Transition · installe-toi doucement</div>':'')+'<h2>'+escapeHTML(step.title)+'</h2>'+(step.sanskrit?'<div class="pose-sanskrit" lang="sa-Latn">'+escapeHTML(step.sanskrit)+'</div>':'')+(step.breath?'<div class="breath-indicator">'+(step.breath==='inspiration'?'Inspire':'Expire')+'</div>':'')+'<p>'+escapeHTML(phaseText)+'</p>'+(step.canAdapt&&(step.variant!=='easy'||step.canReturnFull)?'<button class="secondary variant-toggle" data-action="switch-variant">'+(step.variant==='easy'?'Passer en version normale':'Adapter en version douce')+'</button>':'')+'</div><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Réécouter la consigne</button></div></div>'+
  previewMarkup(session,i)+'<div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="previous-step" '+(i===0?'disabled':'')+'>Précédente</button><button class="primary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Suivante</button><button class="secondary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="practice-safety muted">Interromps toute posture douloureuse. Écoute ton corps.</p></div>';
 }
@@ -359,7 +363,7 @@ function routinePoseStep(poseId,variant){
  const p=yoga.poses.find(x=>x.id===poseId),g=poseGuidance.poses?.[poseId];
  const easy=variant==='easy'&&Boolean(g?.facile);
  return {poseId,title:(p?.nom||poseId)+(easy?' · version douce':''),sanskrit:p?.sanskrit||'',text:easy?g.facile:(p?.instructions||''),holdText:g?.hold?.[easy?'easy':'full'],holdClip:g?.hold?'hold_'+poseId+'_'+(easy?'easy':'full'):null,weight:1,
-  clip:(easy?'easy_':'pose_')+poseId,imageId:poseId,phase:easy?'facile':'finale',
+  clip:(easy?'easy_':'pose_')+poseId,imageId:poseId,imageVariant:easy?'easy':'full',phase:easy?'facile':'finale',
   variant:easy?'easy':'full',canAdapt:Boolean(g?.facile),canReturnFull:true};
 }
 function makeRoutineSteps(r,mode,p){
@@ -400,7 +404,7 @@ function startLearning(id){
  closeModal();
  const steps=[
   {title:'Préparation',sanskrit:p.sanskrit,text:g.preparation,clip:'prepare_'+id,phase:'preparation',imageId:id,weight:1},
-  {title:'Version douce',sanskrit:p.sanskrit,text:g.facile,clip:'easy_'+id,phase:'facile',imageId:id,weight:1},
+  {title:'Version douce',sanskrit:p.sanskrit,text:g.facile,clip:'easy_'+id,phase:'facile',imageId:id,imageVariant:'easy',weight:1},
   {title:'Posture complète',sanskrit:p.sanskrit,text:p.instructions+' '+g.respiration+' '+g.alignement+' '+g.prudence,clip:'learn_full_'+id,imageId:id,weight:2}
  ];
  session={id,type:'learning',name:'Apprendre · '+p.nom,duration:180,elapsed:0,running:true,last:Date.now(),steps,spoken:-1};
@@ -440,7 +444,7 @@ function stopAudio(){
 }
 async function voiceManifest(){
  if(manifest)return manifest;
- for(const path of ['/voice/vivienne-fr-v5/manifest.json']){
+ for(const path of ['/voice/vivienne-fr-v6/manifest.json']){
   const res=await fetch(path,{cache:'no-store'});
   if(!res.ok)continue;
   const obj=await res.json();
@@ -460,7 +464,7 @@ function playReadyClip(clip,pack){
   audio.src=url;
  audio.preload='auto';
  audio.volume=.94;
- audio.playbackRate=pack.packId==='vivienne-fr-v5'?1:(session?.type==='meditate'?.76:.88);
+ audio.playbackRate=pack.packId==='vivienne-fr-v6'?1:(session?.type==='meditate'?.76:.88);
  audio.preservesPitch=true;
  if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
  voiceStatus='Lecture de la consigne…';
@@ -484,7 +488,7 @@ function playVoice(clip){
  if(!session)return;
  // Safari iOS exige que play() soit appelé directement dans le geste de l'utilisateur.
  // La V2 produit un MP3 nommé exactement comme l'identifiant de la consigne.
- const pack=manifest?.files?.[clip]?manifest:{packId:'vivienne-fr-v5',files:{[clip]:{src:clip+'.mp3'}}};
+ const pack=manifest?.files?.[clip]?manifest:{packId:'vivienne-fr-v6',files:{[clip]:{src:clip+'.mp3'}}};
  try{playReadyClip(clip,pack);}
  catch(err){
   voiceStatus='Impossible de lancer la voix. Appuie sur « Écouter la consigne ».';
@@ -607,7 +611,9 @@ async function cacheVoicePack(){
   const mr=await fetch('/voice/'+encodeURIComponent(m.packId)+'/manifest.json');if(!mr.ok)throw Error('Manifeste indisponible');await cache.put('/voice/'+encodeURIComponent(m.packId)+'/manifest.json',mr);
   for(const id of artIds){const url='/media/original/'+encodeURIComponent(id)+'.png';if(!await cache.match(url)){const r=await fetch(url);if(!r.ok)throw Error('Illustration absente : '+id);await cache.put(url,r.clone());}}
   if(artIds.length!==58)throw Error('Bibliothèque incomplète');
-  voiceStatus=done+' fichiers audio et '+artIds.length+' illustrations disponibles hors ligne.';render();notice('Pack vocal installé.');
+  const variants=Object.keys(variantArt.files||{});if(variants.length!==14)throw Error('Variantes incomplètes');
+  for(const id of variants){const url='/media/variants/'+encodeURIComponent(id)+'.png';if(!await cache.match(url)){const r=await fetch(url);if(!r.ok)throw Error('Variante absente : '+id);await cache.put(url,r.clone());}}
+  voiceStatus=done+' fichiers audio et '+(artIds.length+variants.length)+' illustrations disponibles hors ligne.';render();notice('Pack vocal installé.');
  }catch(err){voiceStatus='Téléchargement hors ligne bloqué par Safari. Les consignes restent accessibles en ligne ; réessaie depuis l’écran d’accueil ou un autre navigateur.';render();notice('Téléchargement audio non autorisé sur cet appareil.');}
 }
 async function exportData(){
@@ -782,6 +788,7 @@ async function init(){
     // Hors ligne, conserver les originaux déjà mis en cache, sans réintroduire les anciens dessins.
     originalBundleReady=originalArt.status==='published-58-canonical-assets-73-references'&&originalArt.files?.length===73&&originalArt.expectedPhysicalFiles===58;
   }
+   try{const q=await fetch('/data/variant-art.json');if(q.ok)variantArt=await q.json();}catch(_){}
    try{const q=await fetch('/data/pose-media.json');if(q.ok){const d=await q.json();if(Array.isArray(d.photos))poseMedia=d;}}catch(e){}
   try{const q=await fetch('/data/transitions.json');if(q.ok)transitions=await q.json();}catch(_){}
    try{const q=await fetch('/data/reflections.json');if(q.ok){const v=await q.json();if(Array.isArray(v.reflections)&&v.reflections.length>=400)reflections=v;}}catch(e){}

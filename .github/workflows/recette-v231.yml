@@ -2,7 +2,7 @@ name: SichoSana v2.3.1 — génération et recette isolée
 on:
   push:
     branches: [fix/v2.3.1-recette]
-    paths-ignore: ['static/voice/vivienne-fr-v5/**']
+    paths-ignore: ['static/voice/vivienne-fr-v6/**']
   workflow_dispatch:
 permissions:
   contents: write
@@ -18,7 +18,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Generate and verify Vivienne v5
+      - name: Verify variant art before audio generation
+        run: python scripts/verify-variant-art.py --extract
+      - name: Generate and verify Vivienne v6
         run: |
           python -m pip install "edge-tts>=7,<9"
           command -v ffprobe || (sudo apt-get update && sudo apt-get install -y ffmpeg)
@@ -95,15 +97,15 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: vivienne-fr-v5-candidate
-          path: static/voice/vivienne-fr-v5/
+          name: vivienne-fr-v6-candidate
+          path: static/voice/vivienne-fr-v6/
           retention-days: 15
       - name: Publish candidate assets only if tests passed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add static/voice/vivienne-fr-v5/
+          git add static/voice/vivienne-fr-v6/ static/media/variants/
           if ! git diff --cached --quiet; then
-            git commit -m "assets: Vivienne v5 — recette automatisée passée"
+            git commit -m "assets: Vivienne v6 — recette automatisée passée"
             git push origin "HEAD:$GITHUB_REF_NAME"
           fi

@@ -392,10 +392,14 @@ test('v231: nom sanskrit et consigne de maintien différente après transition',
  await expect(page.locator('.pose-sanskrit')).toContainText('Tāḍāsana');
  await page.locator('[data-action="next-step"]').click();
  await expect(page.locator('.pose-sanskrit')).toContainText('Adho Mukha Śvānāsana');
+ await expect(page.locator('.session-pose-image img')).toHaveAttribute('src','/media/variants/adho-mukha-easy.png');
+ await expect.poll(()=>page.locator('.session-pose-image img').evaluate(n=>n.complete&&n.naturalWidth>0)).toBe(true);
  await expect(page.locator('.transition-label')).toBeVisible();
  const entry=await page.locator('.practice-instructions p').textContent();
  await page.clock.fastForward(45000);
  await expect(page.locator('.transition-label')).toHaveCount(0);
  const hold=await page.locator('.practice-instructions p').textContent();
  expect(hold).not.toBe(entry);expect(hold).toContain('nuque');
+ await page.locator('[data-action="switch-variant"]').click();
+ await expect(page.locator('.session-pose-image img')).toHaveAttribute('src','/media/original/adho-mukha.png');
 });

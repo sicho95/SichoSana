@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "SichoSana, guidance pédagogique éditoriale ; représentation visuelle Yoga API pour les correspondances exactes seulement",
-  "note": "Les illustrations de référence représentent la posture normale. Les supports facultatifs et les amplitudes réduites peuvent ne pas être représentés ; ne jamais présenter une image de référence comme une variante exacte. Relecture éditoriale des 13 postures et 19 liaisons ; validation humaine anatomique restant à réaliser.",
+  "note": "Les variantes faciles du parcours ont un visuel dédié. L'adaptation au mur et celle au sol du chien tête en bas sont distinctes. Validation anatomique professionnelle non effectuée.",
   "stages": [
     "preparation",
     "facile",
@@ -22,7 +22,7 @@
     },
     "balasana": {
       "preparation": "À quatre pattes, effectue quelques bascules légères du bassin.",
-      "facile": "À quatre pattes, recule le bassin vers les talons sans forcer. Pose le front sur un support si nécessaire.",
+      "facile": "À quatre pattes, recule le bassin vers les talons sans forcer. Installe un coussin entre bassin et talons et un support sous le front.",
       "respiration": "Laisse le ventre se détendre à l’expiration, sans retenir le souffle.",
       "alignement": "Ne force pas la flexion des genoux ni le contact du front avec le sol.",
       "prudence": "Si les genoux ou les chevilles sont sensibles, adapte le support ou choisis le repos sur le dos.",
@@ -46,14 +46,14 @@
     },
     "adho-mukha": {
       "preparation": "Depuis quatre pattes, allonge les bras, puis reviens. Répète sans soulever les genoux.",
-      "facile": "Pose les paumes au sol, soulève le bassin vers le haut et l’arrière. Garde les genoux fléchis et laisse les talons se soulever si nécessaire.",
+      "facile": "Pose les paumes contre un mur stable, à hauteur des épaules. Recule les pieds et incline le buste depuis les hanches, genoux souples, pour allonger le dos.",
       "respiration": "Souffle régulièrement en laissant la nuque longue.",
       "alignement": "Garde les genoux fléchis et privilégie la longueur du dos.",
-      "prudence": "Ne force ni les talons ni les genoux. Repose les genoux dès que les poignets, les épaules ou le dos fatiguent. Un chien au mur est une autre adaptation, non illustrée ici.",
+      "prudence": "Ne force ni les épaules ni le dos. Au mur, rapproche les pieds pour sortir de la posture. Au sol, repose les genoux si tu fatigues. Arrête en cas de douleur.",
       "apiPose": null,
       "hold": {
         "full": "Relâche la nuque, allonge le dos et respire librement. Après quelques respirations, repose les genoux au sol. Reprends seulement si tu es à l’aise.",
-        "easy": "Laisse la nuque dans le prolongement du dos. Après quelques respirations, repose les genoux au sol, puis reprends si tu es à l’aise."
+        "easy": "Laisse la nuque dans le prolongement du dos et respire librement. Après quelques respirations, rapproche les pieds et redresse-toi lentement. Reprends seulement si tu es à l’aise."
       }
     },
     "virabhadrasana2": {
@@ -130,7 +130,7 @@
     },
     "supta-matsyendrasana": {
       "preparation": "Sur le dos, plie les genoux puis balance très doucement le bassin de quelques centimètres.",
-      "facile": "Sur le dos, plie une jambe et guide doucement son genou vers le côté opposé. Soutiens-le avec un coussin si nécessaire.",
+      "facile": "Sur le dos, plie une jambe, guide son genou vers le côté opposé et laisse-le reposer sur un coussin, sans forcer les épaules.",
       "respiration": "Expire en relâchant les épaules et garde une respiration libre.",
       "alignement": "La rotation vient en douceur, sans contraindre les épaules ni le bassin.",
       "prudence": "Évite toute torsion qui provoque un inconfort lombaire.",
@@ -154,7 +154,7 @@
     },
     "savasana": {
       "preparation": "Allonge-toi, prends le temps d’ajuster les supports et ferme les yeux si cela te convient.",
-      "facile": "Allonge-toi sur le dos, jambes relâchées, bras légèrement écartés, paumes vers le haut. Un coussin sous les genoux est facultatif.",
+      "facile": "Allonge-toi sur le dos, place un traversin sous les genoux, relâche les jambes et écarte légèrement les bras, paumes vers le haut.",
       "respiration": "Laisse la respiration reprendre son rythme naturel.",
       "alignement": "Installe-toi dans une posture stable sans effort musculaire.",
       "prudence": "Ajuste les supports pour éviter toute compression ou tension.",

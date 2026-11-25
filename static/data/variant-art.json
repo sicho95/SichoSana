@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "files": {
+    "adho-mukha-easy": "1f375b7822daeb190869ca936b7e30efd8c135e1d4a65f19b29457aa022ba576",
+    "adho-mukha-floor": "0c465a1a93a795c8db199c7ca8ceb040d782198741e1ad824051229479952ded",
+    "anjaneyasana-easy": "5d8af7e32080a526ebc52ea46adba01bd2e07f47e20faaf36f9db788876b0aab",
+    "baddha-konasana-easy": "b2034bec1a99d753dcfe114132db76321dc26272a5387529e2bab4231e81b5ee",
+    "balasana-easy": "dc96bd8760df5336442db780fd71cd945ec70ec0c5ec24d3dc1ce008e28a8f96",
+    "bhujangasana-easy": "12cebc4470216795afcacd9986fda334875aef515ac17834baa5eae9f5b8128f",
+    "marjaryasana-easy": "9ea9c829132ffbe01dd1483057a34aa654e09f1cbb7317c52a83e5d3150073b8",
+    "paschimottanasana-easy": "0d9f48bb0ff25ccf3e30de5cf3e579e30d861462ceb95568fdb5f4ed7c11bb1c",
+    "savasana-easy": "6b519035253c35cfaa09925468c6373fa52a0736880b8c61ae255d8509d489f5",
+    "setu-bandha-easy": "46c205e3ced9a75e2c46e993556ef283847a63d1debf90a1b9e12e6ee4edfdb3",
+    "supta-matsyendrasana-easy": "fa07d60b791ca9ec79212e2456b68a1b21057c58a5463d20078bd3b2aed0987f",
+    "tadasana-easy": "bd3dac35cc906c27be9dbdf3cdd6ee943e0ecc10fbbbb8d847f2a9141d3001a0",
+    "virabhadrasana2-easy": "2f49d21ba0435b76174eec289d0521e14ff46999a86bdf00c19d768a4714aab9",
+    "vrksasana-easy": "75ecf29f016d294660bbe5b93b98d270fecf45efbf0993452321567ef374998f"
+  },
+  "easy": {
+    "tadasana": "tadasana-easy",
+    "balasana": "balasana-easy",
+    "marjaryasana": "marjaryasana-easy",
+    "adho-mukha": "adho-mukha-easy",
+    "virabhadrasana2": "virabhadrasana2-easy",
+    "bhujangasana": "bhujangasana-easy",
+    "baddha-konasana": "baddha-konasana-easy",
+    "vrksasana": "vrksasana-easy",
+    "anjaneyasana": "anjaneyasana-easy",
+    "paschimottanasana": "paschimottanasana-easy",
+    "supta-matsyendrasana": "supta-matsyendrasana-easy",
+    "setu-bandha": "setu-bandha-easy",
+    "savasana": "savasana-easy"
+  },
+  "alternatives": {
+    "adho-mukha": [
+      {
+        "image": "adho-mukha-floor",
+        "label": "Adaptation au sol",
+        "text": "Paumes au sol, bassin vers le haut et l’arrière, genoux fléchis, talons libres de se soulever. Repose les genoux après quelques respirations."
+      }
+    ]
+  }
+}

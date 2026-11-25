@@ -73,7 +73,7 @@ def clips(catalog, yoga, guidance, salutations, transitions):
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=Path("static/data/meditations.json"))
-    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v5"))
+    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v6"))
     parser.add_argument("--yoga", type=Path, default=Path("static/data/yoga.json"))
     parser.add_argument("--guidance", type=Path, default=Path("static/data/pose-guidance.json"))
     parser.add_argument("--salutations", type=Path, default=Path("static/data/salutations.json"))

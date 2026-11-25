@@ -10,9 +10,9 @@ def verify():
     mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
     data=ROOT/'static/data'
     expected={k:(t,kind) for k,t,kind in mod.clips(*(load(data/f) for f in ('meditations.json','yoga.json','pose-guidance.json','salutations.json','transitions.json')))}
-    folder=ROOT/'static/voice/vivienne-fr-v5'
+    folder=ROOT/'static/voice/vivienne-fr-v6'
     m=load(folder/'manifest.json')
-    assert m['packId']=='vivienne-fr-v5' and m['voiceId']==mod.VOICE and m['locale']=='fr-FR'
+    assert m['packId']=='vivienne-fr-v6' and m['voiceId']==mod.VOICE and m['locale']=='fr-FR'
     assert m['rateYoga']==mod.RATE_YOGA and m['rateMeditation']==mod.RATE_MEDITATION
     assert len(expected)==260 and set(expected)==set(m['files'])
     for key,(text,kind) in expected.items():
@@ -22,5 +22,5 @@ def verify():
         b=(folder/item['src']).read_bytes()
         assert len(b)>=2000 and sha(b)==item['sha256'] and item['bytes']==len(b),key
         assert b.startswith((b'ID3',b'\xff')),key
-    print('VOICE_V5_OK 260 clips, identité, textes et empreintes')
+    print('VOICE_V6_OK 260 clips, identité, textes et empreintes')
 if __name__=='__main__':verify()
