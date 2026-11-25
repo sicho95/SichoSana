@@ -44,7 +44,7 @@ def daily(sign, period="daily"):
                 "source": SOURCE_NAME, "sourceUrl": SOURCE_URL, "sign": sign, "period": period}
     if os.environ.get("SICHOSANA_ASTRO_ENABLED", "0") != "1":
         return {"available": False, "text": "La source astrologique est temporairement désactivée.",
-                "source": SOURCE_NAME, "sourceUrl": SOURCE_URL, "sign": sign, "period": period}
+                "source": SOURCE_NAME, "sourceUrl": SOURCE_URL, "sign": sign, "period": period, "reason": "disabled"}
     key = (period_key(period), sign, period)
     with LOCK:
         if key in CACHE:
@@ -53,11 +53,12 @@ def daily(sign, period="daily"):
     url = f"https://sigastra.com/api/v1/{period}?" + params
     public_url = os.environ.get("SICHOSANA_PUBLIC_URL", "https://yoga.sicho.cc.cd").rstrip("/")
     try:
-        req = Request(url, headers={
-            "User-Agent": "SichoSana/2.1 (+https://yoga.sicho.cc.cd/astro-source.html)",
-            "Referer": public_url + "/astro-source.html",
-            "Accept": "application/json",
-        })
+        headers = {"User-Agent": "SichoSana/2.3.1 (+https://yoga.sicho.cc.cd/astro-source.html)",
+                   "Referer": public_url + "/astro-source.html", "Accept": "application/json"}
+        partner_key = os.environ.get("SICHOSANA_ASTRO_PARTNER_KEY", "").strip()
+        if partner_key:
+            headers["x-sigastra-key"] = partner_key
+        req = Request(url, headers=headers)
         with urlopen(req, timeout=9) as response:
             if response.status != 200:
                 raise ValueError("HTTP " + str(response.status))
@@ -82,7 +83,11 @@ def daily(sign, period="daily"):
             if len(CACHE) > 100:
                 CACHE.pop(next(iter(CACHE)))
         return result
-    except (OSError, ValueError, TypeError, KeyError, HTTPError, URLError):
-        # Ne jamais inventer d'horoscope. Garder un lien direct à la source.
-        return {"available": False, "text": "Lecture indisponible pour le moment. Tu peux consulter directement la source.",
-                "source": SOURCE_NAME, "sourceUrl": SOURCE_URL, "sign": sign, "period": period}
+    except HTTPError as exc:
+        reason = "provider_authorization" if exc.code in (401, 403) else "provider_limit" if exc.code == 429 else "provider_http"
+    except (OSError, URLError):
+        reason = "network"
+    except (ValueError, TypeError, KeyError, AttributeError):
+        reason = "invalid_response"
+    return {"available": False, "text": "L’horoscope est temporairement indisponible. Réessaie dans un instant.",
+            "source": SOURCE_NAME, "sourceUrl": SOURCE_URL, "sign": sign, "period": period, "reason": reason}

@@ -277,6 +277,7 @@ test('v231: séance compacte et lecteur unique, transition automatique',async({p
   HTMLMediaElement.prototype.play=function(){if(!window.__players.includes(this))window.__players.push(this);window.__plays.push(this.src);return original.call(this);};
  });
  await signIn(page);
+ await page.clock.install();
  await page.locator('.hero [data-action="start-yoga"]').click();
  await expect(page.locator('#step-countdown')).toBeVisible();
  await expect(page.locator('#bottomnav')).toBeHidden();
@@ -291,7 +292,6 @@ test('v231: séance compacte et lecteur unique, transition automatique',async({p
  const stepText=await page.locator('#step-countdown').textContent();
  const [min,sec]=stepText.split(':').map(Number);
  // Simule le temps écoulé sans générer de geste utilisateur.
- await page.clock.install();
  await page.clock.fastForward((min*60+sec+2)*1000);
  await expect.poll(()=>page.evaluate(()=>window.__plays.length)).toBeGreaterThan(before);
  expect(await page.evaluate(()=>window.__players.length)).toBe(1);
@@ -314,4 +314,14 @@ test('v231: image entière, commandes visibles, deux chronos sur iPad et ordinat
   await page.locator('[data-action="cancel-session"]').click();
   await page.locator(size.width>=1200?'#sidebar [data-value="home"]':'#bottomnav [data-value="home"]').click().catch(async()=>{await page.locator('#sidebar [data-value="home"]').click();});
  }
+});
+
+test('v231: version interface et serveur visibles dans profil, zoom accidentel bloqué',async({page})=>{
+ await page.setViewportSize({width:390,height:664});
+ await signIn(page);
+ await page.locator('#bottomnav [data-value="profile"]').click();
+ await expect(page.locator('#ui-version')).toContainText('2.3.1');
+ await expect(page.locator('#server-version')).toContainText('2.3.1');
+ await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content',/user-scalable=no/);
+ expect(await page.locator('body').evaluate(n=>getComputedStyle(n).touchAction)).toMatch(/pan-x.*pan-y|pan-y.*pan-x/);
 });

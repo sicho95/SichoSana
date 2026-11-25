@@ -23,6 +23,18 @@ jobs:
           python -m pip install "edge-tts>=7,<9"
           python scripts/generate-voice-pack.py --jobs 3
           python scripts/verify-v231-voice.py
+      - name: Diagnostic live horoscope (no secrets)
+        continue-on-error: true
+        run: |
+          SICHOSANA_ASTRO_ENABLED=1 python - <<'PY'
+          from server import astrology
+          failed=False
+          for period in ('daily','weekly','monthly'):
+              result=astrology.daily('Verseau',period)
+              print(period, 'OK' if result['available'] else result.get('reason','unavailable'))
+              failed = failed or not result['available']
+          if failed: raise SystemExit(1)
+          PY
       - name: Non-regression API, SQLite, catalog and deployment
         run: |
           python -m compileall -q server scripts
@@ -41,9 +53,10 @@ jobs:
           set -eu
           mkdir -p screenshots
           for engine in chromium webkit; do
+          for suite in legacy candidate; do
             export SICHOSANA_TEST_MODE=1 SICHOSANA_HOST=127.0.0.1
             export SICHOSANA_PUBLIC_URL=http://127.0.0.1:8080
-            export SICHOSANA_DATA_DIR="${RUNNER_TEMP}/sichosana-${engine}"
+            export SICHOSANA_DATA_DIR="${RUNNER_TEMP}/sichosana-${engine}-${suite}"
             mkdir -p "$SICHOSANA_DATA_DIR"
             python - <<'PY'
           from server import app,accounts
@@ -57,12 +70,17 @@ jobs:
             trap 'kill "$pid" 2>/dev/null || true' EXIT
             for i in $(seq 1 30); do curl -fsS http://127.0.0.1:8080/api/health && break; sleep 1; done
             curl -fsS http://127.0.0.1:8080/api/health
-            npx playwright test tests/ui.spec.cjs --browser="$engine" --reporter=line --workers=1
-            mkdir -p "recette-${engine}"
-            cp -r screenshots "recette-${engine}/"
+            if [ "$suite" = legacy ]; then
+              npx playwright test tests/ui.spec.cjs --browser="$engine" --grep-invert "v231:" --reporter=line --workers=1
+            else
+              npx playwright test tests/ui.spec.cjs --browser="$engine" --grep "v231:" --reporter=line --workers=1
+            fi
+            mkdir -p "recette-${engine}-${suite}"
+            cp -r screenshots "recette-${engine}-${suite}/"
             kill "$pid"
             wait "$pid" || true
             trap - EXIT
+          done
           done
       - uses: actions/upload-artifact@v4
         if: always()

@@ -3,6 +3,12 @@
 'use strict';
 import * as Accounts from './auth.js';
 const $ = (s) => document.querySelector(s);
+const APP_VERSION='2.3.1', UI_BUILD='20261125-r2';
+let serverVersion=null, versionChecked=false;
+function versionPanel(){return '<section class="card version-panel"><h2>À propos de SichoSana</h2><p id="ui-version">Application : '+APP_VERSION+' · '+UI_BUILD+'</p><p id="server-version">Serveur : '+escapeHTML(serverVersion||(versionChecked?'indisponible':'vérification…'))+'</p>'+(serverVersion&&serverVersion!==APP_VERSION?'<p class="attention">Versions différentes. Actualise l’application avant de poursuivre.</p>':'')+'<button class="secondary" data-action="check-version">Vérifier la version</button></section>';}
+async function checkVersion(){try{const r=await fetch('/api/health',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();serverVersion=typeof d.version==='string'?d.version:null;}catch(_){serverVersion=null;}versionChecked=true;if(!session&&(page==='profile'||page==='admin')&&Accounts.loggedIn()&&!Accounts.mustChangePassword())render();}
+for(const event of ['gesturestart','gesturechange','gestureend'])document.addEventListener(event,e=>e.preventDefault(),{passive:false});
+document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
 const escapeHTML = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(36).slice(2));
 const formatTime = (n) => { const s = Math.max(0, Math.ceil(n)); return Math.floor(s/60).toString().padStart(2,'0')+':'+(s%60).toString().padStart(2,'0'); };
@@ -112,7 +118,7 @@ function localAstro(){
  if(valid(item))return item;
  if(valid(cached))return {...cached,cached:true};
  if(cached?.available)return {...cached,cached:true,stale:true};
- return {text:item?.text||'Horoscope momentanément indisponible. Réessaie avec une connexion.',sign,period,available:false};
+ return {text:item?.text||'Horoscope momentanément indisponible. Réessaie avec une connexion.',sign,period,available:false,reason:item?.reason};
 }
 async function refreshAstrology(){
  const sign=profile()?.zodiac,period=page==='home'?'daily':astroPeriod;
@@ -246,7 +252,7 @@ function astroPage(){
  '<div class="astro-controls"><div class="field"><label for="astro-sign">Mon signe astrologique</label><select id="astro-sign"><option value="">Choisir un signe</option>'+signs.map(s=>'<option value="'+s+'" '+(profile().zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
  '<div class="segment astro-periods sliding-segment" role="group" aria-label="Période" style="--count:3;--index:'+['daily','weekly','monthly'].indexOf(astroPeriod)+'">'+[['daily','Aujourd’hui'],['weekly','Cette semaine'],['monthly','Ce mois']].map(([id,name])=>'<button type="button" data-action="astro-period" data-value="'+id+'" aria-pressed="'+(astroPeriod===id)+'">'+name+'</button>').join('')+'</div></div>'+
  '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+escapeHTML(a.periodKey?(a.period==='weekly'?'Semaine du ':a.period==='monthly'?'Mois de ':'')+a.periodKey:'Lecture indisponible')+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML((a.stale?'Dernière lecture enregistrée — non actualisée. ':'')+a.text)+'</p>'+
- '<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="/astro-source.html">Horoscopes publics</a></div></div>'+
+ ''+(!a.available?'<button class="secondary" data-action="refresh-astro">Réessayer</button>':'')+'<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="/astro-source.html">Horoscopes publics</a></div></div>'+
  '<div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Observe ta respiration et choisis une intention simple.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
 }
 function smallStats(){
@@ -256,7 +262,7 @@ function smallStats(){
 function profilePage(){
  const p=profile();
  return heading('Mon espace','Profil & progression','Retrouve tes séances et tes habitudes automatiquement sur tes appareils.')+
- '<div class="profile-layout"><div class="stack">'+Accounts.profilePanel()+
+ '<div class="profile-layout"><div class="stack">'+Accounts.profilePanel()+versionPanel()+
  '<section class="card"><div class="section-heading"><h2>Profils de pratique</h2><button class="small-btn" data-action="add-profile">+ Ajouter</button></div><div class="profile-options">'+state.profiles.map(x=>'<button class="profile-option '+(x.id===p.id?'active':'')+'" data-action="select-profile" data-value="'+escapeHTML(x.id)+'"><strong>'+escapeHTML(x.name)+'</strong><br><small>'+ (x.id===p.id?'Profil actuel':'Ouvrir ce profil')+'</small></button>').join('')+'</div><div class="field"><label for="profile-name">Nom du profil actuel</label><input id="profile-name" maxlength="50" value="'+escapeHTML(p.name)+'"></div><button class="secondary" data-action="save-name">Enregistrer le nom</button></section>'+
  '<section class="card"><h2>Mes préférences</h2><div class="field"><label>Univers graphique</label><div class="segment">'+[['linen','Lin & Sauge'],['horizon','Horizon & Sauge']].map(([id,name])=>'<button data-action="theme" data-value="'+id+'" aria-pressed="'+(p.theme===id)+'">'+name+'</button>').join('')+'</div></div><div class="field"><label for="daily-goal">Intention de la séance du jour</label><select id="daily-goal">'+[['varie','Variée'],['detente','Détente'],['energie','Énergie'],['equilibre','Équilibre']].map(([id,label])=>'<option value="'+id+'" '+((p.dailyGoal||'varie')===id?'selected':'')+'>'+label+'</option>').join('')+'</select></div><div class="field"><label for="daily-duration">Durée souhaitée</label><select id="daily-duration">'+[10,15,20,30].map(n=>'<option value="'+n+'" '+((Number(p.dailyDuration)||20)===n?'selected':'')+'>'+n+' minutes</option>').join('')+'</select></div><div class="field"><label for="zodiac">Signe astrologique (facultatif)</label><select id="zodiac"><option value="">Aucun</option>'+signs.map(s=>'<option value="'+s+'" '+(p.zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div><p class="muted">Aucune date de naissance nécessaire.</p></section>'+
  '<section class="card"><h2>Bibliothèque de yoga</h2><p>Préparation, version douce, posture finale, respiration et précautions sont détaillées dans les fiches.</p><button type="button" class="secondary" data-action="page" data-value="yoga">Explorer les postures</button>'+(!originalBundleReady?'<details class="yoga-credits"><summary>Sources et crédits des illustrations de référence</summary><p>Yoga API : <a href="https://github.com/alexcumplido/yoga-api" target="_blank" rel="noopener noreferrer">projet d’origine</a>.</p><p><a href="https://www.flaticon.com/free-icons/easy" target="_blank" rel="noopener noreferrer">monkik — Flaticon</a> · <a href="https://www.flaticon.com/free-icons/yoga" target="_blank" rel="noopener noreferrer">Dara — Flaticon</a>. Les autres photos affichées conservent leurs mentions de licences Creative Commons.</p></details>':'')+'</section>'+
@@ -316,7 +322,7 @@ function render(){
  document.documentElement.dataset.theme=profile().theme==='horizon'?'horizon':'linen';
  document.body.classList.toggle('immersive-session',Boolean(session));
  renderShell();
- const html=session?sessionPage():page==='home'?home():page==='yoga'?yogaPage():page==='meditate'?meditationPage():page==='astro'?astroPage():page==='admin'&&Accounts.user()?.role==='admin'?Accounts.adminScreen():profilePage();
+ const html=session?sessionPage():page==='home'?home():page==='yoga'?yogaPage():page==='meditate'?meditationPage():page==='astro'?astroPage():page==='admin'&&Accounts.user()?.role==='admin'?versionPanel()+Accounts.adminScreen():profilePage();
  $('#main').innerHTML=html;renderModal();
 }
 function findRoutine(id){return yoga.routines.find(x=>x.id===id);}
@@ -537,7 +543,8 @@ function notifications(){
  modal='<div class="modal" role="dialog" aria-modal="true"><button class="icon-btn modal-close" data-action="close">×</button><h2>Notifications</h2><p>'+ (supported?'Le navigateur est compatible avec les notifications web push.':'Cet appareil ou navigateur ne propose pas toutes les fonctions web push.')+'</p><p>Les horaires et clés VAPID ne sont pas encore configurés. Aucun rappel n’est activé automatiquement.</p><button class="secondary" data-action="close">Compris</button></div>';renderModal();
 }
 async function handle(action,value){
- if(action==='page'){if(session)abortSession();page=value;render();if(page==='admin')await Accounts.refreshAdmin();if(page==='astro'||page==='home'){astroPeriod=page==='home'?'daily':astroPeriod;refreshAstrology();}window.scrollTo(0,0);return;}
+ if(action==='check-version')return checkVersion();
+ if(action==='page'){if(session)abortSession();page=value;render();if(page==='profile'||page==='admin')checkVersion();if(page==='admin')await Accounts.refreshAdmin();if(page==='astro'||page==='home'){astroPeriod=page==='home'?'daily':astroPeriod;refreshAstrology();}window.scrollTo(0,0);return;}
  if(action==='yoga-tab'){yogaTab=value;render();return;}
   if(action==='routine-filter'){routineFilter=value;render();return;}
  if(action==='pose-filter'){poseFilter=value;render();return;}
@@ -562,6 +569,7 @@ async function handle(action,value){
  if(action==='export')return exportData();
  if(action==='import')return $('#import-json')?.click();
  if(action==='cache-voice')return cacheVoicePack();
+ if(action==='refresh-astro')return refreshAstrology();
  if(action==='astro-period'){astroPeriod=value;astrologyLive=null;render();refreshAstrology();return;}
  if(action==='replay-voice'){if(session)return playVoice(session.steps[stepIndex(session)].clip);return;}
  if(action==='notifications')return notifications();

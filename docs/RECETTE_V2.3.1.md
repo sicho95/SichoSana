@@ -14,3 +14,9 @@ Référence préservée : 4c59b0c9b66c40cbd3355a630560ba928a1ace2f. Nestor et ma
 | Préparation/douce | image cible explicitement signalée ; variantes anatomiques à contrôler |
 | Installateur | archive SHA explicite, vérifications avant application, sauvegarde SQLite et rollback |
 Les résultats de CI ne sont jamais présumés. Safari réel, PWA, écoute, vérification anatomique et source réelle depuis Nestor restent des portes manuelles.
+
+## Recette r2
+- Version UI/build et serveur dans Profil et Administration ; signaler les écarts de cache.
+- Bloquer zoom tactile, double tap et zoom de focus iOS, conserver le défilement. Test iPhone réel nécessaire.
+- Première CI : 183 MP3 vérifiés, 23 tests Python réussis, 9 tests Chromium historiques réussis ; 2 nouveaux tests bloqués à la connexion. Suites isolées sans désactiver la limitation de production.
+- Horoscope : diagnostiquer refus fournisseur, limite, réseau et réponse invalide ; nouvelle tentative. Diagnostic réel en CI et sur Nestor avant validation. Clé partenaire éventuelle côté serveur.
