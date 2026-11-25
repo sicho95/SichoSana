@@ -50,7 +50,7 @@ def clips(catalog, yoga, guidance, salutations, transitions):
         for i, step in enumerate(routine.get("steps", [])):
             for variant in ("full", "easy"):
                 pose_id = step.get("easyPoseId", step["poseId"]) if variant=="easy" else step["poseId"]
-                cue = step.get("cue", "")
+                cue = step.get("easyCue" if variant == "easy" else "fullCue") or step.get("cue", "")
                 # Sauf dérogation douce (cobra / genoux), la consigne reste identique.
                 title = next((p["nom"] for p in
                     salutations.get("extraPoses", [])+yoga.get("poses", [])

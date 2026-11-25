@@ -3,7 +3,7 @@
 'use strict';
 import * as Accounts from './auth.js';
 const $ = (s) => document.querySelector(s);
-const APP_VERSION='2.3.1', UI_BUILD='20261125-r4';
+const APP_VERSION='2.3.1', UI_BUILD='20261125-r5';
 let serverVersion=null, versionChecked=false;
 function versionPanel(){return '<section class="card version-panel"><h2>À propos de SichoSana</h2><p id="ui-version">Application : '+APP_VERSION+' · '+UI_BUILD+'</p><p id="server-version">Serveur : '+escapeHTML(serverVersion||(versionChecked?'indisponible':'vérification…'))+'</p>'+(serverVersion&&serverVersion!==APP_VERSION?'<p class="attention">Versions différentes. Actualise l’application avant de poursuivre.</p>':'')+'<button class="secondary" data-action="check-version">Vérifier la version</button></section>';}
 async function checkVersion(){try{const r=await fetch('/api/health',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();serverVersion=typeof d.version==='string'?d.version:null;}catch(_){serverVersion=null;}versionChecked=true;if(!session&&(page==='profile'||page==='admin')&&Accounts.loggedIn()&&!Accounts.mustChangePassword())render();}
@@ -315,7 +315,7 @@ function activeClip(s,i=stepIndex(s)){const t=transitionFor(s,i);return stepPhas
 function previewMarkup(s,i){
  const next=s.steps[i+1];if(s.type!=='yoga'||!next)return '';
  const remaining=stepBoundary(s,i)-s.elapsed;
- return '<div id="next-pose-preview" class="next-pose-preview" '+(remaining>8?'hidden':'')+'><span>À suivre dans <span id="next-pose-seconds">'+Math.max(0,Math.ceil(remaining))+'</span> s</span><strong>'+escapeHTML(next.title)+'</strong></div>';
+ return '<div id="next-pose-preview" class="next-pose-preview" '+(remaining>8?'hidden':'')+'><span>À suivre dans <span id="next-pose-seconds">'+Math.max(0,Math.ceil(remaining))+'</span> s</span><strong>'+escapeHTML(next.title)+'</strong>'+(next.imageId?'<div class="next-pose-thumb">'+posePicture(next.imageId,'preview-photo')+'</div>':'')+'</div>';
 }
 function sessionPage(){
  if(!session)return home();
@@ -370,8 +370,8 @@ function saluteStep(r,item,i,variant){
  const id=variant==='easy'?easyId:item.poseId;
  const pose=yoga.poses.find(p=>p.id===id);
  const canReturnFull=r.fullPrerequisites.every(isMastered);
- return {poseId:item.poseId,title:(pose?.nom||id)+(item.side?' · '+item.side:'')+(variant==='easy'?' · version douce':''),
-  text:item.cue,weight:item.weight||1,imageId:id,breath:item.breath||'',variant,
+ return {poseId:item.poseId,title:(pose?.nom||id)+(item.side?' · '+item.side:'')+(variant==='easy'&&easyId!==item.poseId?' · version douce':''),
+  text:(variant==='easy'?item.easyCue:item.fullCue)||item.cue,weight:item.weight||1,imageId:id,breath:item.breath||'',variant,
   canAdapt:easyId!==item.poseId,canReturnFull,
   clip:'salutation_'+r.id+'_'+String(i).padStart(2,'0')+'_'+variant,salutationIndex:i};
 }

@@ -175,13 +175,17 @@
           "poseId": "chaturanga",
           "breath": "expiration",
           "cue": "Descends en planche basse, coudes près du corps. Pour la version douce, pose les genoux avant de descendre.",
-          "easyPoseId": "phalakasana"
+          "easyPoseId": "phalakasana",
+          "fullCue": "Expire, descends en planche basse, coudes près du corps, sans forcer les épaules.",
+          "easyCue": "Expire, pose les genoux au sol et descends progressivement sur le ventre, avec contrôle."
         },
         {
           "poseId": "urdhva-mukha",
           "breath": "inspiration",
           "cue": "Inspire, passe au chien tête en haut, cuisses et bassin décollés ; en version douce, choisis le cobra en conservant le bassin au sol.",
-          "easyPoseId": "bhujangasana"
+          "easyPoseId": "bhujangasana",
+          "fullCue": "Inspire, passe au chien tête en haut, cuisses et bassin décollés, sans forcer la cambrure.",
+          "easyCue": "Inspire, soulève légèrement la poitrine en cobra, le bassin au sol et les coudes souples."
         },
         {
           "poseId": "adho-mukha",

@@ -32,3 +32,7 @@ Les résultats de CI ne sont jamais présumés. Safari réel, PWA, écoute, vér
 - Apprentissage guidé séparé pour les 13 fiches pédagogiques : préparation, variante douce, version complète/respiration/alignement/précautions ; fin sans validation automatique ni ajout à l'historique des séances.
 - Pack Vivienne v4 attendu : 234 clips et durée réelle mesurée ; cache versionné. Les images intermédiaires spécifiques restent à produire si la recette pédagogique les identifie comme indispensables.
 - Recette : couverture des liaisons, chronomètres, aperçu, phase vocale, apprentissage, non-régression. Écoute et essais anatomiques réels encore nécessaires.
+
+## r5 — finition
+- Aperçu de la prochaine posture avec miniature originale ; consignes distinctes pour le cobra et le chien tête en haut, la planche basse et son adaptation. Test de couverture du catalogue et des deux variantes de la salutation.
+- Vérification directe du moteur r4 : 50 cas (25 transitions dans les séances × 2 variantes) réussis, passage transition/maintien et durée totale conservée. Recette r5 complète non encore attestée.
