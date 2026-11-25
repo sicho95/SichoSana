@@ -56,3 +56,6 @@ Nestor r5 : fournisseur activé et lecture effective confirmée par captures. Co
 
 ## Recette r9 — reprise après premier échec
 Run 45710948777 : 14 variantes vérifiées, 260 MP3 vérifiés, diagnostic réel daily/weekly/monthly réussi. 27/28 tests Python réussis ; ancien fixture de test astrologique sans canonicalTag, désormais exigée en mode intégral. Fixture complété et assertions de texte intégral ajoutées, sans contourner la vérification canonique de production. Réutilisation du pack audio candidat issu de ce run avec vérification intégrale des empreintes avant publication.
+
+## Reprise recette navigateur
+Run 45711672982 : 28/28 Python, 16/16 Chromium, 15/16 WebKit. Le test mensuel WebKit reçoit une réponse disabled du serveur de test malgré le routage Playwright. Fixture injecté avant navigation au niveau fetch, limité à la route horoscope ; compteur vérifie qu'une requête mensuelle a effectivement été simulée. Le diagnostic réel des trois périodes et les tests serveur restent inchangés. Pack V6 réutilisé et vérifié. Les notifications Web Push sont encore un écran informatif sans abonnement ni envoi serveur ; chantier distinct à réaliser après stabilisation.

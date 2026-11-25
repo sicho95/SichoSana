@@ -407,17 +407,28 @@ test('v231: nom sanskrit et consigne de maintien différente après transition',
 });
 
 test('v231: horoscope entier, texte courant et date française',async({page})=>{
- await page.setViewportSize({width:390,height:664});await signIn(page);
- const full="Première phrase. Deuxième phrase. Troisième phrase complète.\n\nDernier paragraphe sans coupure.";
- await page.route('**/api/v1/content/horoscope?*',async route=>{
-  const params=new URL(route.request().url()).searchParams,period=params.get('period');
-  const now=new Date(),date=now.toISOString().slice(0,10);
-  const key=period==='monthly'?date.slice(0,7):date;
-  await route.fulfill({json:{available:true,full:true,text:full,preview:"Première phrase.",sign:params.get('sign'),period,periodKey:key,canonicalUrl:"https://sigastra.com/fr/horoscope-du-jour",sourceUrl:"https://sigastra.com/fr/horoscope-du-jour"}});
+ await page.setViewportSize({width:390,height:664});
+ // Simulate only the external reading, at the browser fetch boundary, so an
+ // active service worker cannot bypass the fixture on WebKit. Real provider
+ // and server behaviour are verified separately in Python and live diagnostics.
+ await page.addInitScript(()=>{
+  const originalFetch=window.fetch.bind(window);
+  window.__astroMonthlyRequests=0;
+  window.fetch=async(input,init)=>{
+   const req=new URL(typeof input==='string'?input:input instanceof URL?input.href:input.url,location.href);
+   if(req.pathname!=='/api/v1/content/horoscope')return originalFetch(input,init);
+   const period=req.searchParams.get('period');
+   if(period==='monthly')window.__astroMonthlyRequests++;
+   const now=new Date(),date=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+   const key=period==='monthly'?date.slice(0,7):date;
+   return new Response(JSON.stringify({available:true,full:true,text:"Première phrase. Deuxième phrase. Troisième phrase complète.\n\nDernier paragraphe sans coupure.",preview:"Première phrase.",sign:req.searchParams.get('sign'),period,periodKey:key,canonicalUrl:"https://sigastra.com/fr/horoscope-du-jour",sourceUrl:"https://sigastra.com/fr/horoscope-du-jour"}),{status:200,headers:{'Content-Type':'application/json'}});
+  };
  });
+ await signIn(page);
  await page.locator('#bottomnav [data-value="astro"]').click();
  await page.locator('#astro-sign').selectOption('Verseau');
  await page.locator('[data-action="astro-period"][data-value="monthly"]').click();
+ await expect.poll(()=>page.evaluate(()=>window.__astroMonthlyRequests)).toBeGreaterThan(0);
  await expect(page.locator('.astro-quote')).toContainText('Dernier paragraphe sans coupure.');
  await expect(page.locator('.astrology-card .pill')).not.toContainText(/\d{4}-\d{2}/);
  expect(parseFloat(await page.locator('.astro-quote').evaluate(n=>getComputedStyle(n).fontSize))).toBeLessThanOrEqual(18);
