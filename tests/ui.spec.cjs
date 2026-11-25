@@ -353,3 +353,32 @@ test('v231: une posture par étape, adaptation immédiate et mémorisée',async(
  await expect(page.locator('.practice-instructions h2')).toContainText('version douce');
  await expect(page.locator('.practice-heading .pill')).toContainText('Étape 1 sur '+count);
 });
+
+test('v231: transitions contextualisées et apprentissage distinct',async({page})=>{
+ await page.setViewportSize({width:390,height:664});
+ await signIn(page);await page.locator('#bottomnav [data-value="yoga"]').click();
+ await page.locator('.yoga-practice-modes [data-value="douce"]').click();
+ await page.clock.install();
+ await page.locator('[data-action="start-yoga"][data-value="eveil-doux"]').first().click();
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 1 sur 5');
+ const [m,s]=(await page.locator('#step-countdown').textContent()).split(':').map(Number);
+ await page.clock.fastForward(Math.max(0,m*60+s-5)*1000);
+ await expect(page.locator('#next-pose-preview')).toBeVisible();
+ await page.clock.fastForward(6500);
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 2 sur 5');
+ await expect(page.locator('.transition-label')).toBeVisible();
+ await expect(page.locator('.practice-instructions p')).toContainText('quatre pattes');
+ await page.clock.fastForward(35000);
+ await expect(page.locator('.transition-label')).toHaveCount(0);
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 2 sur 5');
+ await page.locator('[data-action="cancel-session"]').click();
+ await page.locator('[data-action="yoga-tab"][data-value="postures"]').click();
+ await page.locator('.pose-list [data-action="pose"][data-value="tadasana"]').click();
+ await page.locator('[data-action="learn-pose"]').click();
+ await expect(page.locator('.practice-heading')).toContainText('Apprentissage guidé');
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 1 sur 3');
+ await page.locator('[data-action="next-step"]').click();
+ await expect(page.locator('.practice-instructions h2')).toHaveText('Version douce');
+ await page.locator('[data-action="finish"]').click();
+ await expect(page.locator('.pose-modal [data-action="toggle-mastery"]')).toBeVisible();
+});

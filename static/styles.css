@@ -614,3 +614,5 @@ html,body,button,a,input,select,textarea{touch-action:pan-x pan-y}
 .version-panel p{margin:4px 0;overflow-wrap:anywhere}
 
 .immersive .variant-toggle{font-size:12px;min-height:36px;padding:4px 10px;margin:2px auto;max-width:100%}
+
+.immersive .transition-label{font-size:11px;color:var(--sage-dark);font-weight:700}.next-pose-preview{flex:none;display:flex;justify-content:space-between;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:4px 9px;font-size:11px;color:var(--sage-dark);min-height:25px}.next-pose-preview[hidden]{display:none}.next-pose-preview strong{text-align:right}.learn-pose{margin:8px 0;width:100%}

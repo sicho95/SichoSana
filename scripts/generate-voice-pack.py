@@ -5,6 +5,7 @@ import asyncio
 import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path
 
 VOICE = "fr-FR-VivienneMultilingualNeural"
@@ -16,7 +17,7 @@ def sha(path):
 def spoken_title(name):
     return 'Nous allons pratiquer cette posture de yoga, appelée ' + name.lower() + ', en douceur. '
 
-def clips(catalog, yoga, guidance, salutations):
+def clips(catalog, yoga, guidance, salutations, transitions):
     found = []
     for session in catalog["sessions"]:
         for level in ("discrete", "equilibree", "enveloppante"):
@@ -37,6 +38,11 @@ def clips(catalog, yoga, guidance, salutations):
                           "Préparons doucement cette posture de yoga, appelée "+pose["nom"].lower()+", à ton rythme. "+progression["preparation"], "yoga"))
             found.append(("easy_"+pose["id"],
                           "Passons à la version douce de cette posture de yoga, appelée "+pose["nom"].lower()+", à ton rythme. "+progression["facile"], "yoga"))
+            found.append(("learn_full_"+pose["id"], spoken_title(pose["nom"])+pose["instructions"]+" "+progression["respiration"]+" "+progression["alignement"]+" "+progression["prudence"], "yoga"))
+    for key, variants in transitions["routes"].items():
+        start, end = key.split(">")
+        for variant in ("full", "easy"):
+            found.append(("transition_"+start+"_"+end+"_"+variant, variants[variant], "yoga"))
     for pose in salutations.get("extraPoses", []):
         found.append(("pose_" + pose["id"], spoken_title(pose["nom"])+pose["instructions"]+" "+pose["prudence"], "yoga"))
     # Les deux voix par étape sont générées en avance, aucune synthèse sur le NAS.
@@ -58,10 +64,11 @@ def clips(catalog, yoga, guidance, salutations):
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=Path("static/data/meditations.json"))
-    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v3"))
+    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v4"))
     parser.add_argument("--yoga", type=Path, default=Path("static/data/yoga.json"))
     parser.add_argument("--guidance", type=Path, default=Path("static/data/pose-guidance.json"))
     parser.add_argument("--salutations", type=Path, default=Path("static/data/salutations.json"))
+    parser.add_argument("--transitions", type=Path, default=Path("static/data/transitions.json"))
     parser.add_argument("--jobs", type=int, default=3)
     args = parser.parse_args()
     from edge_tts import Communicate
@@ -69,6 +76,7 @@ async def main():
     yoga = json.loads(args.yoga.read_text(encoding="utf-8"))
     guidance = json.loads(args.guidance.read_text(encoding="utf-8"))
     salutations = json.loads(args.salutations.read_text(encoding="utf-8"))
+    transitions = json.loads(args.transitions.read_text(encoding="utf-8"))
     dest = args.out
     dest.mkdir(parents=True, exist_ok=True)
     lock = asyncio.Semaphore(min(max(args.jobs, 1), 4))
@@ -100,10 +108,11 @@ async def main():
             "src": target.name, "sha256": sha(target),
             "bytes": target.stat().st_size, 
             "textSha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "durationSeconds": float(subprocess.check_output(["ffprobe","-v","error","-show_entries","format=duration","-of","default=noprint_wrappers=1:nokey=1",str(target)],text=True).strip()),
             "kind": kind
         }
 
-    await asyncio.gather(*(render(k, t, kind) for k, t, kind in clips(source, yoga, guidance, salutations)))
+    await asyncio.gather(*(render(k, t, kind) for k, t, kind in clips(source, yoga, guidance, salutations, transitions)))
     manifest = {
         "format": "sichosana-voice-pack", "packId": dest.name,
         "locale": "fr-FR", "voiceId": VOICE, "rateYoga": RATE_YOGA,
@@ -113,6 +122,7 @@ async def main():
         "status": "candidate-awaiting-damien-audition",
         "catalogSha256": sha(args.catalog), "yogaCatalogSha256": sha(args.yoga),
         "guidanceSha256": sha(args.guidance), "salutationsSha256": sha(args.salutations),
+        "transitionsSha256": sha(args.transitions),
         "files": dict(sorted(entries.items()))
     }
     (dest / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

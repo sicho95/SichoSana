@@ -2,11 +2,11 @@
    Une réponse HTTP 206 ne peut pas être stockée dans CacheStorage.
    Hors ligne, servir un fragment 206 depuis le fichier complet (200) en cache.
    Ne jamais mettre en cache l'API ni les données de compte. */
-const VERSION='sichosana-static-v231-r3-20261125';
+const VERSION='sichosana-static-v231-r4-20261125';
 const ESSENTIAL=['/','/index.html','/styles.css','/app.js','/auth.js','/icon.svg',
   '/manifest.webmanifest','/data/yoga.json','/data/yoga-api-library.json',
   '/data/pose-guidance.json','/data/salutations.json','/data/meditations.json','/data/programs.json',
-  '/data/reflections.json','/data/pose-media.json','/data/original-art.json','/media/yoga-hero.png'];
+  '/data/transitions.json','/data/reflections.json','/data/pose-media.json','/data/original-art.json','/media/yoga-hero.png'];
 
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(VERSION).then(cache=>cache.addAll(ESSENTIAL)).then(()=>self.skipWaiting()));
@@ -109,7 +109,7 @@ self.addEventListener('fetch',event=>{
   return;
  }
  event.respondWith(caches.match(request).then(cached=>cached||fetch(request).then(response=>{
-  if(response.status===200&&(ESSENTIAL.includes(url.pathname)||url.pathname.startsWith('/media/')||url.pathname==='/voice/vivienne-fr-v3/manifest.json')){
+  if(response.status===200&&(ESSENTIAL.includes(url.pathname)||url.pathname.startsWith('/media/')||url.pathname==='/voice/vivienne-fr-v4/manifest.json')){
    caches.open(VERSION).then(cache=>cache.put(request,response.clone())).catch(()=>{});
   }
   return response;

@@ -26,3 +26,9 @@ Les résultats de CI ne sont jamais présumés. Safari réel, PWA, écoute, vér
 - Mode adaptatif (identifiant historique initiation) : douce si non acquise, normale si acquise. Doux : douce privilégiée. Normal : complète sauf adaptation douce explicitement mémorisée. Un retour volontaire à normale ou une déclaration de maîtrise annule l'adaptation.
 - Bascule durant la séance : même étape et même budget temporel, clip correspondant, préférence horodatée persistante par profil et synchronisée ; historique des variantes pratiquées. Les salutations gardent leurs prérequis et leurs 12/18 étapes ; pas de bascule complète si les prérequis complets manquent.
 - Contrôler la séance Éveil du matin, le retour à la même étape, la navigation suivante, la persistance et la version douce ; tests sur Chromium/WebKit. Les illustrations spécifiques des variantes et les consignes différenciées de certaines salutations restent à revoir.
+
+## r4 — transitions et apprentissage
+- 19 liaisons contextualisées, deux consignes par destination selon variante ; durée incluse dans la prochaine posture, compteur inchangé, anticipation à 8 s. Salutations : consignes existantes avec phase de transition intégrée.
+- Apprentissage guidé séparé pour les 13 fiches pédagogiques : préparation, variante douce, version complète/respiration/alignement/précautions ; fin sans validation automatique ni ajout à l'historique des séances.
+- Pack Vivienne v4 attendu : 234 clips et durée réelle mesurée ; cache versionné. Les images intermédiaires spécifiques restent à produire si la recette pédagogique les identifie comme indispensables.
+- Recette : couverture des liaisons, chronomètres, aperçu, phase vocale, apprentissage, non-régression. Écoute et essais anatomiques réels encore nécessaires.
