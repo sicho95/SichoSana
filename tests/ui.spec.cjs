@@ -268,3 +268,32 @@ test('salutations: maîtrise par profil synchronisée et révocable entre deux a
   await expect(a.locator('.salutation-card').filter({hasText:'Salutation à la lune'})).toContainText('0 / 8 postures');
  }finally{await c1.close();await c2.close();}
 });
+
+test('v231: séance compacte et lecteur unique, transition automatique',async({page})=>{
+ await page.setViewportSize({width:390,height:664});
+ await page.addInitScript(()=>{
+  const original=HTMLMediaElement.prototype.play;
+  window.__players=[];window.__plays=[];
+  HTMLMediaElement.prototype.play=function(){if(!window.__players.includes(this))window.__players.push(this);window.__plays.push(this.src);return original.call(this);};
+ });
+ await signIn(page);
+ await page.locator('.hero [data-action="start-yoga"]').click();
+ await expect(page.locator('#step-countdown')).toBeVisible();
+ await expect(page.locator('#bottomnav')).toBeHidden();
+ const picture=page.locator('.session-pose-image img');
+ await expect(picture).toBeVisible();
+ await expect.poll(()=>picture.evaluate(n=>n.complete&&n.naturalWidth>0)).toBe(true);
+ const sizing=await picture.evaluate(n=>{const r=n.getBoundingClientRect(),p=n.parentElement.getBoundingClientRect();return {contained:r.bottom<=p.bottom+1&&r.top>=p.top-1&&r.width<=p.width+1,fit:getComputedStyle(n).objectFit};});
+ expect(sizing).toEqual({contained:true,fit:'contain'});
+ const controls=await page.locator('.session-controls').boundingBox();
+ expect(controls.y+controls.height).toBeLessThanOrEqual(665);
+ const before=await page.evaluate(()=>window.__plays.length);
+ // Simule le temps écoulé sans générer de geste utilisateur.
+ await page.clock.install();
+ await page.clock.fastForward(240000);
+ await expect.poll(()=>page.evaluate(()=>window.__plays.length)).toBeGreaterThan(before);
+ expect(await page.evaluate(()=>window.__players.length)).toBe(1);
+ await page.locator('[data-action="previous-step"]').click();
+ await page.locator('[data-action="cancel-session"]').click();
+ await expect(page.locator('#bottomnav')).toBeVisible();
+});

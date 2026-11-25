@@ -576,3 +576,34 @@ body{background:var(--linen)}
 /* Paiement externe : seulement si l'URL de l'exploitant est validée côté serveur. */
 a.donate-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:42px;padding:11px 17px;border-radius:13px;color:#fff;background:var(--sage-dark);font-weight:670}
 a.donate-link:hover{text-decoration:underline}
+
+/* v2.3.1 — séance immersive, image entièrement contenue dans une boîte bornée. */
+body.immersive-session #topbar,body.immersive-session #sidebar,body.immersive-session #bottomnav,body.immersive-session .site-footer{display:none!important}
+body.immersive-session .app-shell,body.immersive-session .app-column{min-height:0;width:100%;display:block}
+body.immersive-session #main{max-width:100%;margin:0;padding:0!important}
+.session.immersive{height:100vh;height:100dvh;max-width:900px;margin:auto;padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));display:flex;flex-direction:column;gap:6px;overflow:auto}
+.immersive .practice-heading{text-align:center;flex:none}
+.immersive .practice-heading h1{font-size:clamp(21px,4vw,32px);margin:2px 0;line-height:1.1}
+.immersive .practice-heading .eyebrow{font-size:10px;letter-spacing:1.5px}
+.immersive .practice-heading .pill{padding:3px 10px;font-size:12px}
+.immersive .practice-clocks{display:grid;grid-template-columns:1fr 1fr;text-align:center;flex:none}
+.immersive .practice-clocks span{font-size:11px;color:var(--sage-dark)}
+.immersive .session-clock{font-size:clamp(25px,5vw,38px);line-height:1.05;margin:0}
+.immersive .session-stage{flex:1;min-height:0;display:flex;flex-direction:column;padding:7px 10px;gap:4px;overflow:visible;justify-content:center;align-items:stretch}
+.immersive .practice-visual{flex:1;min-height:70px;display:flex;flex-direction:column;gap:2px}
+.immersive .session-pose-image{position:relative;flex:1;min-height:0;width:100%;height:auto;max-width:none;max-height:none;aspect-ratio:auto;padding:0;margin:0;overflow:hidden}
+.immersive .session-pose-image img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain!important;object-position:center;display:block;padding:4px}
+.immersive .target-caption{text-align:center;font-size:10px;color:var(--sage-dark)}
+.immersive .practice-instructions{text-align:center;flex:none}
+.immersive .practice-instructions h2{font-size:clamp(19px,4.3vw,27px);line-height:1.13;margin:2px 0}
+.immersive .practice-instructions p{font-size:clamp(13px,2.5vw,16px);line-height:1.3;margin:3px auto;max-width:620px}
+.immersive .audio-panel{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:2px 8px;flex:none}
+.immersive .audio-panel .muted{font-size:11px;margin:0}
+.immersive .audio-replay{font-size:12px;min-height:36px;padding:5px 10px}
+.immersive .progress-track{flex:none;margin:0;height:5px}
+.immersive .session-controls{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin:0;flex:none}
+.immersive .session-controls>button{grid-column:span 2;min-width:0;min-height:44px;font-size:12px;padding:5px 4px}
+.immersive .session-controls>button:nth-child(4),.immersive .session-controls>button:nth-child(5){grid-column:span 3}
+.immersive .practice-safety{font-size:10px;text-align:center;line-height:1.2;margin:0;flex:none}
+@media(min-width:760px) and (min-height:550px){.immersive .session-stage.has-pose{display:grid;grid-template-columns:1.15fr 1fr;grid-template-rows:minmax(0,1fr) auto;align-items:center}.immersive .practice-visual{height:100%;grid-row:1/3}.immersive .audio-panel{grid-column:2}.immersive .session-controls>button{font-size:15px}.immersive .practice-instructions h2{font-size:30px}.immersive .practice-instructions p{font-size:17px}}
+@media(max-height:610px) and (max-width:759px){.session.immersive{gap:3px}.immersive .session-stage{padding:4px;gap:2px}.immersive .practice-heading .eyebrow{display:none}.immersive .session-controls>button{min-height:40px}.immersive .practice-safety{font-size:9px}}

@@ -13,6 +13,9 @@ RATE_YOGA, RATE_MEDITATION, PITCH, VOLUME = "-22%", "-32%", "-1Hz", "+0%"
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
+def spoken_title(name):
+    return 'Nous allons pratiquer la posture suivante : ' + name + ', en douceur. '
+
 def clips(catalog, yoga, guidance, salutations):
     found = []
     for session in catalog["sessions"]:
@@ -26,16 +29,16 @@ def clips(catalog, yoga, guidance, salutations):
                     found.append((key, re.sub(r"(?<=[.!?])\s+", " ... ", text), "meditation"))
     # Même identité Vivienne pour les consignes de yoga et les méditations.
     for pose in yoga.get("poses", []):
-        text = (pose.get("nom", "") + ". " + pose.get("instructions", "") + " " + pose.get("prudence", "")).strip()
+        text = (spoken_title(pose.get("nom", "")) + pose.get("instructions", "") + " " + pose.get("prudence", "")).strip()
         found.append(("pose_" + pose["id"], text, "yoga"))
         progression=guidance.get("poses",{}).get(pose["id"])
         if progression:
             found.append(("prepare_"+pose["id"],
-                          pose["nom"]+". Préparation. "+progression["preparation"], "yoga"))
+                          "Préparons doucement la posture suivante : "+pose["nom"]+", à ton rythme. "+progression["preparation"], "yoga"))
             found.append(("easy_"+pose["id"],
-                          pose["nom"]+". Variante douce. "+progression["facile"], "yoga"))
+                          "Passons à la version douce de la posture suivante : "+pose["nom"]+". "+progression["facile"], "yoga"))
     for pose in salutations.get("extraPoses", []):
-        found.append(("pose_" + pose["id"], pose["nom"]+". "+pose["instructions"]+" "+pose["prudence"], "yoga"))
+        found.append(("pose_" + pose["id"], spoken_title(pose["nom"])+pose["instructions"]+" "+pose["prudence"], "yoga"))
     # Les deux voix par étape sont générées en avance, aucune synthèse sur le NAS.
     for routine in salutations.get("routines", []):
         for i, step in enumerate(routine.get("steps", [])):
@@ -46,7 +49,7 @@ def clips(catalog, yoga, guidance, salutations):
                 title = next((p["nom"] for p in
                     salutations.get("extraPoses", [])+yoga.get("poses", [])
                     if p["id"] == pose_id), step["poseId"])
-                text = (title+". "+("Inspire. " if step.get("breath")=="inspiration" else "Expire. ")+cue).strip()
+                text = (spoken_title(title)+("Inspire. " if step.get("breath")=="inspiration" else "Expire. ")+cue).strip()
                 found.append(("salutation_"+routine["id"]+"_"+str(i).zfill(2)+"_"+variant, text, "yoga"))
     if len(set(k for k, _, _ in found)) != len(found):
         raise ValueError("Segments vocaux en doublon")
@@ -55,7 +58,7 @@ def clips(catalog, yoga, guidance, salutations):
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=Path("static/data/meditations.json"))
-    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v2"))
+    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v3"))
     parser.add_argument("--yoga", type=Path, default=Path("static/data/yoga.json"))
     parser.add_argument("--guidance", type=Path, default=Path("static/data/pose-guidance.json"))
     parser.add_argument("--salutations", type=Path, default=Path("static/data/salutations.json"))
@@ -70,14 +73,22 @@ async def main():
     dest.mkdir(parents=True, exist_ok=True)
     lock = asyncio.Semaphore(min(max(args.jobs, 1), 4))
     entries = {}
+    try:
+        previous = json.loads((dest / "manifest.json").read_text(encoding="utf-8")).get("files", {})
+    except (OSError, ValueError):
+        previous = {}
 
     async def render(key, text, kind):
         target = dest / (key + ".mp3")
         async with lock:
             for attempt in range(4):
                 try:
-                    if not target.exists() or target.stat().st_size < 2000:
-                        await Communicate(text=text, voice=VOICE, rate=RATE_MEDITATION if kind == 'meditation' else RATE_YOGA, pitch=PITCH, volume=VOLUME).save(str(target))
+                    if (not target.exists() or target.stat().st_size < 2000 or
+                        previous.get(key, {}).get("textSha256") != hashlib.sha256(text.encode("utf-8")).hexdigest() or
+                        previous.get(key, {}).get("sha256") != sha(target)):
+                        tmp = target.with_suffix(".tmp.mp3")
+                        await Communicate(text=text, voice=VOICE, rate=RATE_MEDITATION if kind == 'meditation' else RATE_YOGA, pitch=PITCH, volume=VOLUME).save(str(tmp))
+                        tmp.replace(target)
                     if target.stat().st_size < 2000:
                         raise ValueError("Fichier audio vide : " + key)
                     break
@@ -94,7 +105,7 @@ async def main():
 
     await asyncio.gather(*(render(k, t, kind) for k, t, kind in clips(source, yoga, guidance, salutations)))
     manifest = {
-        "format": "sichosana-voice-pack", "packId": "vivienne-fr-v2",
+        "format": "sichosana-voice-pack", "packId": dest.name,
         "locale": "fr-FR", "voiceId": VOICE, "rateYoga": RATE_YOGA,
         "rateMeditation": RATE_MEDITATION,
         "pitch": PITCH, "volume": VOLUME,

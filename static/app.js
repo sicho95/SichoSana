@@ -100,19 +100,32 @@ function dailyReflection(){
  touch();
  return list[index];
 }
+const astroCacheKey=(sign,period)=>'astro-v231:'+sign+':'+period;
+function astroPeriodKey(period,d=new Date()){
+ const key=x=>[x.getFullYear(),String(x.getMonth()+1).padStart(2,'0'),String(x.getDate()).padStart(2,'0')].join('-');
+ if(period==='monthly')return key(d).slice(0,7);
+ if(period==='weekly'){const x=new Date(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return key(x);}
+ return key(d);
+}
 function localAstro(){
- const sign=profile().zodiac;
- if(!sign)return {text:'Choisis ton signe ci-dessous pour découvrir ton horoscope en français.',sign:'Non configuré',available:false};
- if(astrologyLive?.sign===sign && astrologyLive?.period===astroPeriod && astrologyLive?.date===todayKey())return astrologyLive;
- return {text:'Consulte ton horoscope en français, avec un lien direct vers la source.',sign,available:false};
+ const sign=profile().zodiac,period=page==='home'?'daily':astroPeriod;
+ if(!sign)return {text:'Choisis ton signe pour découvrir ton horoscope.',sign:'Non configuré',available:false};
+ let cached=null;try{cached=JSON.parse(localStorage.getItem(astroCacheKey(sign,period))||'null');}catch(_){}
+ const item=astrologyLive?.sign===sign&&astrologyLive?.period===period?astrologyLive:null;
+ const valid=x=>x?.available&&x.sign===sign&&x.period===period&&x.periodKey===astroPeriodKey(period);
+ if(valid(item))return item;
+ if(valid(cached))return {...cached,cached:true};
+ if(cached?.available)return {...cached,cached:true,stale:true};
+ return {text:item?.text||'Horoscope momentanément indisponible. Réessaie avec une connexion.',sign,period,available:false};
 }
 async function refreshAstrology(){
- const sign=profile()?.zodiac;
+ const sign=profile()?.zodiac,period=page==='home'?'daily':astroPeriod;
  if(!sign||!navigator.onLine)return;
  try{
-  const result=await Accounts.api('content/horoscope?sign='+encodeURIComponent(sign)+'&period='+astroPeriod);
-  if(result.sign===profile()?.zodiac && result.period===astroPeriod){astrologyLive=result;if(page==='astro'||page==='home')render();}
- }catch(e){astrologyLive={sign,period:astroPeriod,text:'Source momentanément indisponible.',available:false};if(page==='astro')render();}
+  const result=await Accounts.api('content/horoscope?sign='+encodeURIComponent(sign)+'&period='+period);
+  if(result.available&&result.sign===sign&&result.period===period){try{localStorage.setItem(astroCacheKey(sign,period),JSON.stringify(result));}catch(_){}}
+  if(result.sign===profile()?.zodiac&&result.period===(page==='home'?'daily':astroPeriod)){astrologyLive=result;if(!session&&(page==='astro'||page==='home'))render();}
+ }catch(e){astrologyLive={sign,period,text:'Source momentanément indisponible.',available:false};if(!session&&(page==='astro'||page==='home'))render();}
 }
 function activeProgram(){return programs.programs.find(x=>x.id===profile().selectedProgram)||programs.programs[0];}
 function progressProgram(program){
@@ -177,7 +190,7 @@ function home(){
  const r=dailyRoutine(),astro=localAstro(),reflection=dailyReflection(),n=profile().history.filter(x=>x.date===todayKey()).length;
  return heading('Bienvenue','Un moment pour soi','Du mouvement, de la douceur et un peu de temps pour toi.')+
  '<div class="home-desktop-layout"><div class="home-main"><section class="hero"><div class="hero-content"><span class="pill">Séance du jour</span><h2>'+escapeHTML(r.name)+'</h2><p>'+escapeHTML(r.subtitle)+'</p><div class="meta"><span>'+r.duration+' min</span><span>'+escapeHTML(r.level)+'</span></div><button class="primary" type="button" data-action="start-yoga" data-value="'+r.id+'">▷ Commencer ma séance</button></div><div class="hero-art" aria-hidden="true">'+logo+'</div></section>'+
- '<div class="wellness-row"><article class="tile"><div class="tile-icon">☼</div><h3>Méditation guidée</h3><p>Une parenthèse calme, avec un niveau de guidage qui respecte ton rythme.</p><button class="text-link" data-action="page" data-value="meditate">Découvrir les séances ›</button></article><article class="tile"><div class="tile-icon">☾</div><h3>Astro du jour</h3><p>'+escapeHTML(astro.text)+'</p><button class="text-link" data-action="page" data-value="astro">Mon inspiration ›</button></article></div>'+
+ '<div class="wellness-row"><article class="tile"><div class="tile-icon">☼</div><h3>Méditation guidée</h3><p>Une parenthèse calme, avec un niveau de guidage qui respecte ton rythme.</p><button class="text-link" data-action="page" data-value="meditate">Découvrir les séances ›</button></article><article class="tile"><div class="tile-icon">☾</div><h3>Astro du jour</h3><p>'+escapeHTML((astro.stale?'Dernière lecture ('+astro.periodKey+') : ':'')+astro.text)+'</p><button class="text-link" data-action="page" data-value="astro">Mon inspiration ›</button></article></div>'+
  '<div class="section-heading"><h2>Explorer le yoga</h2><button class="text-link" data-action="page" data-value="yoga">Toutes les séances ›</button></div><div class="cards">'+yoga.routines.slice(1,4).map(routineCard).join('')+'</div></div>'+
  '<aside class="home-aside">'+programSidebar()+'<div class="card"><div class="eyebrow">Rituel de la semaine</div><h3>7 jours de présence</h3><p class="muted">La régularité se construit sans pression.</p>'+weeklyStats()+'<p class="muted">'+n+' séance'+(n>1?'s':'')+' terminée'+(n>1?'s':'')+' aujourd’hui.</p></div>'+
  '<div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><div class="eyebrow">Ta progression</div>'+smallStats()+'<button class="text-link" data-action="page" data-value="profile">Voir mon suivi ›</button></div></aside></div>';
@@ -236,7 +249,7 @@ function astroPage(){
  return heading('Un regard sur les étoiles','Astrologie du jour','Une lecture culturelle et symbolique, sans prédiction scientifique.')+
  '<div class="astro-controls"><div class="field"><label for="astro-sign">Mon signe astrologique</label><select id="astro-sign"><option value="">Choisir un signe</option>'+signs.map(s=>'<option value="'+s+'" '+(profile().zodiac===s?'selected':'')+'>'+s+'</option>').join('')+'</select></div>'+
  '<div class="segment astro-periods sliding-segment" role="group" aria-label="Période" style="--count:3;--index:'+['daily','weekly','monthly'].indexOf(astroPeriod)+'">'+[['daily','Aujourd’hui'],['weekly','Cette semaine'],['monthly','Ce mois']].map(([id,name])=>'<button type="button" data-action="astro-period" data-value="'+id+'" aria-pressed="'+(astroPeriod===id)+'">'+name+'</button>').join('')+'</div></div>'+
- '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+new Intl.DateTimeFormat('fr-FR',{dateStyle:'long'}).format(new Date())+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML(a.text)+'</p>'+
+ '<div class="astro-layout"><div class="card astrology-card"><div class="celestial-icon">☾</div><span class="pill">'+escapeHTML(a.sign)+' · '+escapeHTML(a.periodKey||'Lecture indisponible')+'</span><h2>L’inspiration des astres</h2><p class="astro-quote">'+escapeHTML((a.stale?'Dernière lecture enregistrée — non actualisée. ':'')+a.text)+'</p>'+
  '<p class="muted">À lire comme une invitation à réfléchir.</p><div class="astro-attribution"><span>Source : </span><a class="text-link astro-source-link" target="_blank" rel="noopener noreferrer" href="'+link+'">Sigastra</a><a class="text-link" href="/astro-source.html">Horoscopes publics</a></div></div>'+
  '<div class="stack"><div class="card reflection-card"><div class="eyebrow">Réflexion du jour</div><h3>Un instant pour toi</h3><p class="daily-reflection">'+escapeHTML(reflection)+'</p></div><div class="card"><h3>Petit rituel</h3><p>Observe ta respiration et choisis une intention simple.</p><button class="primary" data-action="start-med" data-value="respirer">Prendre 5 minutes</button></div></div></div>';
 }
@@ -284,7 +297,12 @@ function closeModal(){modal='';renderModal();}
 function sessionPage(){
  if(!session)return home();
  const i=stepIndex(session),step=session.steps[i],remaining=session.duration-session.elapsed,progress=Math.min(100,100*session.elapsed/session.duration);
- return '<div class="session"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><div class="session-stage"><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div>'+(step.imageId?'<div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>':'')+'<h2>'+escapeHTML(step.title)+'</h2>'+(step.breath?'<div class="breath-indicator">'+(step.breath==='inspiration'?'Inspire':'Expire')+'</div>':'')+'<p>'+escapeHTML(step.text)+'</p><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Écouter la consigne</button></div></div><div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Étape suivante</button><button class="primary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="muted">Si une posture provoque une douleur, interromps-la. Les consignes vocales ne remplacent pas l’écoute de ton corps.</p></div>';
+ const target=step.phase==='preparation'||step.phase==='facile';
+ return '<div class="session immersive"><header class="practice-heading"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span></header>'+
+ '<div class="practice-clocks"><div><span>Posture / étape</span><div class="session-clock" id="step-countdown">'+formatTime(stepBoundary(session,i)-session.elapsed)+'</div></div><div><span>Séance</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div></div></div>'+
+ '<div class="session-stage '+(step.imageId?'has-pose':'no-pose')+'">'+(step.imageId?'<div class="practice-visual"><div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>'+(target?'<span class="target-caption">Illustration de la posture cible</span>':'')+'</div>':'')+
+ '<div class="practice-instructions"><h2>'+escapeHTML(step.title)+'</h2>'+(step.breath?'<div class="breath-indicator">'+(step.breath==='inspiration'?'Inspire':'Expire')+'</div>':'')+'<p>'+escapeHTML(step.text)+'</p></div><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Réécouter la consigne</button></div></div>'+
+ '<div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="previous-step" '+(i===0?'disabled':'')+'>Précédente</button><button class="primary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Suivante</button><button class="secondary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="practice-safety muted">Interromps toute posture douloureuse. Écoute ton corps.</p></div>';
 }
 function stepIndex(s){
  let elapsed=0;const total=s.steps.reduce((x,p)=>x+p.weight,0)||1;
@@ -293,12 +311,14 @@ function stepIndex(s){
 }
 function render(){
  if(!Accounts.loggedIn() || Accounts.mustChangePassword()){
-  document.documentElement.dataset.theme='linen';
+  document.body.classList.remove('immersive-session');
+   document.documentElement.dataset.theme='linen';
   $('#sidebar').innerHTML='';$('#bottomnav').innerHTML='';$('#topbar').innerHTML='';
   $('#main').innerHTML=Accounts.loggedIn()?Accounts.passwordScreen():Accounts.screen();
   renderModal();return;
  }
  document.documentElement.dataset.theme=profile().theme==='horizon'?'horizon':'linen';
+ document.body.classList.toggle('immersive-session',Boolean(session));
  renderShell();
  const html=session?sessionPage():page==='home'?home():page==='yoga'?yogaPage():page==='meditate'?meditationPage():page==='astro'?astroPage():page==='admin'&&Accounts.user()?.role==='admin'?Accounts.adminScreen():profilePage();
  $('#main').innerHTML=html;renderModal();
@@ -337,17 +357,20 @@ function startSession(type,id){
  }
  if(!steps.length)return notice('Cette séance n’a pas de contenu.');
  session={id,type,name,duration,elapsed:0,running:true,last:Date.now(),steps,spoken:-1};
+  voiceStatus='';keepAwake();
  page=type==='yoga'?'yoga':'meditate';render();
  announceStep();clearInterval(timer);timer=setInterval(tick,300);
 }
-let voicePlayId=0;
+let voicePlayId=0, wakeLock=null;
+async function keepAwake(){if(!session?.running||document.hidden||!navigator.wakeLock||wakeLock)return;try{const lock=await navigator.wakeLock.request('screen');if(!session?.running){await lock.release();return;}wakeLock=lock;lock.addEventListener('release',()=>{if(wakeLock===lock)wakeLock=null;});}catch(_){}}
+function releaseAwake(){const lock=wakeLock;wakeLock=null;if(lock)lock.release().catch(()=>{});}
 function stopAudio(){
  ++voicePlayId;
  if(audio){audio.pause();audio.removeAttribute('src');audio.load();}
 }
 async function voiceManifest(){
  if(manifest)return manifest;
- for(const path of ['/voice/vivienne-fr-v2/manifest.json','/voice/vivienne-fr-v1/manifest.json']){
+ for(const path of ['/voice/vivienne-fr-v3/manifest.json']){
   const res=await fetch(path,{cache:'no-store'});
   if(!res.ok)continue;
   const obj=await res.json();
@@ -360,13 +383,14 @@ function playReadyClip(clip,pack){
  if(!record)throw Error('Cette consigne est absente du pack audio.');
  const playId=++voicePlayId;
  // Identique au lecteur qui fonctionne dans ResurGo Running :
- // un Audio neuf par consigne, play() lancé directement depuis l'interaction.
+ // Un seul élément audio pour conserver l'autorisation de lecture Safari.
  if(audio)audio.pause();
  const url='/voice/'+encodeURIComponent(pack.packId)+'/'+encodeURIComponent(record.src);
- audio=new Audio(url);
+ if(!audio)audio=new Audio();
+  audio.src=url;
  audio.preload='auto';
  audio.volume=.94;
- audio.playbackRate=pack.packId==='vivienne-fr-v2'?1:(session?.type==='meditate'?.76:.88);
+ audio.playbackRate=pack.packId==='vivienne-fr-v3'?1:(session?.type==='meditate'?.76:.88);
  audio.preservesPitch=true;
  if('webkitPreservesPitch' in audio)audio.webkitPreservesPitch=true;
  voiceStatus='Lecture de la consigne…';
@@ -390,7 +414,7 @@ function playVoice(clip){
  if(!session)return;
  // Safari iOS exige que play() soit appelé directement dans le geste de l'utilisateur.
  // La V2 produit un MP3 nommé exactement comme l'identifiant de la consigne.
- const pack=manifest?.files?.[clip]?manifest:{packId:'vivienne-fr-v2',files:{[clip]:{src:clip+'.mp3'}}};
+ const pack=manifest?.files?.[clip]?manifest:{packId:'vivienne-fr-v3',files:{[clip]:{src:clip+'.mp3'}}};
  try{playReadyClip(clip,pack);}
  catch(err){
   voiceStatus='Impossible de lancer la voix. Appuie sur « Écouter la consigne ».';
@@ -410,8 +434,9 @@ function tick(){
  const now=Date.now();if(session.running){session.elapsed+=(now-session.last)/1000;}
  session.last=now;
  if(session.elapsed>=session.duration){finishSession(true);return;}
- if(stepIndex(session)!==session.spoken){announceStep();return;}
- const clock=$('#countdown'),bar=$('#session-progress');
+ if(session.running&&stepIndex(session)!==session.spoken){announceStep();return;}
+ const clock=$('#countdown'),stepClock=$('#step-countdown'),bar=$('#session-progress');
+ if(stepClock)stepClock.textContent=formatTime(stepBoundary(session,stepIndex(session))-session.elapsed);
  if(clock)clock.textContent=formatTime(session.duration-session.elapsed);
  if(bar)bar.style.width=Math.min(100,100*session.elapsed/session.duration)+'%';
 }
@@ -421,12 +446,12 @@ function stepBoundary(s,idx){
 }
 async function finishSession(automatic=false){
  if(!session)return;
- const s=session;session=null;clearInterval(timer);timer=null;stopAudio();
+ const s=session;session=null;clearInterval(timer);timer=null;stopAudio();releaseAwake();
  const p=profile(),elapsed=automatic?s.duration:s.elapsed;
  p.history.push({id:uid(),type:s.type,ref:s.id,name:s.name,date:todayKey(),duration:Math.max(1,Math.round(elapsed/60)),completed:automatic||elapsed>=s.duration*.85,at:Date.now()});
  touch();render();notice('Séance enregistrée. Merci pour ce moment.');
 }
-function abortSession(){session=null;clearInterval(timer);timer=null;stopAudio();render();}
+function abortSession(){session=null;clearInterval(timer);timer=null;stopAudio();releaseAwake();render();}
 function mergedProfiles(local,remote){
  const map=new Map();
  for(const p of [...remote,...local]){
@@ -512,7 +537,7 @@ function notifications(){
  modal='<div class="modal" role="dialog" aria-modal="true"><button class="icon-btn modal-close" data-action="close">×</button><h2>Notifications</h2><p>'+ (supported?'Le navigateur est compatible avec les notifications web push.':'Cet appareil ou navigateur ne propose pas toutes les fonctions web push.')+'</p><p>Les horaires et clés VAPID ne sont pas encore configurés. Aucun rappel n’est activé automatiquement.</p><button class="secondary" data-action="close">Compris</button></div>';renderModal();
 }
 async function handle(action,value){
- if(action==='page'){if(session)abortSession();page=value;render();if(page==='admin')await Accounts.refreshAdmin();if(page==='astro')refreshAstrology();window.scrollTo(0,0);return;}
+ if(action==='page'){if(session)abortSession();page=value;render();if(page==='admin')await Accounts.refreshAdmin();if(page==='astro'||page==='home'){astroPeriod=page==='home'?'daily':astroPeriod;refreshAstrology();}window.scrollTo(0,0);return;}
  if(action==='yoga-tab'){yogaTab=value;render();return;}
   if(action==='routine-filter'){routineFilter=value;render();return;}
  if(action==='pose-filter'){poseFilter=value;render();return;}
@@ -527,8 +552,8 @@ async function handle(action,value){
  if(action==='pose')return poseModal(value);
   if(action==='toggle-mastery'){const p=profile();p.masteredPoseStatus||={};p.masteredPoseStatus[value]={mastered:!isMastered(value),at:Date.now()};touch();render();return poseModal(value);}
  if(action==='close')return closeModal();
- if(action==='pause'){if(session){session.running=!session.running;session.last=Date.now();if(!session.running)stopAudio();else session.spoken=-1;render();if(session.running)announceStep();}return;}
- if(action==='next-step'){if(session){const idx=stepIndex(session);session.elapsed=Math.min(session.duration,stepBoundary(session,idx)+0.01);session.spoken=-1;tick();}return;}
+ if(action==='pause'){if(session){session.running=!session.running;session.last=Date.now();if(!session.running){stopAudio();releaseAwake();}else{session.spoken=-1;keepAwake();}render();if(session.running)announceStep();}return;}
+ if(action==='previous-step'||action==='next-step'){if(session){const idx=stepIndex(session),next=action==='previous-step'?Math.max(0,idx-1):idx+1;if(next>=session.steps.length)return finishSession(false);session.elapsed=next===0?0:stepBoundary(session,next-1)+0.001;session.last=Date.now();session.spoken=-1;if(session.running)announceStep();else{stopAudio();$('#main').innerHTML=sessionPage();}}return;}
  if(action==='finish')return finishSession(false);
  if(action==='cancel-session')return abortSession();
  if(action==='add-profile'){const name=prompt('Nom du nouveau profil :');if(name&&name.trim()){const p=defaultProfile();p.name=name.trim().slice(0,50);state.profiles.push(p);state.activeProfileId=p.id;save();render();}return;}
@@ -622,9 +647,9 @@ document.addEventListener('error',e=>{
   target.replaceWith(span);
  }
 },true);
-window.addEventListener('online',()=>{render();autoSync(true);});
+window.addEventListener('online',()=>{render();autoSync(true);refreshAstrology();});
 window.addEventListener('offline',render);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoSync(true);});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){autoSync(true);keepAwake();}});
 async function init(){
  try{
   db=await openDB();

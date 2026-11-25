@@ -4,7 +4,8 @@ Les appels depuis le NAS portent un Referer vers une page publique qui crédite
 Sigastra. Le service reste désactivable immédiatement par variable d'environnement.
 """
 from __future__ import annotations
-from datetime import date
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 import json
 import os
 import re
@@ -26,6 +27,15 @@ CACHE = {}
 LOCK = threading.RLock()
 
 
+def period_key(period, now=None):
+    day = (now or datetime.now(ZoneInfo('Europe/Paris'))).date()
+    if period == 'weekly':
+        return (day - timedelta(days=day.weekday())).isoformat()
+    if period == 'monthly':
+        return day.strftime('%Y-%m')
+    return day.isoformat()
+
+
 def daily(sign, period="daily"):
     if period not in PERIODS:
         period = "daily"
@@ -35,7 +45,7 @@ def daily(sign, period="daily"):
     if os.environ.get("SICHOSANA_ASTRO_ENABLED", "0") != "1":
         return {"available": False, "text": "La source astrologique est temporairement désactivée.",
                 "source": SOURCE_NAME, "sourceUrl": SOURCE_URL, "sign": sign, "period": period}
-    key = (date.today().isoformat(), sign, period)
+    key = (period_key(period), sign, period)
     with LOCK:
         if key in CACHE:
             return CACHE[key]
@@ -60,15 +70,17 @@ def daily(sign, period="daily"):
         if item is None:
             raise ValueError("Horoscope vide.")
         full_text = re.sub(r"\s+", " ", item["text"]).strip()
-        short = " ".join(re.split(r"(?<=[.!?])\s+", full_text)[:3]).strip()[:480]
+        short = " ".join(re.split(r"(?<=[.!?])\s+", full_text)[:2]).strip()
         attribution = payload.get("attribution") or {}
         link = attribution.get("localizedHref", SOURCE_URL)
         if not isinstance(link, str) or not link.startswith("https://sigastra.com/"):
             link = SOURCE_URL
         result = {"available": True, "text": short, "source": SOURCE_NAME,
-                  "sourceUrl": link, "sign": sign, "period": period, "date": key[0]}
+                  "sourceUrl": link, "sign": sign, "period": period, "periodKey": key[0], "date": period_key('daily')}
         with LOCK:
             CACHE[key] = result
+            if len(CACHE) > 100:
+                CACHE.pop(next(iter(CACHE)))
         return result
     except (OSError, ValueError, TypeError, KeyError, HTTPError, URLError):
         # Ne jamais inventer d'horoscope. Garder un lien direct à la source.
