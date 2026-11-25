@@ -5,6 +5,7 @@ import asyncio
 import hashlib
 import json
 import re
+import unicodedata
 import subprocess
 from pathlib import Path
 
@@ -14,8 +15,14 @@ RATE_YOGA, RATE_MEDITATION, PITCH, VOLUME = "-22%", "-32%", "-1Hz", "+0%"
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
-def spoken_title(name):
-    return 'Nous allons pratiquer cette posture de yoga, appelée ' + name.lower() + ', en douceur. '
+def spoken_title(pose, variant=None):
+    # Translittération sans diacritiques pour le synthétiseur, graphie savante conservée à l'écran.
+    name = pose.get("nom", "").lower()
+    sanskrit = pose.get("sanskrit", "").replace(" / ", " et ")
+    sanskrit = "".join(c for c in unicodedata.normalize("NFD", sanskrit) if not unicodedata.combining(c))
+    sanskrit = sanskrit.replace(" II", " deux")
+    title = (sanskrit + ", " if sanskrit else "") + name
+    return "Nous allons pratiquer " + title + (", en version douce" if variant == "easy" else "") + ". "
 
 def clips(catalog, yoga, guidance, salutations, transitions):
     found = []
@@ -30,21 +37,24 @@ def clips(catalog, yoga, guidance, salutations, transitions):
                     found.append((key, re.sub(r"(?<=[.!?])\s+", " ... ", text), "meditation"))
     # Même identité Vivienne pour les consignes de yoga et les méditations.
     for pose in yoga.get("poses", []):
-        text = (spoken_title(pose.get("nom", "")) + pose.get("instructions", "") + " " + pose.get("prudence", "")).strip()
+        text = (spoken_title(pose) + pose.get("instructions", "") + " " + pose.get("prudence", "")).strip()
         found.append(("pose_" + pose["id"], text, "yoga"))
         progression=guidance.get("poses",{}).get(pose["id"])
         if progression:
             found.append(("prepare_"+pose["id"],
-                          "Préparons doucement cette posture de yoga, appelée "+pose["nom"].lower()+", à ton rythme. "+progression["preparation"], "yoga"))
+                          spoken_title(pose)+"Préparons cette posture. "+progression["preparation"], "yoga"))
             found.append(("easy_"+pose["id"],
-                          "Passons à la version douce de cette posture de yoga, appelée "+pose["nom"].lower()+", à ton rythme. "+progression["facile"], "yoga"))
-            found.append(("learn_full_"+pose["id"], spoken_title(pose["nom"])+pose["instructions"]+" "+progression["respiration"]+" "+progression["alignement"]+" "+progression["prudence"], "yoga"))
+                          spoken_title(pose,"easy")+progression["facile"], "yoga"))
+            found.append(("learn_full_"+pose["id"], spoken_title(pose)+pose["instructions"]+" "+progression["respiration"]+" "+progression["alignement"]+" "+progression["prudence"], "yoga"))
+            for variant in ("full","easy"):
+                found.append(("hold_"+pose["id"]+"_"+variant, progression["hold"][variant], "yoga"))
+    pose_index = {p["id"]: p for p in yoga["poses"] + salutations.get("extraPoses", [])}
     for key, variants in transitions["routes"].items():
         start, end = key.split(">")
         for variant in ("full", "easy"):
-            found.append(("transition_"+start+"_"+end+"_"+variant, variants[variant], "yoga"))
+            found.append(("transition_"+start+"_"+end+"_"+variant, spoken_title(pose_index[end], variant)+variants[variant], "yoga"))
     for pose in salutations.get("extraPoses", []):
-        found.append(("pose_" + pose["id"], spoken_title(pose["nom"])+pose["instructions"]+" "+pose["prudence"], "yoga"))
+        found.append(("pose_" + pose["id"], spoken_title(pose)+pose["instructions"]+" "+pose["prudence"], "yoga"))
     # Les deux voix par étape sont générées en avance, aucune synthèse sur le NAS.
     for routine in salutations.get("routines", []):
         for i, step in enumerate(routine.get("steps", [])):
@@ -52,10 +62,8 @@ def clips(catalog, yoga, guidance, salutations, transitions):
                 pose_id = step.get("easyPoseId", step["poseId"]) if variant=="easy" else step["poseId"]
                 cue = step.get("easyCue" if variant == "easy" else "fullCue") or step.get("cue", "")
                 # Sauf dérogation douce (cobra / genoux), la consigne reste identique.
-                title = next((p["nom"] for p in
-                    salutations.get("extraPoses", [])+yoga.get("poses", [])
-                    if p["id"] == pose_id), step["poseId"])
-                text = (spoken_title(title)+("Inspire. " if step.get("breath")=="inspiration" else "Expire. ")+cue).strip()
+                pose = pose_index[pose_id]
+                text = (spoken_title(pose, variant if pose_id != step["poseId"] else None)+cue).strip()
                 found.append(("salutation_"+routine["id"]+"_"+str(i).zfill(2)+"_"+variant, text, "yoga"))
     if len(set(k for k, _, _ in found)) != len(found):
         raise ValueError("Segments vocaux en doublon")
@@ -64,7 +72,7 @@ def clips(catalog, yoga, guidance, salutations, transitions):
 async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=Path("static/data/meditations.json"))
-    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v4"))
+    parser.add_argument("--out", type=Path, default=Path("static/voice/vivienne-fr-v5"))
     parser.add_argument("--yoga", type=Path, default=Path("static/data/yoga.json"))
     parser.add_argument("--guidance", type=Path, default=Path("static/data/pose-guidance.json"))
     parser.add_argument("--salutations", type=Path, default=Path("static/data/salutations.json"))

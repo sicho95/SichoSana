@@ -40,3 +40,21 @@ class PeriodTests(unittest.TestCase):
         self.assertEqual(len(variants),2)
         for s in variants:
             self.assertNotEqual(s['fullCue'],s['easyCue'])
+
+    def test_voice_script_has_distinct_title_and_hold(self):
+        import importlib.util,json
+        from pathlib import Path
+        root=Path(__file__).resolve().parents[1]
+        spec=importlib.util.spec_from_file_location('voice',root/'scripts/generate-voice-pack.py')
+        mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
+        data=root/'static/data'
+        args=[json.loads((data/n).read_text()) for n in ('meditations.json','yoga.json','pose-guidance.json','salutations.json','transitions.json')]
+        clips={k:t for k,t,_ in mod.clips(*args)}
+        self.assertEqual(len(clips),260)
+        self.assertIn('Adho Mukha Svanasana, chien tête en bas',clips['transition_tadasana_adho-mukha_easy'])
+        self.assertIn('Savasana, relaxation allongée',clips['easy_savasana'])
+        for pose in args[2]['poses']:
+            for variant in ('easy','full'):
+                hold=clips['hold_'+pose+'_'+variant]
+                self.assertNotIn('Nous allons pratiquer',hold)
+                self.assertNotEqual(hold,args[2]['poses'][pose]['facile'])

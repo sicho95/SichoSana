@@ -297,6 +297,10 @@ class Handler(SimpleHTTPRequestHandler):
         LOGGER.info("%s %s", self.address_string(), fmt % args)
 
     def end_headers(self):
+        # App shell/data mutable: never let the CDN retain an earlier build.
+        path = urlsplit(self.path).path
+        if path in ("/", "/index.html", "/app.js", "/auth.js", "/styles.css", "/sw.js", "/manifest.webmanifest") or path.startswith("/data/") or path.endswith("/manifest.json"):
+            self.send_header("Cache-Control", "no-store, max-age=0, must-revalidate")
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Referrer-Policy", "strict-origin-when-cross-origin")
         self.send_header("X-Frame-Options", "DENY")
@@ -402,7 +406,7 @@ class Handler(SimpleHTTPRequestHandler):
                 params=parse_qs(urlsplit(self.path).query)
                 return self.json_response(200, astrology.daily(params.get('sign',[''])[0], params.get('period',['daily'])[0]))
             if path == "/api/health":
-                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.1"})
+                return self.json_response(200, {"status": "ok", "storage": "sqlite", "version": "2.3.1", "build": "20261125-r6"})
             if path == "/api/v1/public-config":
                 return self.json_response(200, {"donationUrl": donation_destination()})
             if path == "/api/v1/media/original-status":

@@ -382,3 +382,20 @@ test('v231: transitions contextualisées et apprentissage distinct',async({page}
  await page.locator('[data-action="finish"]').click();
  await expect(page.locator('.pose-modal [data-action="toggle-mastery"]')).toBeVisible();
 });
+
+test('v231: nom sanskrit et consigne de maintien différente après transition',async({page})=>{
+ await page.setViewportSize({width:390,height:664});await signIn(page);
+ await page.locator('#bottomnav [data-value="yoga"]').click();
+ await page.locator('.yoga-practice-modes [data-value="douce"]').click();
+ await page.clock.install();
+ await page.locator('[data-action="start-yoga"][data-value="vinyasa-fluide"]').first().click();
+ await expect(page.locator('.pose-sanskrit')).toContainText('Tāḍāsana');
+ await page.locator('[data-action="next-step"]').click();
+ await expect(page.locator('.pose-sanskrit')).toContainText('Adho Mukha Śvānāsana');
+ await expect(page.locator('.transition-label')).toBeVisible();
+ const entry=await page.locator('.practice-instructions p').textContent();
+ await page.clock.fastForward(45000);
+ await expect(page.locator('.transition-label')).toHaveCount(0);
+ const hold=await page.locator('.practice-instructions p').textContent();
+ expect(hold).not.toBe(entry);expect(hold).toContain('nuque');
+});

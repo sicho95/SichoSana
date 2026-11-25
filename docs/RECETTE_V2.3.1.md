@@ -36,3 +36,9 @@ Les résultats de CI ne sont jamais présumés. Safari réel, PWA, écoute, vér
 ## r5 — finition
 - Aperçu de la prochaine posture avec miniature originale ; consignes distinctes pour le cobra et le chien tête en haut, la planche basse et son adaptation. Test de couverture du catalogue et des deux variantes de la salutation.
 - Vérification directe du moteur r4 : 50 cas (25 transitions dans les séances × 2 variantes) réussis, passage transition/maintien et durée totale conservée. Recette r5 complète non encore attestée.
+
+## r6 — retour utilisateur Nestor
+- Nom sanskrit puis français à l'entrée, transition contextualisée ; maintien sans réannonce ni répétition des gestes. 26 nouvelles consignes de maintien, pack Vivienne v5 (260 MP3). Noms sanskrits visibles, graphie savante conservée ; translittération TTS à écouter sur appareil réel.
+- Cache CDN : app shell/data no-store, URL JS/CSS versionnées, installation SW avec reload, build API r6.
+- Horoscope : capture Nestor signale explicitement configuration désactivée. Activer SICHOSANA_ASTRO_ENABLED=1 dans la configuration locale et vérifier les trois périodes dans le conteneur. Ne pas écraser la configuration NAS.
+- Les illustrations des variantes restent à produire ; l'illustration de la posture cible n'est pas un visuel exact de la version douce.

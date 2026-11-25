@@ -91,7 +91,7 @@ print('GITHUB_ARCHIVE_STAGED_OK',total,'octets')
 PY
 log '2/7 — 58 PNG uniques, 73 références, 15 alias, 30 étapes et 183 MP3'
 docker run --rm --network none -v "$STAGE/src:/src:ro" -w /src python:3.12-slim python scripts/verify-v23-art-and-salutations.py --root /src || error 'Bibliothèque, audio ou salutations incomplets. Application inchangée.'
-docker run --rm --network none -v "$STAGE/src:/src:ro" -w /src python:3.12-slim python scripts/verify-v231-voice.py || error 'Pack Vivienne v4 incomplet. Application inchangée.'
+docker run --rm --network none -v "$STAGE/src:/src:ro" -w /src python:3.12-slim python scripts/verify-v231-voice.py || error 'Pack Vivienne v5 incomplet. Application inchangée.'
 log '3/7 — Tests API et SQLite en base temporaire, syntaxe JavaScript'
 docker run --rm --network none -v "$STAGE/src:/src:ro" -w /src -e PYTHONDONTWRITEBYTECODE=1 python:3.12-slim python -m unittest discover -s tests -v || error 'Tests Python en échec. Application inchangée.'
 docker run --rm --network none -v "$STAGE/src:/src:ro" -w /src node:22-alpine sh -ec 'node --check static/app.js; node --check static/auth.js; node --check static/sw.js; node --check tests/ui.spec.cjs' || error 'Syntaxe JavaScript invalide. Application inchangée.'
@@ -123,7 +123,7 @@ for n in sorted(physical):
     path='media/original/'+n+'.png'; b=read('/'+path)
     assert b.startswith(b'\x89PNG\r\n\x1a\n') and hashlib.sha256(b).digest()==hashlib.sha256((root/path).read_bytes()).digest(),n
 for name in ('pose_balasana.mp3',):
-    req=urllib.request.Request(base+'/voice/vivienne-fr-v4/'+name,headers={'Range':'bytes=0-63'})
+    req=urllib.request.Request(base+'/voice/vivienne-fr-v5/'+name,headers={'Range':'bytes=0-63'})
     with urllib.request.urlopen(req,timeout=6) as r:assert r.status==206 and len(r.read())==64
 print('HEALTH_OK 2.3.1 ; ART_58_73_OK ; AUDIO_RANGE_206_OK')
 PY
