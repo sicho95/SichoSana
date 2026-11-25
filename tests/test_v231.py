@@ -51,8 +51,8 @@ class PeriodTests(unittest.TestCase):
         args=[json.loads((data/n).read_text()) for n in ('meditations.json','yoga.json','pose-guidance.json','salutations.json','transitions.json')]
         clips={k:t for k,t,_ in mod.clips(*args)}
         self.assertEqual(len(clips),260)
-        self.assertIn('Adho Mukha Svanasana, chien tête en bas',clips['transition_tadasana_adho-mukha_easy'])
-        self.assertIn('Savasana, relaxation allongée',clips['easy_savasana'])
+        self.assertIn('Adho Mukha Svanasana, le chien tête en bas',clips['transition_tadasana_adho-mukha_easy'])
+        self.assertIn('Savasana, la relaxation allongée',clips['easy_savasana'])
         for pose in args[2]['poses']:
             for variant in ('easy','full'):
                 hold=clips['hold_'+pose+'_'+variant]

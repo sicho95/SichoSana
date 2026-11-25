@@ -18,6 +18,7 @@ def sha(path):
 def spoken_title(pose, variant=None):
     # Translittération sans diacritiques pour le synthétiseur, graphie savante conservée à l'écran.
     name = pose.get("nom", "").lower()
+    name = {"tadasana":"la ","balasana":"la ","marjaryasana":"le ","adho-mukha":"le ","virabhadrasana2":"le ","bhujangasana":"le ","baddha-konasana":"le ","vrksasana":"l’","anjaneyasana":"la ","paschimottanasana":"la ","supta-matsyendrasana":"la ","setu-bandha":"le ","savasana":"la ","urdhva-hastasana":"les ","uttanasana":"la ","ardha-uttanasana":"la ","phalakasana":"la ","chaturanga":"la ","urdhva-mukha":"le ","ardha-chandra-lateral":"l’","utthita-tadasana":"l’","utkata-konasana":"la ","trikonasana":"le ","parsvottanasana":"la ","skandasana":"la "}.get(pose["id"], "") + name.replace(" ii", " deux")
     sanskrit = pose.get("sanskrit", "").replace(" / ", " et ")
     sanskrit = "".join(c for c in unicodedata.normalize("NFD", sanskrit) if not unicodedata.combining(c))
     sanskrit = sanskrit.replace(" II", " deux")
