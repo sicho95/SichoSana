@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  actions: read
 jobs:
   candidate:
     runs-on: ubuntu-latest
@@ -20,6 +21,14 @@ jobs:
           node-version: '22'
       - name: Verify variant art before audio generation
         run: python scripts/verify-variant-art.py --extract
+      - name: Recover previously verified voice candidate
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: vivienne-fr-v6-candidate
+          run-id: 45710948777
+          github-token: ${{ github.token }}
+          path: static/voice/vivienne-fr-v6/
       - name: Generate and verify Vivienne v6
         run: |
           python -m pip install "edge-tts>=7,<9"

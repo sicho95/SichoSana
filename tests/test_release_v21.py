@@ -44,7 +44,8 @@ class ReleaseValidation(unittest.TestCase):
         from server import astrology
         self.assertEqual(astrology.PERIODS,{'daily','weekly','monthly'})
         response={'items':[{'text':'Un jour serein. Cultive le calme. Prends un instant.'}],
-                  'attribution':{'localizedHref':'https://sigastra.com/fr/horoscope-du-jour'}}
+                  'attribution':{'localizedHref':'https://sigastra.com/fr/horoscope-du-jour',
+                  'canonicalTag':'<link rel="canonical" href="https://sigastra.com/fr/horoscope-du-jour">'}}
         class R:
             status=200
             def __enter__(self):return self
@@ -58,6 +59,10 @@ class ReleaseValidation(unittest.TestCase):
         self.assertEqual(data['period'],'weekly')
         self.assertEqual(data['source'],'Sigastra')
         self.assertIn('/weekly?',fetch.call_args.args[0].full_url)
+        self.assertIn('full=1',fetch.call_args.args[0].full_url)
+        self.assertEqual(data['text'],response['items'][0]['text'])
+        self.assertEqual(data['preview'],'Un jour serein.')
+        self.assertEqual(data['canonicalUrl'],response['attribution']['localizedHref'])
 
 
 class YogaCurriculumValidation(unittest.TestCase):

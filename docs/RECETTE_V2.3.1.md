@@ -53,3 +53,6 @@ Les résultats de CI ne sont jamais présumés. Safari réel, PWA, écoute, vér
 
 ## r9 — recette astrologie
 Nestor r5 : fournisseur activé et lecture effective confirmée par captures. Correction du double tronquage : full=1, texte intact et paragraphes, aperçu distinct à l’accueil, dates françaises, typographie de corps. Canonical fournisseur validée et appliquée sur écran Astro et route publique par signe/période ; attribution visible. Cache local distinct des anciens extraits. Tests simulés 3 périodes, refus canonical externe, navigateur et taille. Conditions Sigastra : https://sigastra.com/fr/partners/api et https://sigastra.com/fr/partners/syndication ; vérifier réponse réelle et accessibilité publique sur Nestor. La recette r9 reste bloquée si archive variantes absente.
+
+## Recette r9 — reprise après premier échec
+Run 45710948777 : 14 variantes vérifiées, 260 MP3 vérifiés, diagnostic réel daily/weekly/monthly réussi. 27/28 tests Python réussis ; ancien fixture de test astrologique sans canonicalTag, désormais exigée en mode intégral. Fixture complété et assertions de texte intégral ajoutées, sans contourner la vérification canonique de production. Réutilisation du pack audio candidat issu de ce run avec vérification intégrale des empreintes avant publication.
