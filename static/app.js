@@ -3,7 +3,7 @@
 'use strict';
 import * as Accounts from './auth.js';
 const $ = (s) => document.querySelector(s);
-const APP_VERSION='2.3.1', UI_BUILD='20261125-r2';
+const APP_VERSION='2.3.1', UI_BUILD='20261125-r3';
 let serverVersion=null, versionChecked=false;
 function versionPanel(){return '<section class="card version-panel"><h2>À propos de SichoSana</h2><p id="ui-version">Application : '+APP_VERSION+' · '+UI_BUILD+'</p><p id="server-version">Serveur : '+escapeHTML(serverVersion||(versionChecked?'indisponible':'vérification…'))+'</p>'+(serverVersion&&serverVersion!==APP_VERSION?'<p class="attention">Versions différentes. Actualise l’application avant de poursuivre.</p>':'')+'<button class="secondary" data-action="check-version">Vérifier la version</button></section>';}
 async function checkVersion(){try{const r=await fetch('/api/health',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();serverVersion=typeof d.version==='string'?d.version:null;}catch(_){serverVersion=null;}versionChecked=true;if(!session&&(page==='profile'||page==='admin')&&Accounts.loggedIn()&&!Accounts.mustChangePassword())render();}
@@ -27,7 +27,7 @@ const iconPaths={
 function uiIcon(key){return '<svg aria-hidden="true" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+(iconPaths[key]||iconPaths.lotus)+'</svg>';}
 const signs = ['Bélier','Taureau','Gémeaux','Cancer','Lion','Vierge','Balance','Scorpion','Sagittaire','Capricorne','Verseau','Poissons'];
 let reflections={reflections:[]}, poseMedia={photos:[]}, poseGuidance={poses:{}}, originalArt={files:[]}, originalBundleReady=false, donationUrl=null, salutations={routines:[],extraPoses:[]}, astrologyLive=null, astroPeriod='daily', yogaTab='seances';
-const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',dailyGoal:'varie',dailyDuration:20,zodiac:'',favorites:[],history:[],masteredPoseStatus:{},createdAt:Date.now(),modifiedAt:Date.now()});
+const defaultProfile = () => ({id:uid(),name:'Mon espace',theme:'linen',meditationStyle:'equilibree',practiceMode:'initiation',dailyGoal:'varie',dailyDuration:20,zodiac:'',favorites:[],history:[],masteredPoseStatus:{},poseVariantStatus:{},createdAt:Date.now(),modifiedAt:Date.now()});
 const initialState = () => { const p=defaultProfile(); return {schemaVersion:1,profiles:[p],activeProfileId:p.id,revision:0}; };
 let db, state, yoga={poses:[],routines:[]}, meditations={sessions:[]}, programs={programs:[]}, page='home', routineFilter='Tous', poseFilter='Essentielles', meditationFilter='Toutes', modal='', session=null, timer=null, audio=null, manifest=null, voiceStatus='', syncBusy=false, conflict=null, syncTimer=null, syncStatus='';
 function openDB(){
@@ -221,7 +221,7 @@ function yogaPage(){
  const routines=yoga.routines.filter(r=>!r.requiresMastery&&(routineFilter==='Tous'||r.family===routineFilter||(routineFilter==='Favoris'&&profile().favorites.includes(r.id))));
  const poses=yoga.poses.filter(p=>poseFilter==='Tous'||(poseFilter==='Essentielles'&&!p.id.startsWith('yoga-api-'))||(poseFilter==='Catalogue API'&&p.id.startsWith('yoga-api-'))||p.niveau===poseFilter);
  return heading('Pratiquer','Yoga','Une séance à ton rythme et une bibliothèque pour découvrir chaque posture.')+
- '<div class="card yoga-mode-panel"><div><div class="eyebrow">Pratique adaptée</div><h3>Comment souhaites-tu pratiquer ?</h3><p class="muted">Chaque posture peut être préparée et simplifiée avant sa version complète.</p></div><div class="segment yoga-practice-modes sliding-segment" role="group" aria-label="Mode de pratique" style="--count:3;--index:'+['initiation','douce','complete'].indexOf(practiceMode())+'">'+[['initiation','Découvrir pas à pas'],['douce','Version douce'],['complete','Pratique complète']].map(([id,label])=>'<button type="button" data-action="practice-mode" data-value="'+id+'" aria-pressed="'+(practiceMode()===id)+'">'+label+'</button>').join('')+'</div></div>'+
+ '<div class="card yoga-mode-panel"><div><div class="eyebrow">Pratique adaptée</div><h3>Comment souhaites-tu pratiquer ?</h3><p class="muted">Une seule version par posture. Le mode adaptatif tient compte des postures maîtrisées et des adaptations mémorisées.</p></div><div class="segment yoga-practice-modes sliding-segment" role="group" aria-label="Mode de pratique" style="--count:3;--index:'+['initiation','douce','complete'].indexOf(practiceMode())+'">'+[['initiation','Adaptatif'],['douce','Version douce'],['complete','Normal']].map(([id,label])=>'<button type="button" data-action="practice-mode" data-value="'+id+'" aria-pressed="'+(practiceMode()===id)+'">'+label+'</button>').join('')+'</div></div>'+
  '<div class="yoga-tabs sliding-segment" role="tablist" aria-label="Explorer le yoga" style="--count:2;--index:'+(yogaTab==='postures'?1:0)+'">'+
  '<button type="button" role="tab" aria-selected="'+(yogaTab==='seances')+'" data-action="yoga-tab" data-value="seances">Mes séances</button>'+
  '<button type="button" role="tab" aria-selected="'+(yogaTab==='postures')+'" data-action="yoga-tab" data-value="postures">Bibliothèque des postures <small>'+yoga.poses.length+'</small></button></div>'+
@@ -303,7 +303,7 @@ function sessionPage(){
  return '<div class="session immersive"><header class="practice-heading"><div class="eyebrow">'+(session.type==='yoga'?'Yoga guidé':'Méditation guidée')+'</div><h1>'+escapeHTML(session.name)+'</h1><span class="pill">Étape '+(i+1)+' sur '+session.steps.length+'</span></header>'+
  '<div class="practice-clocks"><div><span>Posture / étape</span><div class="session-clock" id="step-countdown">'+formatTime(stepBoundary(session,i)-session.elapsed)+'</div></div><div><span>Séance</span><div class="session-clock" id="countdown">'+formatTime(remaining)+'</div></div></div>'+
  '<div class="session-stage '+(step.imageId?'has-pose':'no-pose')+'">'+(step.imageId?'<div class="practice-visual"><div class="session-pose-image">'+posePicture(step.imageId,'session-photo')+'</div>'+(target?'<span class="target-caption">Illustration de la posture cible</span>':'')+'</div>':'')+
- '<div class="practice-instructions"><h2>'+escapeHTML(step.title)+'</h2>'+(step.breath?'<div class="breath-indicator">'+(step.breath==='inspiration'?'Inspire':'Expire')+'</div>':'')+'<p>'+escapeHTML(step.text)+'</p></div><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Réécouter la consigne</button></div></div>'+
+ '<div class="practice-instructions"><h2>'+escapeHTML(step.title)+'</h2>'+(step.breath?'<div class="breath-indicator">'+(step.breath==='inspiration'?'Inspire':'Expire')+'</div>':'')+'<p>'+escapeHTML(step.text)+'</p>'+(step.canAdapt&&(step.variant!=='easy'||step.canReturnFull)?'<button class="secondary variant-toggle" data-action="switch-variant">'+(step.variant==='easy'?'Passer en version normale':'Adapter en version douce')+'</button>':'')+'</div><div class="audio-panel"><p class="muted" id="audio-label" role="status">'+escapeHTML(voiceStatus||'Voix guidée disponible')+'</p><button class="secondary audio-replay" data-action="replay-voice" type="button">Réécouter la consigne</button></div></div>'+
  '<div class="progress-track" aria-label="Progression"><span id="session-progress" style="width:'+progress+'%"></span></div><div class="session-controls"><button class="secondary" data-action="previous-step" '+(i===0?'disabled':'')+'>Précédente</button><button class="primary" data-action="pause">'+(session.running?'Pause':'Reprendre')+'</button><button class="secondary" data-action="next-step">Suivante</button><button class="secondary" data-action="finish">Terminer</button><button class="secondary" data-action="cancel-session">Quitter sans enregistrer</button></div><p class="practice-safety muted">Interromps toute posture douloureuse. Écoute ton corps.</p></div>';
 }
 function stepIndex(s){
@@ -326,6 +326,52 @@ function render(){
  $('#main').innerHTML=html;renderModal();
 }
 function findRoutine(id){return yoga.routines.find(x=>x.id===id);}
+function preferredVariant(poseId,mode,p){
+ const saved=p.poseVariantStatus?.[poseId]?.variant;
+ if(mode==='douce')return 'easy';
+ if(saved==='easy')return 'easy';
+ if(mode==='complete'||saved==='full'||p.masteredPoseStatus?.[poseId]?.mastered===true)return 'full';
+ return 'easy';
+}
+function routinePoseStep(poseId,variant){
+ const p=yoga.poses.find(x=>x.id===poseId),g=poseGuidance.poses?.[poseId];
+ const easy=variant==='easy'&&Boolean(g?.facile);
+ return {poseId,title:(p?.nom||poseId)+(easy?' · version douce':''),text:easy?g.facile:(p?.instructions||''),weight:1,
+  clip:(easy?'easy_':'pose_')+poseId,imageId:poseId,phase:easy?'facile':'finale',
+  variant:easy?'easy':'full',canAdapt:Boolean(g?.facile),canReturnFull:true};
+}
+function makeRoutineSteps(r,mode,p){
+ return r.poseIds.map(id=>routinePoseStep(id,preferredVariant(id,mode,p)));
+}
+function saluteStep(r,item,i,variant){
+ const easyId=item.easyPoseId||item.poseId;
+ const id=variant==='easy'?easyId:item.poseId;
+ const pose=yoga.poses.find(p=>p.id===id);
+ const canReturnFull=r.fullPrerequisites.every(isMastered);
+ return {poseId:item.poseId,title:(pose?.nom||id)+(item.side?' · '+item.side:'')+(variant==='easy'?' · version douce':''),
+  text:item.cue,weight:item.weight||1,imageId:id,breath:item.breath||'',variant,
+  canAdapt:easyId!==item.poseId,canReturnFull,
+  clip:'salutation_'+r.id+'_'+String(i).padStart(2,'0')+'_'+variant,salutationIndex:i};
+}
+function switchStepVariant(){
+ if(!session||session.type!=='yoga')return;
+ const i=stepIndex(session),old=session.steps[i];
+ if(!old.canAdapt)return;
+ const variant=old.variant==='easy'?'full':'easy';
+ if(variant==='full'&&!old.canReturnFull)return notice('Cette posture complète doit d’abord être maîtrisée.');
+ const p=profile();p.poseVariantStatus||={};
+ p.poseVariantStatus[old.poseId]={variant,at:Date.now()};
+ const r=findRoutine(session.id);
+ // Remplacer l'étape actuelle et les occurrences ultérieures de la même posture sans changer la durée.
+ for(let j=i;j<session.steps.length;j++){
+  const s=session.steps[j];if(s.poseId!==old.poseId||!s.canAdapt)continue;
+  if(variant==='full'&&!s.canReturnFull)continue;
+  session.steps[j]=r.requiresMastery?saluteStep(r,r.steps[s.salutationIndex],s.salutationIndex,variant):routinePoseStep(s.poseId,variant);
+ }
+ session.spoken=-1;session.last=Date.now();stopAudio();touch();
+ if(session.running)announceStep();else $('#main').innerHTML=sessionPage();
+ notice(variant==='easy'?'Version douce mémorisée pour cette posture.':'Version normale mémorisée pour cette posture.');
+}
 function startSession(type,id){
  if(session)return notice('Termine ou quitte la séance actuelle.');
  let steps=[],duration=0,name='';
@@ -335,24 +381,12 @@ function startSession(type,id){
    if(r.requiresMastery){
      const missing=remainingToMaster(r);
      if(missing.length){return notice('Il reste '+missing.length+' postures à apprendre avant de commencer cette salutation.');}
+     const canFull=r.fullPrerequisites.every(isMastered);
      steps=r.steps.map((item,i)=>{
-       const id=mode==='complete'?item.poseId:(item.easyPoseId||item.poseId);
-       const pose=yoga.poses.find(p=>p.id===id);
-       const easy=mode==='complete'?'full':'easy';
-       return {title:(pose?.nom||id)+(item.side?' · '+item.side:''),text:item.cue,
-         weight:item.weight||1,imageId:id,breath:item.breath||'',
-         clip:'salutation_'+r.id+'_'+String(i).padStart(2,'0')+'_'+easy};
+       const variant=canFull?preferredVariant(item.poseId,mode,profile()):'easy';
+       return saluteStep(r,item,i,variant);
      });
-   }else for(const poseId of r.poseIds){
-    const p=yoga.poses.find(x=>x.id===poseId),guidance=poseGuidance.poses?.[poseId];
-    if(guidance&&mode!=='complete'){
-      steps.push({title:(p?.nom||poseId)+' · se préparer',text:guidance.preparation,weight:.20,clip:'prepare_'+poseId,imageId:poseId,phase:'preparation'});
-      steps.push({title:(p?.nom||poseId)+' · version douce',text:guidance.facile,weight:.35,clip:'easy_'+poseId,imageId:poseId,phase:'facile'});
-    }
-    if(mode!=='douce'||!guidance){
-      steps.push({title:p?.nom||poseId,text:p?.instructions||'',weight:1,clip:'pose_'+poseId,imageId:poseId,phase:'finale'});
-    }
-   }
+   }else steps=makeRoutineSteps(r,mode,profile());
  }else{
   const med=meditations.sessions.find(x=>x.id===id);if(!med)return;name=med.name;duration=med.minutes*60;
   steps=(med.scripts[profile().meditationStyle]||[]).map((x,i)=>({title:i===0?'S’installer':i===med.scripts[profile().meditationStyle].length-1?'Revenir': 'Prendre le temps',text:x.text,weight:Math.max(1,Number(x.pause)||1),clip:med.id+'_'+profile().meditationStyle+'_'+String(i).padStart(2,'0')}));
@@ -450,7 +484,7 @@ async function finishSession(automatic=false){
  if(!session)return;
  const s=session;session=null;clearInterval(timer);timer=null;stopAudio();releaseAwake();
  const p=profile(),elapsed=automatic?s.duration:s.elapsed;
- p.history.push({id:uid(),type:s.type,ref:s.id,name:s.name,date:todayKey(),duration:Math.max(1,Math.round(elapsed/60)),completed:automatic||elapsed>=s.duration*.85,at:Date.now()});
+ p.history.push({id:uid(),type:s.type,ref:s.id,name:s.name,date:todayKey(),duration:Math.max(1,Math.round(elapsed/60)),completed:automatic||elapsed>=s.duration*.85,...(s.type==='yoga'?{poseVariants:s.steps.filter((step,i)=>i<=stepIndex(s)).map(step=>({poseId:step.poseId,variant:step.variant}))}:{}),at:Date.now()});
  touch();render();notice('Séance enregistrée. Merci pour ce moment.');
 }
 function abortSession(){session=null;clearInterval(timer);timer=null;stopAudio();releaseAwake();render();}
@@ -460,22 +494,23 @@ function mergedProfiles(local,remote){
   const old=map.get(p.id);if(!old){map.set(p.id,p);continue;}
   const newer=(p.modifiedAt||0)>=(old.modifiedAt||0)?p:old;
   const history=new Map([...(old.history||[]),...(p.history||[])].map(x=>[x.id,x]));
-  const masteredPoseStatus={};
+  const masteredPoseStatus={},poseVariantStatus={};
+   for(const obj of [old.poseVariantStatus||{},p.poseVariantStatus||{}])for(const [id,status] of Object.entries(obj))if(!poseVariantStatus[id]||(status?.at||0)>(poseVariantStatus[id]?.at||0))poseVariantStatus[id]=status;
    for(const obj of [old.masteredPoseStatus||{},p.masteredPoseStatus||{}]){
      for(const [id,status] of Object.entries(obj)){
        if(!masteredPoseStatus[id]||(status?.at||0)>(masteredPoseStatus[id]?.at||0))masteredPoseStatus[id]=status;
      }
    }
-   map.set(p.id,{...newer,history:[...history.values()].sort((a,b)=>(a.at||0)-(b.at||0)),favorites:[...new Set([...(old.favorites||[]),...(p.favorites||[])])],masteredPoseStatus});
+   map.set(p.id,{...newer,history:[...history.values()].sort((a,b)=>(a.at||0)-(b.at||0)),favorites:[...new Set([...(old.favorites||[]),...(p.favorites||[])])],masteredPoseStatus,poseVariantStatus});
  }
  return [...map.values()];
 }
 function snapshot(){return {schemaVersion:1,profiles:state.profiles,activeProfileId:state.activeProfileId,exportedAt:new Date().toISOString()};}
 function ingest(data,remote=false){
  if(!data||data.schemaVersion!==1||!Array.isArray(data.profiles)||data.profiles.length>100)throw Error('Fichier de sauvegarde non reconnu.');
- const fresh=data.profiles.filter(x=>x&&typeof x.id==='string'&&typeof x.name==='string'&&Array.isArray(x.history)).map(x=>({...x,name:x.name.slice(0,50),theme:x.theme==='horizon'?'horizon':'linen',favorites:Array.isArray(x.favorites)?x.favorites.slice(0,200):[],masteredPoseStatus:Object.fromEntries(Object.entries(x.masteredPoseStatus||{}).filter(([k,v])=>typeof k==='string'&&k.length<=70&&v&&typeof v.mastered==='boolean'&&Number.isFinite(v.at)).slice(0,200).map(([k,v])=>[k,{mastered:v.mastered,at:v.at}])),meditationStyle:['discrete','equilibree','enveloppante'].includes(x.meditationStyle)?x.meditationStyle:'equilibree',history:x.history.slice(-2000)}));
+ const fresh=data.profiles.filter(x=>x&&typeof x.id==='string'&&typeof x.name==='string'&&Array.isArray(x.history)).map(x=>({...x,name:x.name.slice(0,50),theme:x.theme==='horizon'?'horizon':'linen',favorites:Array.isArray(x.favorites)?x.favorites.slice(0,200):[],masteredPoseStatus:Object.fromEntries(Object.entries(x.masteredPoseStatus||{}).filter(([k,v])=>typeof k==='string'&&k.length<=70&&v&&typeof v.mastered==='boolean'&&Number.isFinite(v.at)).slice(0,200).map(([k,v])=>[k,{mastered:v.mastered,at:v.at}])),poseVariantStatus:Object.fromEntries(Object.entries(x.poseVariantStatus||{}).filter(([k,v])=>typeof k==='string'&&k.length<=70&&v&&['easy','full'].includes(v.variant)&&Number.isFinite(v.at)).slice(0,200).map(([k,v])=>[k,{variant:v.variant,at:v.at}])),meditationStyle:['discrete','equilibree','enveloppante'].includes(x.meditationStyle)?x.meditationStyle:'equilibree',history:x.history.slice(-2000)}));
  if(!fresh.length)throw Error('Aucun profil valide.');
- if(remote&&state.profiles.length===1&&state.profiles[0].name==='Mon espace'&&!state.profiles[0].history.length&&!Object.keys(state.profiles[0].masteredPoseStatus||{}).length&&!state.profiles[0].favorites?.length&&!fresh.some(p=>p.id===state.profiles[0].id)){state.profiles=fresh;state.activeProfileId=fresh[0].id;}
+ if(remote&&state.profiles.length===1&&state.profiles[0].name==='Mon espace'&&!state.profiles[0].history.length&&!Object.keys(state.profiles[0].poseVariantStatus||{}).length&&!Object.keys(state.profiles[0].masteredPoseStatus||{}).length&&!state.profiles[0].favorites?.length&&!fresh.some(p=>p.id===state.profiles[0].id)){state.profiles=fresh;state.activeProfileId=fresh[0].id;}
  else{state.profiles=mergedProfiles(state.profiles,fresh);if(!state.profiles.some(p=>p.id===state.activeProfileId))state.activeProfileId=state.profiles[0].id;}
  save(!remote);render();
 }
@@ -554,10 +589,11 @@ async function handle(action,value){
  if(action==='theme'){profile().theme=value;touch();render();return;}
  if(action==='select-program'){profile().selectedProgram=value;touch();render();return;}
  if(action==='favorite'){const list=profile().favorites;profile().favorites=list.includes(value)?list.filter(x=>x!==value):[...list,value];touch();render();return;}
+ if(action==='switch-variant')return switchStepVariant();
  if(action==='start-yoga')return startSession('yoga',value);
  if(action==='start-med')return startSession('meditate',value);
  if(action==='pose')return poseModal(value);
-  if(action==='toggle-mastery'){const p=profile();p.masteredPoseStatus||={};p.masteredPoseStatus[value]={mastered:!isMastered(value),at:Date.now()};touch();render();return poseModal(value);}
+  if(action==='toggle-mastery'){const p=profile();p.masteredPoseStatus||={};p.masteredPoseStatus[value]={mastered:!isMastered(value),at:Date.now()};if(p.masteredPoseStatus[value].mastered){p.poseVariantStatus||={};p.poseVariantStatus[value]={variant:'full',at:Date.now()};}else{p.poseVariantStatus||={};p.poseVariantStatus[value]={variant:'easy',at:Date.now()};}touch();render();return poseModal(value);}
  if(action==='close')return closeModal();
  if(action==='pause'){if(session){session.running=!session.running;session.last=Date.now();if(!session.running){stopAudio();releaseAwake();}else{session.spoken=-1;keepAwake();}render();if(session.running)announceStep();}return;}
  if(action==='previous-step'||action==='next-step'){if(session){const idx=stepIndex(session),next=action==='previous-step'?Math.max(0,idx-1):idx+1;if(next>=session.steps.length)return finishSession(false);session.elapsed=next===0?0:stepBoundary(session,next-1)+0.001;session.last=Date.now();session.spoken=-1;if(session.running)announceStep();else{stopAudio();$('#main').innerHTML=sessionPage();}}return;}

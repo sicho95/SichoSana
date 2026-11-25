@@ -80,9 +80,9 @@ class YogaCurriculumValidation(unittest.TestCase):
     def test_daily_and_practice_modes_visible(self):
         app=(ROOT/'static/app.js').read_text(encoding='utf-8')
         self.assertIn('function dailyRoutine()',app)
-        self.assertIn("['initiation','Découvrir pas à pas']",app)
-        self.assertIn("'prepare_'+poseId",app)
-        self.assertIn("'easy_'+poseId",app)
+        self.assertIn("['initiation','Adaptatif']",app)
+        self.assertIn('function makeRoutineSteps',app)
+        self.assertIn("(easy?'easy_':'pose_')+poseId",app)
         self.assertIn("p.dailyChoice={date:day,id:chosen.id}",app)
 
 class MediaHttpRange(unittest.TestCase):

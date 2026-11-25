@@ -20,3 +20,9 @@ Les résultats de CI ne sont jamais présumés. Safari réel, PWA, écoute, vér
 - Bloquer zoom tactile, double tap et zoom de focus iOS, conserver le défilement. Test iPhone réel nécessaire.
 - Première CI : 183 MP3 vérifiés, 23 tests Python réussis, 9 tests Chromium historiques réussis ; 2 nouveaux tests bloqués à la connexion. Suites isolées sans désactiver la limitation de production.
 - Horoscope : diagnostiquer refus fournisseur, limite, réseau et réponse invalide ; nouvelle tentative. Diagnostic réel en CI et sur Nestor avant validation. Clé partenaire éventuelle côté serveur.
+
+## Recette r3 — une posture par étape
+- Les préparations restent pédagogiques dans les fiches. Une séance ordinaire contient exactement les occurrences prévues par le catalogue, jamais trois versions successives imposées.
+- Mode adaptatif (identifiant historique initiation) : douce si non acquise, normale si acquise. Doux : douce privilégiée. Normal : complète sauf adaptation douce explicitement mémorisée. Un retour volontaire à normale ou une déclaration de maîtrise annule l'adaptation.
+- Bascule durant la séance : même étape et même budget temporel, clip correspondant, préférence horodatée persistante par profil et synchronisée ; historique des variantes pratiquées. Les salutations gardent leurs prérequis et leurs 12/18 étapes ; pas de bascule complète si les prérequis complets manquent.
+- Contrôler la séance Éveil du matin, le retour à la même étape, la navigation suivante, la persistance et la version douce ; tests sur Chromium/WebKit. Les illustrations spécifiques des variantes et les consignes différenciées de certaines salutations restent à revoir.

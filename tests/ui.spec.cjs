@@ -325,3 +325,31 @@ test('v231: version interface et serveur visibles dans profil, zoom accidentel b
  await expect(page.locator('meta[name="viewport"]')).toHaveAttribute('content',/user-scalable=no/);
  expect(await page.locator('body').evaluate(n=>getComputedStyle(n).touchAction)).toMatch(/pan-x.*pan-y|pan-y.*pan-x/);
 });
+
+test('v231: une posture par étape, adaptation immédiate et mémorisée',async({page})=>{
+ await page.setViewportSize({width:390,height:664});
+ await signIn(page);
+ await page.locator('#bottomnav [data-value="yoga"]').click();
+ await page.locator('.yoga-practice-modes [data-value="complete"]').click();
+ const button=page.locator('[data-action="start-yoga"][data-value="eveil-doux"]').first();
+ await button.click();
+ const catalog=await page.evaluate(async()=>await (await fetch('/data/yoga.json')).json());
+ const count=catalog.routines.find(x=>x.id==='eveil-doux').poseIds.length;
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 1 sur '+count);
+ const initial=await page.locator('.practice-instructions h2').textContent();
+ await page.locator('[data-action="switch-variant"]').click();
+ await expect(page.locator('.practice-instructions h2')).toHaveText(initial+' · version douce');
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 1 sur '+count);
+ await page.locator('[data-action="next-step"]').click();
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 2 sur '+count);
+ await page.locator('[data-action="cancel-session"]').click();
+ await button.click();
+ await expect(page.locator('.practice-instructions h2')).toHaveText(initial+' · version douce');
+ await page.locator('[data-action="switch-variant"]').click();
+ await expect(page.locator('.practice-instructions h2')).toHaveText(initial);
+ await page.locator('[data-action="cancel-session"]').click();
+ await page.locator('.yoga-practice-modes [data-value="douce"]').click();
+ await button.click();
+ await expect(page.locator('.practice-instructions h2')).toContainText('version douce');
+ await expect(page.locator('.practice-heading .pill')).toContainText('Étape 1 sur '+count);
+});
